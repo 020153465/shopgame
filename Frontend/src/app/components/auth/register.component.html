@@ -1,36 +1,17 @@
-<div class="form-container">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Register</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <form (ngSubmit)="register()">
-        <mat-form-field class="form-field">
-          <mat-label>Username</mat-label>
-          <input matInput [(ngModel)]="username" name="username" required>
-        </mat-form-field>
-        <mat-form-field class="form-field">
-          <mat-label>Email</mat-label>
-          <input matInput type="email" [(ngModel)]="email" name="email" required>
-        </mat-form-field>
-        <mat-form-field class="form-field">
-          <mat-label>First Name</mat-label>
-          <input matInput [(ngModel)]="firstName" name="firstName" required>
-        </mat-form-field>
-        <mat-form-field class="form-field">
-          <mat-label>Last Name</mat-label>
-          <input matInput [(ngModel)]="lastName" name="lastName" required>
-        </mat-form-field>
-        <mat-form-field class="form-field">
-          <mat-label>Password</mat-label>
-          <input matInput type="password" [(ngModel)]="password" name="password" required>
-        </mat-form-field>
-        <div *ngIf="error" class="error-message">{{ error }}</div>
-      </form>
-    </mat-card-content>
-    <mat-card-actions class="button-container">
-      <button mat-raised-button color="primary" (click)="register()" [disabled]="loading">Register</button>
-      <button mat-button routerLink="/login">Login</button>
-    </mat-card-actions>
-  </mat-card>
-</div> 
+<section class="auth-section">
+  <div class="auth-card">
+    <h2 class="auth-title">Register</h2>
+    <form (ngSubmit)="register()" class="auth-form">
+      <input class="auth-input" type="text" placeholder="Username" [(ngModel)]="username" name="username" required>
+      <input class="auth-input" type="email" placeholder="Email" [(ngModel)]="email" name="email" required>
+      <input class="auth-input" type="text" placeholder="First Name" [(ngModel)]="firstName" name="firstName" required>
+      <input class="auth-input" type="text" placeholder="Last Name" [(ngModel)]="lastName" name="lastName" required>
+      <input class="auth-input" type="password" placeholder="Password" [(ngModel)]="password" name="password" required>
+      <div *ngIf="error" class="auth-error">{{ error }}</div>
+      <button class="auth-btn" type="submit" [disabled]="loading">Register</button>
+    </form>
+    <div class="auth-link">
+      <a routerLink="/login">Already have an account? Login</a>
+    </div>
+  </div>
+</section> 

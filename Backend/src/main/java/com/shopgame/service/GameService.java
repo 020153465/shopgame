@@ -3,8 +3,13 @@ package com.shopgame.service;
 import com.shopgame.model.Game;
 import com.shopgame.repository.GameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -69,5 +74,52 @@ public class GameService {
 
     public List<Game> getFeaturedGames() {
         return gameRepository.findByFeaturedTrue();
+    }
+
+    public Page<Game> getGamesPaged(Pageable pageable) {
+        return gameRepository.findAll(pageable);
+    }
+
+    public Page<Game> searchGamesByTitlePaged(String title, Pageable pageable) {
+        return gameRepository.findByTitleContainingIgnoreCase(title, pageable);
+    }
+    public Page<Game> searchGamesByGenrePaged(String genre, Pageable pageable) {
+        return gameRepository.findByGenreContaining(genre, pageable);
+    }
+
+    public Page<Game> filterAndSortGames(
+            String title, String genre, String platform, String publisher, String devTeam,
+            BigDecimal minPrice, BigDecimal maxPrice, Boolean featured, Boolean inStock,
+            String sortBy, String sortDir, Pageable pageable) {
+        Specification<Game> spec = Specification.where(null);
+        if (StringUtils.hasText(title)) {
+            spec = spec.and((root, query, cb) -> cb.like(cb.lower(root.get("title")), "%" + title.toLowerCase() + "%"));
+        }
+        if (StringUtils.hasText(genre)) {
+            spec = spec.and((root, query, cb) -> cb.like(cb.lower(root.get("genres")), "%" + genre.toLowerCase() + "%"));
+        }
+        if (StringUtils.hasText(platform)) {
+            spec = spec.and((root, query, cb) -> cb.like(cb.lower(root.get("platforms")), "%" + platform.toLowerCase() + "%"));
+        }
+        if (StringUtils.hasText(publisher)) {
+            spec = spec.and((root, query, cb) -> cb.like(cb.lower(root.get("publisher")), "%" + publisher.toLowerCase() + "%"));
+        }
+        if (StringUtils.hasText(devTeam)) {
+            spec = spec.and((root, query, cb) -> cb.like(cb.lower(root.get("devTeam")), "%" + devTeam.toLowerCase() + "%"));
+        }
+        if (minPrice != null) {
+            spec = spec.and((root, query, cb) -> cb.ge(root.get("price"), minPrice));
+        }
+        if (maxPrice != null) {
+            spec = spec.and((root, query, cb) -> cb.le(root.get("price"), maxPrice));
+        }
+        if (featured != null) {
+            spec = spec.and((root, query, cb) -> cb.equal(root.get("featured"), featured));
+        }
+        if (inStock != null && inStock) {
+            spec = spec.and((root, query, cb) -> cb.greaterThan(root.get("stockQuantity"), 0));
+        }
+        // Sorting is handled by Pageable
+        return gameRepository.findAll(spec, pageable);
     }
 } 

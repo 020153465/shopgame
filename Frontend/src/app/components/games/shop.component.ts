@@ -11,6 +11,9 @@ import { CommonModule } from '@angular/common';
 import { Game } from '../../models/game.model';
 import { GameService } from '../../services/game.service';
 import { CartService } from '../../services/cart.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-shop',
@@ -24,7 +27,9 @@ import { CartService } from '../../services/cart.service';
     MatInputModule,
     MatSelectModule,
     MatOptionModule,
-    RouterLink
+    RouterLink,
+    MatSnackBarModule,
+    FormsModule
   ],
   templateUrl: './shop.component.html',
   styleUrls: ['./shop.component.css']
@@ -33,10 +38,28 @@ export class ShopComponent implements OnInit {
   games: Game[] = [];
   loading = false;
   error: string | null = null;
+  page = 0;
+  pageSize = 8;
+  totalPages = 1;
+  searchTerm = '';
+  selectedGenre = '';
+  selectedPlatform = '';
+  selectedPublisher = '';
+  selectedDevTeam = '';
+  minPrice: number | null = null;
+  maxPrice: number | null = null;
+  featured: boolean | null = null;
+  inStock: boolean | null = null;
+  sortBy = 'createdAt';
+  sortDir = 'desc';
+  genres = ['RPG', 'Action', 'Adventure', 'Strategy', 'Sports', 'Shooter', 'Indie'];
+  platforms = ['PC', 'PS4', 'PS5', 'Xbox One', 'Xbox Series X', 'Nintendo Switch'];
+  publishers = [];
+  devTeams = [];
 
   @Output() cartChanged = new EventEmitter<void>();
 
-  constructor(private gameService: GameService, private cartService: CartService) {}
+  constructor(private gameService: GameService, private cartService: CartService, private snackBar: MatSnackBar) {}
 
   ngOnInit() {
     this.fetchGames();
@@ -44,9 +67,25 @@ export class ShopComponent implements OnInit {
 
   fetchGames() {
     this.loading = true;
-    this.gameService.getAllGames().subscribe({
-      next: (games: Game[]) => {
-        this.games = games;
+    const params: any = {
+      title: this.searchTerm,
+      genre: this.selectedGenre,
+      platform: this.selectedPlatform,
+      publisher: this.selectedPublisher,
+      devTeam: this.selectedDevTeam,
+      minPrice: this.minPrice,
+      maxPrice: this.maxPrice,
+      featured: this.featured,
+      inStock: this.inStock,
+      sortBy: this.sortBy,
+      sortDir: this.sortDir,
+      page: this.page,
+      size: this.pageSize
+    };
+    this.gameService.filterAndSortGames(params).subscribe({
+      next: (res) => {
+        this.games = res.content;
+        this.totalPages = res.totalPages;
         this.loading = false;
       },
       error: () => {
@@ -56,13 +95,91 @@ export class ShopComponent implements OnInit {
     });
   }
 
+  onSearch(term: string) {
+    this.searchTerm = term;
+    this.page = 0;
+    this.fetchGames();
+  }
+
+  onGenreChange(genre: string) {
+    this.selectedGenre = genre;
+    this.page = 0;
+    this.fetchGames();
+  }
+
+  // Add similar handlers for platform, publisher, devTeam, minPrice, maxPrice, featured, inStock, sortBy, sortDir
+  onPlatformChange(platform: string) {
+    this.selectedPlatform = platform;
+    this.page = 0;
+    this.fetchGames();
+  }
+  onPublisherChange(publisher: string) {
+    this.selectedPublisher = publisher;
+    this.page = 0;
+    this.fetchGames();
+  }
+  onDevTeamChange(devTeam: string) {
+    this.selectedDevTeam = devTeam;
+    this.page = 0;
+    this.fetchGames();
+  }
+  onPriceChange(min: number | null, max: number | null) {
+    this.minPrice = min;
+    this.maxPrice = max;
+    this.page = 0;
+    this.fetchGames();
+  }
+  onFeaturedChange(val: boolean | null) {
+    this.featured = val;
+    this.page = 0;
+    this.fetchGames();
+  }
+  onInStockChange(val: boolean | null) {
+    this.inStock = val;
+    this.page = 0;
+    this.fetchGames();
+  }
+  onSortChange(sortBy: string, sortDir: string) {
+    this.sortBy = sortBy;
+    this.sortDir = sortDir;
+    this.page = 0;
+    this.fetchGames();
+  }
+
+  nextPage() {
+    if (this.page < this.totalPages - 1) {
+      this.page++;
+      this.fetchGames();
+    }
+  }
+
+  prevPage() {
+    if (this.page > 0) {
+      this.page--;
+      this.fetchGames();
+    }
+  }
+
   getImage(url: string | null | undefined): string {
     return url && url.trim() !== '' ? url : 'https://via.placeholder.com/300x400?text=No+Image';
   }
 
   addToCart(game: Game) {
     this.cartService.addToCart(game);
-    alert(`Added ${game.title} to cart!`);
+    this.snackBar.open(`Added ${game.title} to cart!`, 'Close', {
+      duration: 2000,
+      panelClass: ['snackbar-success']
+    });
     this.cartChanged.emit();
+  }
+
+  searchGames() {
+    this.page = 0;
+    this.fetchGames();
+  }
+
+  filterByGenre() {
+    this.page = 0;
+    this.fetchGames();
   }
 } 

@@ -43,4 +43,24 @@ export class GameService {
   searchGamesByPlatform(platform: string): Observable<Game[]> {
     return this.http.get<Game[]>(`${this.apiUrl}/search?platform=${platform}`);
   }
+
+  searchGamesByTitlePaged(title: string, page: number, size: number) {
+    return this.http.get<any>(`${this.apiUrl}/search?title=${encodeURIComponent(title)}&page=${page}&size=${size}`);
+  }
+
+  searchGamesByGenrePaged(genre: string, page: number, size: number) {
+    return this.http.get<any>(`${this.apiUrl}/search?genre=${encodeURIComponent(genre)}&page=${page}&size=${size}`);
+  }
+
+  getGamesPaged(page: number, size: number) {
+    return this.http.get<any>(`${this.apiUrl}/paged?page=${page}&size=${size}`);
+  }
+
+  filterAndSortGames(params: any) {
+    const query = Object.entries(params)
+      .filter(([_, v]) => v !== undefined && v !== null && v !== '')
+      .map(([k, v]) => `${encodeURIComponent(k)}=${encodeURIComponent(String(v))}`)
+      .join('&');
+    return this.http.get<any>(`${this.apiUrl}/filter?${query}`);
+  }
 } 

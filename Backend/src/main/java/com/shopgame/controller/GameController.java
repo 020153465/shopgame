@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/api/games")
@@ -30,16 +34,23 @@ public class GameController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Game>> searchGames(
+    public ResponseEntity<?> searchGames(
             @RequestParam(required = false) String title,
             @RequestParam(required = false) String genre,
             @RequestParam(required = false) String platform,
             @RequestParam(required = false) String devTeam,
-            @RequestParam(required = false) String publisher) {
-        
+            @RequestParam(required = false) String publisher,
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size) {
         if (title != null && !title.isEmpty()) {
+            if (page != null && size != null) {
+                return ResponseEntity.ok(gameService.searchGamesByTitlePaged(title, PageRequest.of(page, size)));
+            }
             return ResponseEntity.ok(gameService.searchGamesByTitle(title));
         } else if (genre != null && !genre.isEmpty()) {
+            if (page != null && size != null) {
+                return ResponseEntity.ok(gameService.searchGamesByGenrePaged(genre, PageRequest.of(page, size)));
+            }
             return ResponseEntity.ok(gameService.searchGamesByGenre(genre));
         } else if (platform != null && !platform.isEmpty()) {
             return ResponseEntity.ok(gameService.searchGamesByPlatform(platform));
@@ -55,6 +66,30 @@ public class GameController {
     @GetMapping("/featured")
     public ResponseEntity<List<Game>> getFeaturedGames() {
         return ResponseEntity.ok(gameService.getFeaturedGames());
+    }
+
+    @GetMapping("/paged")
+    public ResponseEntity<Page<Game>> getGamesPaged(Pageable pageable) {
+        return ResponseEntity.ok(gameService.getGamesPaged(pageable));
+    }
+
+    @GetMapping("/filter")
+    public ResponseEntity<Page<Game>> filterAndSortGames(
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String genre,
+            @RequestParam(required = false) String platform,
+            @RequestParam(required = false) String publisher,
+            @RequestParam(required = false) String devTeam,
+            @RequestParam(required = false) BigDecimal minPrice,
+            @RequestParam(required = false) BigDecimal maxPrice,
+            @RequestParam(required = false) Boolean featured,
+            @RequestParam(required = false) Boolean inStock,
+            @RequestParam(defaultValue = "createdAt") String sortBy,
+            @RequestParam(defaultValue = "desc") String sortDir,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "8") int size) {
+        Pageable pageable = org.springframework.data.domain.PageRequest.of(page, size, org.springframework.data.domain.Sort.by(org.springframework.data.domain.Sort.Direction.fromString(sortDir), sortBy));
+        return ResponseEntity.ok(gameService.filterAndSortGames(title, genre, platform, publisher, devTeam, minPrice, maxPrice, featured, inStock, sortBy, sortDir, pageable));
     }
 
     @PostMapping

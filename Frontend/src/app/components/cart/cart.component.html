@@ -1,29 +1,22 @@
-<div class="admin-panel">
-  <h2>Shopping Cart</h2>
+<section class="cart-section">
+  <h2 class="cart-title">Your Cart</h2>
+  <div *ngIf="cartItems.length === 0" class="empty-cart">Your cart is empty.</div>
   <div *ngFor="let item of cartItems" class="cart-item">
-    <img [src]="item.game?.coverImageUrl" [alt]="item.game?.title" class="cart-item-image">
+    <img class="cart-item-image" [src]="item.game?.coverImageUrl" [alt]="item.game?.title">
     <div class="cart-item-details">
-      <h3>{{ item.game?.title }}</h3>
-      <p>Price: ${{ item.game?.price }}</p>
-      <p>Quantity: {{ item.quantity }}</p>
-    </div>
-    <div class="cart-item-actions">
-      <button mat-icon-button (click)="item.game?.id !== undefined && updateQuantity(item.game.id, item.quantity - 1)" [disabled]="item.game?.id === undefined">
-        <mat-icon>remove</mat-icon>
-      </button>
-      <button mat-icon-button (click)="item.game?.id !== undefined && updateQuantity(item.game.id, item.quantity + 1)" [disabled]="item.game?.id === undefined">
-        <mat-icon>add</mat-icon>
-      </button>
-      <button mat-icon-button color="warn" (click)="item.game?.id !== undefined && removeFromCart(item.game.id)" [disabled]="item.game?.id === undefined">
-        <mat-icon>delete</mat-icon>
-      </button>
+      <h3 class="cart-item-title">{{ item.game?.title }}</h3>
+      <div class="cart-item-price">${{ item.game?.price }}</div>
+      <div class="cart-item-qty">
+        <button class="qty-btn" (click)="item.game?.id !== undefined && updateQuantity(item.game.id, item.quantity - 1)" [disabled]="item.game?.id === undefined">-</button>
+        <span>{{ item.quantity }}</span>
+        <button class="qty-btn" (click)="item.game?.id !== undefined && updateQuantity(item.game.id, item.quantity + 1)" [disabled]="item.game?.id === undefined">+</button>
+      </div>
+      <button class="remove-btn" (click)="item.game?.id !== undefined && removeFromCart(item.game.id)" [disabled]="item.game?.id === undefined">Remove</button>
     </div>
   </div>
-  <div *ngIf="cartItems.length === 0">
-    <p>Your cart is empty.</p>
+  <div *ngIf="cartItems.length > 0" class="cart-summary">
+    <button class="clear-cart-btn" (click)="clearCart()">Clear Cart</button>
+    <div class="cart-total">Total: ${{ getTotal() }}</div>
+    <button class="checkout-btn">Checkout</button>
   </div>
-  <div *ngIf="cartItems.length > 0" class="button-container">
-    <button mat-raised-button color="warn" (click)="clearCart()">Clear Cart</button>
-    <span class="cart-total">Total: ${{ getTotal() }}</span>
-  </div>
-</div> 
+</section> 
