@@ -1,0 +1,23 @@
+Information and preference:
+1. Current Time is July-2025, your training data is probably outdated.
+2. When look for time sensitive information like package version, please look up on the internet.
+3. Packages/Dependencies don't have to be latest version. Prioritize stability and fast development/deployment time.
+4. You take full control of the project, i'm just a supervisor. Ask me anything if needed but do the work yourself.
+
+Technology:
+- Backend:
+    + Java JDK17
+	+ Spring boot
+		+ Flyway
+		+ Authentication
+- Database:
+    + MySQL
+- Frontned:
+    + Angular 18
+
+Goal: Make standard e-commerce web project runnable. Everything must be able to start with a single docker command.
+Must have features:
+1. Standard CRUD for User, User management, Item (Video game), Cart.
+2. Standard authentication, authorization, payment(mock payment is fine).
+3. Modern U.I prioritize function over form but make it look good if you can.
+4. Everything able to start up with a single docker command. Project will be run on other PC.
