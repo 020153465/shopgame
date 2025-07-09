@@ -1,0 +1,25 @@
+# Node/Angular (Frontend)
+Frontend/node_modules/
+Frontend/dist/
+Frontend/.angular/
+
+
+# Java/Spring Boot (Backend)
+Backend/target/
+
+# System/IDE files
+.vscode/
+.cursor/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# OS generated files
+ehthumbs.db
+Icon?
+Desktop.ini
+
+# Docker
+**/.env 

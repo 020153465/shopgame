@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: shopgame-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: shopgame
+      MYSQL_USER: shopgame_user
+      MYSQL_PASSWORD: shopgame_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./Database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - shopgame-network
+
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    container_name: shopgame-backend
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/shopgame?useSSL=false&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: shopgame_user
+      SPRING_DATASOURCE_PASSWORD: shopgame_pass
+      JWT_SECRET: your-secret-key-here-make-it-long-and-secure-in-production
+    depends_on:
+      - mysql
+    networks:
+      - shopgame-network
+
+  frontend:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+    container_name: shopgame-frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+    networks:
+      - shopgame-network
+
+volumes:
+  mysql_data:
+
+networks:
+  shopgame-network:
+    driver: bridge 

@@ -1,0 +1,23 @@
+<div class="form-container" *ngIf="game">
+  <mat-card>
+    <img mat-card-image [src]="game.coverImageUrl" [alt]="game.title">
+    <mat-card-header>
+      <mat-card-title>{{ game.title }}</mat-card-title>
+      <mat-card-subtitle>{{ game.publisher }}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <p>{{ game.description }}</p>
+      <p><strong>Price:</strong> ${{ game.price }}</p>
+      <p><strong>Genres:</strong> {{ game.genres }}</p>
+      <p><strong>Platforms:</strong> {{ game.platforms }}</p>
+      <p><strong>Developer:</strong> {{ game.devTeam }}</p>
+      <p><strong>Stock:</strong> {{ game.stockQuantity }} units</p>
+    </mat-card-content>
+    <mat-card-actions class="button-container">
+      <button mat-raised-button color="accent" (click)="addToCart()">
+        <mat-icon>add_shopping_cart</mat-icon>
+        Add to Cart
+      </button>
+    </mat-card-actions>
+  </mat-card>
+</div> 

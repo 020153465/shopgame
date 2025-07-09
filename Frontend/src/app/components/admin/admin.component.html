@@ -1,0 +1,82 @@
+<div class="admin-panel">
+  <h2>Admin Panel</h2>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Add New Game</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form>
+        <mat-form-field class="form-field">
+          <mat-label>Title</mat-label>
+          <input matInput [(ngModel)]="newGame.title" name="title" required>
+        </mat-form-field>
+        <mat-form-field class="form-field">
+          <mat-label>Description</mat-label>
+          <textarea matInput [(ngModel)]="newGame.description" name="description" required></textarea>
+        </mat-form-field>
+        <mat-form-field class="form-field">
+          <mat-label>Price</mat-label>
+          <input matInput type="number" [(ngModel)]="newGame.price" name="price" required>
+        </mat-form-field>
+        <mat-form-field class="form-field">
+          <mat-label>Genres (comma-separated)</mat-label>
+          <input matInput [(ngModel)]="newGame.genres" name="genres">
+        </mat-form-field>
+        <mat-form-field class="form-field">
+          <mat-label>Platforms (comma-separated)</mat-label>
+          <input matInput [(ngModel)]="newGame.platforms" name="platforms">
+        </mat-form-field>
+        <mat-form-field class="form-field">
+          <mat-label>Developer</mat-label>
+          <input matInput [(ngModel)]="newGame.devTeam" name="devTeam">
+        </mat-form-field>
+        <mat-form-field class="form-field">
+          <mat-label>Publisher</mat-label>
+          <input matInput [(ngModel)]="newGame.publisher" name="publisher">
+        </mat-form-field>
+        <mat-form-field class="form-field">
+          <mat-label>Cover Image URL</mat-label>
+          <input matInput [(ngModel)]="newGame.coverImageUrl" name="coverImageUrl">
+        </mat-form-field>
+        <mat-form-field class="form-field">
+          <mat-label>Stock Quantity</mat-label>
+          <input matInput type="number" [(ngModel)]="newGame.stockQuantity" name="stockQuantity">
+        </mat-form-field>
+      </form>
+    </mat-card-content>
+    <mat-card-actions class="button-container">
+      <button mat-raised-button color="primary" (click)="addGame()">Add Game</button>
+    </mat-card-actions>
+  </mat-card>
+  <mat-card style="margin-top: 20px;">
+    <mat-card-header>
+      <mat-card-title>Manage Games</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <table mat-table [dataSource]="games">
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef>Title</th>
+          <td mat-cell *matCellDef="let game">{{ game.title }}</td>
+        </ng-container>
+        <ng-container matColumnDef="price">
+          <th mat-header-cell *matHeaderCellDef>Price</th>
+          <td mat-cell *matCellDef="let game">${{ game.price }}</td>
+        </ng-container>
+        <ng-container matColumnDef="stock">
+          <th mat-header-cell *matHeaderCellDef>Stock</th>
+          <td mat-cell *matCellDef="let game">{{ game.stockQuantity }}</td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let game">
+            <button mat-icon-button color="warn" (click)="deleteGame(game.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+</div> 
