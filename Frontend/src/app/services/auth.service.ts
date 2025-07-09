@@ -10,6 +10,7 @@ import { environment } from '../../environments/environment';
 })
 export class AuthService {
   private apiUrl = `${environment.apiUrl}/auth`;
+  private userApiUrl = `${environment.apiUrl}/users`;
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
@@ -22,7 +23,7 @@ export class AuthService {
       .pipe(
         tap(response => {
           localStorage.setItem('token', response.token);
-          this.currentUserSubject.next(response.user);
+          this.fetchCurrentUser();
         })
       );
   }
@@ -32,7 +33,7 @@ export class AuthService {
       .pipe(
         tap(response => {
           localStorage.setItem('token', response.token);
-          this.currentUserSubject.next(response.user);
+          this.fetchCurrentUser();
         })
       );
   }
@@ -57,9 +58,14 @@ export class AuthService {
   private loadCurrentUser(): void {
     const token = this.getToken();
     if (token) {
-      // In a real app, you'd decode the JWT token or make an API call to get user info
-      // For now, we'll just check if token exists
-      this.currentUserSubject.next(null);
+      this.fetchCurrentUser();
     }
+  }
+
+  private fetchCurrentUser(): void {
+    this.http.get<User>(`${this.userApiUrl}/me`).subscribe({
+      next: user => this.currentUserSubject.next(user),
+      error: () => this.currentUserSubject.next(null)
+    });
   }
 } 

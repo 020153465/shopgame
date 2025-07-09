@@ -5,9 +5,11 @@ import { RegisterComponent } from './components/auth/register.component';
 import { CartComponent } from './components/cart/cart.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { GameDetailComponent } from './components/games/game-detail.component';
+import { ShopComponent } from './components/games/shop.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
+  { path: 'shop', component: ShopComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'cart', component: CartComponent },

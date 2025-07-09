@@ -1,15 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
+import { CartService, CartItem } from '../../services/cart.service';
 import { MatIconModule } from '@angular/material/icon';
-import { CartService } from '../../services/cart.service';
-import { CartItem } from '../../models/cart.model';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule],
+  imports: [CommonModule, MatIconModule, MatButtonModule, MatCardModule],
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css']
 })
@@ -18,39 +17,35 @@ export class CartComponent implements OnInit {
 
   constructor(private cartService: CartService) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.loadCart();
   }
 
-  loadCart(): void {
-    // For demo purposes, using user ID 1
-    this.cartService.getCart(1).subscribe(items => {
-      this.cartItems = items;
-    });
+  loadCart() {
+    this.cartItems = this.cartService.getCartItems();
   }
 
-  updateQuantity(cartItemId: number, quantity: number): void {
-    if (quantity > 0) {
-      this.cartService.updateQuantity(cartItemId, quantity).subscribe(() => {
-        this.loadCart();
-      });
+  updateQuantity(gameId: number, quantity: number) {
+    const items = this.cartService.getCartItems();
+    const idx = items.findIndex(item => item.game.id === gameId);
+    if (idx > -1) {
+      items[idx].quantity = quantity;
+      localStorage.setItem('shopgame_cart', JSON.stringify(items));
+      this.loadCart();
     }
   }
 
-  removeFromCart(cartItemId: number): void {
-    this.cartService.removeFromCart(cartItemId).subscribe(() => {
-      this.loadCart();
-    });
+  removeFromCart(gameId: number) {
+    this.cartService.removeFromCart(gameId);
+    this.loadCart();
   }
 
-  clearCart(): void {
-    this.cartService.clearCart(1).subscribe(() => {
-      this.loadCart();
-    });
+  clearCart() {
+    this.cartService.clearCart();
+    this.loadCart();
   }
 
-  checkout(): void {
-    console.log('Proceeding to checkout...');
-    // In a real app, this would navigate to a checkout page
+  getTotal(): number {
+    return this.cartItems.reduce((sum, item) => sum + item.game.price * item.quantity, 0);
   }
 } 

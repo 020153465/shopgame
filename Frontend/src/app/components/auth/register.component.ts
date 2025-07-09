@@ -5,7 +5,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { RegisterRequest } from '../../models/user.model';
 
 @Component({
   selector: 'app-register',
@@ -19,47 +21,8 @@ import { RouterModule } from '@angular/router';
     MatFormFieldModule,
     RouterModule
   ],
-  template: `
-    <div class="form-container">
-      <mat-card>
-        <mat-card-header>
-          <mat-card-title>Register</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <form>
-            <mat-form-field class="form-field">
-              <mat-label>Username</mat-label>
-              <input matInput [(ngModel)]="username" name="username" required>
-            </mat-form-field>
-            
-            <mat-form-field class="form-field">
-              <mat-label>Email</mat-label>
-              <input matInput type="email" [(ngModel)]="email" name="email" required>
-            </mat-form-field>
-            
-            <mat-form-field class="form-field">
-              <mat-label>First Name</mat-label>
-              <input matInput [(ngModel)]="firstName" name="firstName" required>
-            </mat-form-field>
-            
-            <mat-form-field class="form-field">
-              <mat-label>Last Name</mat-label>
-              <input matInput [(ngModel)]="lastName" name="lastName" required>
-            </mat-form-field>
-            
-            <mat-form-field class="form-field">
-              <mat-label>Password</mat-label>
-              <input matInput type="password" [(ngModel)]="password" name="password" required>
-            </mat-form-field>
-          </form>
-        </mat-card-content>
-        <mat-card-actions class="button-container">
-          <button mat-raised-button color="primary" (click)="register()">Register</button>
-          <button mat-button routerLink="/login">Login</button>
-        </mat-card-actions>
-      </mat-card>
-    </div>
-  `
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.css']
 })
 export class RegisterComponent {
   username = '';
@@ -67,14 +30,30 @@ export class RegisterComponent {
   firstName = '';
   lastName = '';
   password = '';
+  error: string | null = null;
+  loading = false;
+
+  constructor(private authService: AuthService, private router: Router) {}
 
   register() {
-    console.log('Register attempt:', { 
-      username: this.username, 
-      email: this.email, 
-      firstName: this.firstName, 
-      lastName: this.lastName, 
-      password: this.password 
+    this.error = null;
+    this.loading = true;
+    const userData: RegisterRequest = {
+      username: this.username,
+      email: this.email,
+      firstName: this.firstName,
+      lastName: this.lastName,
+      password: this.password
+    };
+    this.authService.register(userData).subscribe({
+      next: () => {
+        this.loading = false;
+        this.router.navigate(['/']);
+      },
+      error: err => {
+        this.loading = false;
+        this.error = err.error?.message || 'Registration failed. Please check your input.';
+      }
     });
   }
 } 

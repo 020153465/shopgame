@@ -1,1 +1,16 @@
-/* Add admin styles here if needed */ 
+.admin-container {
+  padding: 24px;
+}
+.user-detail {
+  margin-top: 24px;
+  max-width: 400px;
+}
+.button-container {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+.error-message {
+  color: red;
+  margin-bottom: 12px;
+} 

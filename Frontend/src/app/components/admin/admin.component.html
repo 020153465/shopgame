@@ -1,82 +1,71 @@
-<div class="admin-panel">
-  <h2>Admin Panel</h2>
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Add New Game</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <form>
-        <mat-form-field class="form-field">
-          <mat-label>Title</mat-label>
-          <input matInput [(ngModel)]="newGame.title" name="title" required>
-        </mat-form-field>
-        <mat-form-field class="form-field">
-          <mat-label>Description</mat-label>
-          <textarea matInput [(ngModel)]="newGame.description" name="description" required></textarea>
-        </mat-form-field>
-        <mat-form-field class="form-field">
-          <mat-label>Price</mat-label>
-          <input matInput type="number" [(ngModel)]="newGame.price" name="price" required>
-        </mat-form-field>
-        <mat-form-field class="form-field">
-          <mat-label>Genres (comma-separated)</mat-label>
-          <input matInput [(ngModel)]="newGame.genres" name="genres">
-        </mat-form-field>
-        <mat-form-field class="form-field">
-          <mat-label>Platforms (comma-separated)</mat-label>
-          <input matInput [(ngModel)]="newGame.platforms" name="platforms">
-        </mat-form-field>
-        <mat-form-field class="form-field">
-          <mat-label>Developer</mat-label>
-          <input matInput [(ngModel)]="newGame.devTeam" name="devTeam">
-        </mat-form-field>
-        <mat-form-field class="form-field">
-          <mat-label>Publisher</mat-label>
-          <input matInput [(ngModel)]="newGame.publisher" name="publisher">
-        </mat-form-field>
-        <mat-form-field class="form-field">
-          <mat-label>Cover Image URL</mat-label>
-          <input matInput [(ngModel)]="newGame.coverImageUrl" name="coverImageUrl">
-        </mat-form-field>
-        <mat-form-field class="form-field">
-          <mat-label>Stock Quantity</mat-label>
-          <input matInput type="number" [(ngModel)]="newGame.stockQuantity" name="stockQuantity">
-        </mat-form-field>
-      </form>
-    </mat-card-content>
-    <mat-card-actions class="button-container">
-      <button mat-raised-button color="primary" (click)="addGame()">Add Game</button>
-    </mat-card-actions>
-  </mat-card>
-  <mat-card style="margin-top: 20px;">
-    <mat-card-header>
-      <mat-card-title>Manage Games</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <table mat-table [dataSource]="games">
-        <ng-container matColumnDef="title">
-          <th mat-header-cell *matHeaderCellDef>Title</th>
-          <td mat-cell *matCellDef="let game">{{ game.title }}</td>
-        </ng-container>
-        <ng-container matColumnDef="price">
-          <th mat-header-cell *matHeaderCellDef>Price</th>
-          <td mat-cell *matCellDef="let game">${{ game.price }}</td>
-        </ng-container>
-        <ng-container matColumnDef="stock">
-          <th mat-header-cell *matHeaderCellDef>Stock</th>
-          <td mat-cell *matCellDef="let game">{{ game.stockQuantity }}</td>
-        </ng-container>
-        <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef>Actions</th>
-          <td mat-cell *matCellDef="let game">
-            <button mat-icon-button color="warn" (click)="deleteGame(game.id)">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </td>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-      </table>
-    </mat-card-content>
-  </mat-card>
+<div class="admin-container">
+  <h2>User Management</h2>
+  <div *ngIf="loading">Loading users...</div>
+  <div *ngIf="error" class="error-message">{{ error }}</div>
+  <table mat-table [dataSource]="users" class="mat-elevation-z8" *ngIf="!loading">
+    <ng-container matColumnDef="username">
+      <th mat-header-cell *matHeaderCellDef>Username</th>
+      <td mat-cell *matCellDef="let user">{{ user.username }}</td>
+    </ng-container>
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef>Email</th>
+      <td mat-cell *matCellDef="let user">{{ user.email }}</td>
+    </ng-container>
+    <ng-container matColumnDef="role">
+      <th mat-header-cell *matHeaderCellDef>Role</th>
+      <td mat-cell *matCellDef="let user">{{ user.role }}</td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let user">
+        <button mat-button color="primary" (click)="selectUser(user)">View/Edit</button>
+        <button mat-button color="warn" (click)="deleteUser(user)">Delete</button>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="['username', 'email', 'role', 'actions']"></tr>
+    <tr mat-row *matRowDef="let row; columns: ['username', 'email', 'role', 'actions'];"></tr>
+  </table>
+
+  <div *ngIf="selectedUser" class="user-detail">
+    <h3>User Detail</h3>
+    <form *ngIf="editMode; else viewMode">
+      <mat-form-field>
+        <mat-label>Username</mat-label>
+        <input matInput [(ngModel)]="selectedUser.username" name="username">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput [(ngModel)]="selectedUser.email" name="email">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>First Name</mat-label>
+        <input matInput [(ngModel)]="selectedUser.firstName" name="firstName">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Last Name</mat-label>
+        <input matInput [(ngModel)]="selectedUser.lastName" name="lastName">
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Role</mat-label>
+        <mat-select [(ngModel)]="selectedUser.role" name="role">
+          <mat-option *ngFor="let role of userRoles" [value]="role">{{ role }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="button-container">
+        <button mat-raised-button color="primary" (click)="saveUser()">Save</button>
+        <button mat-button (click)="cancelEdit()">Cancel</button>
+      </div>
+    </form>
+    <ng-template #viewMode>
+      <p><strong>Username:</strong> {{ selectedUser.username }}</p>
+      <p><strong>Email:</strong> {{ selectedUser.email }}</p>
+      <p><strong>First Name:</strong> {{ selectedUser.firstName }}</p>
+      <p><strong>Last Name:</strong> {{ selectedUser.lastName }}</p>
+      <p><strong>Role:</strong> {{ selectedUser.role }}</p>
+      <div class="button-container">
+        <button mat-raised-button color="primary" (click)="enableEdit()">Edit</button>
+        <button mat-button (click)="selectedUser = null">Close</button>
+      </div>
+    </ng-template>
+  </div>
 </div> 

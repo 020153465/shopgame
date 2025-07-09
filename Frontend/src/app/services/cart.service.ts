@@ -1,36 +1,41 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { CartItem, AddToCartRequest, UpdateCartItemRequest } from '../models/cart.model';
-import { environment } from '../../environments/environment';
+import { Game } from '../models/game.model';
 
-@Injectable({
-  providedIn: 'root'
-})
+export interface CartItem {
+  game: Game;
+  quantity: number;
+}
+
+@Injectable({ providedIn: 'root' })
 export class CartService {
-  private apiUrl = `${environment.apiUrl}/cart`;
+  private storageKey = 'shopgame_cart';
 
-  constructor(private http: HttpClient) {}
-
-  getCart(userId: number): Observable<CartItem[]> {
-    return this.http.get<CartItem[]>(`${this.apiUrl}/${userId}`);
+  getCartItems(): CartItem[] {
+    const data = localStorage.getItem(this.storageKey);
+    return data ? JSON.parse(data) : [];
   }
 
-  addToCart(userId: number, gameId: number, quantity: number): Observable<CartItem> {
-    const request: AddToCartRequest = { userId, gameId, quantity };
-    return this.http.post<CartItem>(this.apiUrl, request);
+  addToCart(game: Game, quantity: number = 1): void {
+    const items = this.getCartItems();
+    const idx = items.findIndex(item => item.game.id === game.id);
+    if (idx > -1) {
+      items[idx].quantity += quantity;
+    } else {
+      items.push({ game, quantity });
+    }
+    localStorage.setItem(this.storageKey, JSON.stringify(items));
   }
 
-  updateQuantity(cartItemId: number, quantity: number): Observable<CartItem> {
-    const request: UpdateCartItemRequest = { quantity };
-    return this.http.put<CartItem>(`${this.apiUrl}/items/${cartItemId}`, request);
+  removeFromCart(gameId: number): void {
+    const items = this.getCartItems().filter(item => item.game.id !== gameId);
+    localStorage.setItem(this.storageKey, JSON.stringify(items));
   }
 
-  removeFromCart(cartItemId: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/items/${cartItemId}`);
+  clearCart(): void {
+    localStorage.removeItem(this.storageKey);
   }
 
-  clearCart(userId: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${userId}`);
+  getCartCount(): number {
+    return this.getCartItems().reduce((sum, item) => sum + item.quantity, 0);
   }
 } 

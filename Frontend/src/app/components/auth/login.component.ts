@@ -5,7 +5,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
+import { LoginRequest } from '../../models/user.model';
 
 @Component({
   selector: 'app-login',
@@ -19,40 +21,30 @@ import { RouterModule } from '@angular/router';
     MatFormFieldModule,
     RouterModule
   ],
-  template: `
-    <div class="form-container">
-      <mat-card>
-        <mat-card-header>
-          <mat-card-title>Login</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <form>
-            <mat-form-field class="form-field">
-              <mat-label>Username</mat-label>
-              <input matInput [(ngModel)]="username" name="username" required>
-            </mat-form-field>
-            
-            <mat-form-field class="form-field">
-              <mat-label>Password</mat-label>
-              <input matInput type="password" [(ngModel)]="password" name="password" required>
-            </mat-form-field>
-          </form>
-        </mat-card-content>
-        <mat-card-actions class="button-container">
-          <button mat-raised-button color="primary" (click)="login()">Login</button>
-          <button mat-button routerLink="/register">Register</button>
-        </mat-card-actions>
-      </mat-card>
-    </div>
-  `
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
 })
 export class LoginComponent {
   username = '';
   password = '';
+  error: string | null = null;
+  loading = false;
+
+  constructor(private authService: AuthService, private router: Router) {}
 
   login() {
-    // For demo purposes, just log the credentials
-    console.log('Login attempt:', { username: this.username, password: this.password });
-    // In a real app, you would call an authentication service
+    this.error = null;
+    this.loading = true;
+    const credentials: LoginRequest = { username: this.username, password: this.password };
+    this.authService.login(credentials).subscribe({
+      next: () => {
+        this.loading = false;
+        this.router.navigate(['/']);
+      },
+      error: err => {
+        this.loading = false;
+        this.error = err.error?.message || 'Login failed. Please check your credentials.';
+      }
+    });
   }
 } 

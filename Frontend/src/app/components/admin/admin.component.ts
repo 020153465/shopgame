@@ -1,82 +1,93 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { MatCardModule } from '@angular/material/card';
+import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatTableModule } from '@angular/material/table';
-import { MatIconModule } from '@angular/material/icon';
-import { GameService } from '../../services/game.service';
-import { Game, CreateGameRequest } from '../../models/game.model';
+import { MatSelectModule } from '@angular/material/select';
+import { FormsModule } from '@angular/forms';
+import { User, UserRole } from '../../models/user.model';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-admin',
   standalone: true,
   imports: [
     CommonModule,
-    FormsModule,
-    MatCardModule,
+    MatTableModule,
     MatButtonModule,
     MatInputModule,
     MatFormFieldModule,
-    MatTableModule,
-    MatIconModule
+    MatSelectModule,
+    FormsModule
   ],
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css']
 })
 export class AdminComponent implements OnInit {
-  games: Game[] = [];
-  displayedColumns: string[] = ['title', 'price', 'stock', 'actions'];
-  newGame: CreateGameRequest = {
-    title: '',
-    description: '',
-    price: 0,
-    genres: '',
-    platforms: '',
-    devTeam: '',
-    publisher: '',
-    coverImageUrl: '',
-    stockQuantity: 0
-  };
+  users: User[] = [];
+  selectedUser: User | null = null;
+  editMode = false;
+  userRoles = Object.values(UserRole);
+  error: string | null = null;
+  loading = false;
 
-  constructor(private gameService: GameService) {}
+  constructor(private userService: UserService) {}
 
-  ngOnInit(): void {
-    this.loadGames();
+  ngOnInit() {
+    this.fetchUsers();
   }
 
-  loadGames(): void {
-    this.gameService.getAllGames().subscribe(games => {
-      this.games = games;
+  fetchUsers() {
+    this.loading = true;
+    this.userService.getAllUsers().subscribe({
+      next: users => {
+        this.users = users;
+        this.loading = false;
+      },
+      error: err => {
+        this.error = 'Failed to load users.';
+        this.loading = false;
+      }
     });
   }
 
-  addGame(): void {
-    this.gameService.createGame(this.newGame).subscribe(() => {
-      this.loadGames();
-      this.resetNewGame();
+  selectUser(user: User) {
+    this.selectedUser = { ...user };
+    this.editMode = false;
+    this.error = null;
+  }
+
+  enableEdit() {
+    this.editMode = true;
+  }
+
+  saveUser() {
+    if (!this.selectedUser) return;
+    this.userService.updateUser(this.selectedUser.id, this.selectedUser).subscribe({
+      next: updated => {
+        this.editMode = false;
+        this.fetchUsers();
+      },
+      error: err => {
+        this.error = 'Failed to update user.';
+      }
     });
   }
 
-  deleteGame(id: number): void {
-    this.gameService.deleteGame(id).subscribe(() => {
-      this.loadGames();
+  deleteUser(user: User) {
+    if (!confirm(`Delete user ${user.username}?`)) return;
+    this.userService.deleteUser(user.id).subscribe({
+      next: () => this.fetchUsers(),
+      error: () => this.error = 'Failed to delete user.'
     });
   }
 
-  private resetNewGame(): void {
-    this.newGame = {
-      title: '',
-      description: '',
-      price: 0,
-      genres: '',
-      platforms: '',
-      devTeam: '',
-      publisher: '',
-      coverImageUrl: '',
-      stockQuantity: 0
-    };
+  cancelEdit() {
+    this.editMode = false;
+    this.error = null;
+    if (this.selectedUser) {
+      this.selectUser(this.selectedUser);
+    }
   }
 } 
