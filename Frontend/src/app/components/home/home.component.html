@@ -1,11 +1,26 @@
 <div class="hero-section">
   <div class="hero-content">
-    <h1>Welcome to ShopGame</h1>
+    <h1>Welcome to <span class="brand-highlight">ShopGame</span></h1>
     <p>Discover, buy, and play the best video games. Curated for gamers, by gamers.</p>
-    <button mat-raised-button color="accent" routerLink="/shop">Shop Now</button>
+    <button mat-raised-button color="accent" routerLink="/shop">
+      <mat-icon>storefront</mat-icon> Shop Now
+    </button>
   </div>
   <div class="hero-image">
     <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=600&q=80" alt="Gaming" />
+  </div>
+</div>
+
+<div class="categories-section">
+  <h3>Browse by Genre</h3>
+  <div class="categories-list">
+    <button mat-stroked-button color="primary">RPG</button>
+    <button mat-stroked-button color="primary">Action</button>
+    <button mat-stroked-button color="primary">Adventure</button>
+    <button mat-stroked-button color="primary">Strategy</button>
+    <button mat-stroked-button color="primary">Sports</button>
+    <button mat-stroked-button color="primary">Shooter</button>
+    <button mat-stroked-button color="primary">Indie</button>
   </div>
 </div>
 
@@ -13,15 +28,22 @@
   <h2>Featured Games</h2>
   <div class="featured-grid">
     <mat-card class="featured-card" *ngFor="let game of featuredGames">
-      <img mat-card-image [src]="game.coverImageUrl" [alt]="game.title">
-      <mat-card-title>{{ game.title }}</mat-card-title>
+      <img mat-card-image [src]="game.coverImageUrl || 'https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg'" [alt]="game.title" (error)="game.coverImageUrl='https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg'">
+      <mat-card-header>
+        <mat-card-title>{{ game.title }}</mat-card-title>
+        <mat-card-subtitle>{{ game.publisher }}</mat-card-subtitle>
+      </mat-card-header>
       <mat-card-content>
         <p>{{ game.description | slice:0:80 }}...</p>
-        <p><strong>Price:</strong> ${{ game.price }}</p>
+        <p class="price"><strong>Price:</strong> ${{ game.price }}</p>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-button color="primary" [routerLink]="['/game', game.id]">Details</button>
-        <button mat-raised-button color="accent">Add to Cart</button>
+        <button mat-button color="primary" [routerLink]="['/game', game.id]">
+          <mat-icon>info</mat-icon> Details
+        </button>
+        <button mat-raised-button color="accent">
+          <mat-icon>add_shopping_cart</mat-icon> Add to Cart
+        </button>
       </mat-card-actions>
     </mat-card>
   </div>
@@ -33,21 +55,25 @@
   <div *ngIf="error" class="error-message">{{ error }}</div>
   <div class="games-grid" *ngIf="!loading && !error">
     <mat-card class="game-card" *ngFor="let game of games">
-      <img mat-card-image [src]="game.coverImageUrl" [alt]="game.title" class="game-card-image">
+      <img mat-card-image [src]="game.coverImageUrl || 'https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg'" [alt]="game.title" (error)="game.coverImageUrl='https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg'">
       <mat-card-header>
         <mat-card-title>{{ game.title }}</mat-card-title>
         <mat-card-subtitle>{{ game.publisher }}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
         <p>{{ game.description | slice:0:100 }}...</p>
-        <p><strong>Price:</strong> ${{ game.price }}</p>
+        <p class="price"><strong>Price:</strong> ${{ game.price }}</p>
         <p><strong>Genres:</strong> {{ game.genres }}</p>
         <p><strong>Platforms:</strong> {{ game.platforms }}</p>
         <p><strong>Developer:</strong> {{ game.devTeam }}</p>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-button color="primary" [routerLink]="['/game', game.id]">Details</button>
-        <button mat-raised-button color="accent">Add to Cart</button>
+        <button mat-button color="primary" [routerLink]="['/game', game.id]">
+          <mat-icon>info</mat-icon> Details
+        </button>
+        <button mat-raised-button color="accent">
+          <mat-icon>add_shopping_cart</mat-icon> Add to Cart
+        </button>
       </mat-card-actions>
     </mat-card>
   </div>

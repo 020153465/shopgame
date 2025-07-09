@@ -1,23 +1,47 @@
 <div class="shop-section">
-  <h1>Shop Games</h1>
+  <h1><mat-icon>storefront</mat-icon> Shop Games</h1>
+  <div class="shop-filters">
+    <mat-form-field appearance="outline">
+      <mat-label>Search games</mat-label>
+      <input matInput placeholder="Title or keyword">
+      <button mat-icon-button matSuffix><mat-icon>search</mat-icon></button>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Genre</mat-label>
+      <mat-select>
+        <mat-option value="">All</mat-option>
+        <mat-option value="RPG">RPG</mat-option>
+        <mat-option value="Action">Action</mat-option>
+        <mat-option value="Adventure">Adventure</mat-option>
+        <mat-option value="Strategy">Strategy</mat-option>
+        <mat-option value="Sports">Sports</mat-option>
+        <mat-option value="Shooter">Shooter</mat-option>
+        <mat-option value="Indie">Indie</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
   <div *ngIf="loading">Loading games...</div>
   <div *ngIf="error" class="error-message">{{ error }}</div>
   <div class="games-grid" *ngIf="!loading && !error">
     <mat-card class="game-card" *ngFor="let game of games">
-      <img mat-card-image [src]="getImage(game.coverImageUrl)" [alt]="game.title" class="game-card-image">
+      <img mat-card-image [src]="game.coverImageUrl || 'https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg'" [alt]="game.title" (error)="game.coverImageUrl='https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg'">
       <mat-card-header>
         <mat-card-title>{{ game.title }}</mat-card-title>
         <mat-card-subtitle>{{ game.publisher }}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
         <p>{{ game.description | slice:0:100 }}...</p>
-        <p><strong>Price:</strong> ${{ game.price }}</p>
+        <p class="price"><strong>Price:</strong> ${{ game.price }}</p>
         <p><strong>Genres:</strong> {{ game.genres }}</p>
         <p><strong>Platforms:</strong> {{ game.platforms }}</p>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-button color="primary" [routerLink]="['/game', game.id]">Details</button>
-        <button mat-raised-button color="accent" (click)="addToCart(game)">Add to Cart</button>
+        <button mat-button color="primary" [routerLink]="['/game', game.id]">
+          <mat-icon>info</mat-icon> Details
+        </button>
+        <button mat-raised-button color="accent">
+          <mat-icon>add_shopping_cart</mat-icon> Add to Cart
+        </button>
       </mat-card-actions>
     </mat-card>
   </div>

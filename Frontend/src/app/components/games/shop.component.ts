@@ -1,6 +1,11 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatOptionModule } from '@angular/material/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Game } from '../../models/game.model';
@@ -14,6 +19,11 @@ import { CartService } from '../../services/cart.service';
     CommonModule,
     MatCardModule,
     MatButtonModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatOptionModule,
     RouterLink
   ],
   templateUrl: './shop.component.html',
