@@ -21,4 +21,5 @@ public interface GameRepository extends JpaRepository<Game, Long> {
     List<Game> findByDevTeamContainingIgnoreCase(String devTeam);
     
     List<Game> findByPublisherContainingIgnoreCase(String publisher);
+    List<Game> findByFeaturedTrue();
 } 

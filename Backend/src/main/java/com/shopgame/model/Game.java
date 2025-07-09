@@ -38,6 +38,9 @@ public class Game {
     private String coverImageUrl;
     
     private Integer stockQuantity = 0;
+
+    private boolean featured = false;
+    private String musicUrl;
     
     private LocalDateTime createdAt;
     
@@ -142,6 +145,19 @@ public class Game {
     
     public void setStockQuantity(Integer stockQuantity) {
         this.stockQuantity = stockQuantity;
+    }
+    
+    public boolean isFeatured() {
+        return featured;
+    }
+    public void setFeatured(boolean featured) {
+        this.featured = featured;
+    }
+    public String getMusicUrl() {
+        return musicUrl;
+    }
+    public void setMusicUrl(String musicUrl) {
+        this.musicUrl = musicUrl;
     }
     
     public LocalDateTime getCreatedAt() {

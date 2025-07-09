@@ -52,6 +52,11 @@ public class GameController {
         }
     }
 
+    @GetMapping("/featured")
+    public ResponseEntity<List<Game>> getFeaturedGames() {
+        return ResponseEntity.ok(gameService.getFeaturedGames());
+    }
+
     @PostMapping
     public ResponseEntity<Game> createGame(@RequestBody Game game) {
         Game createdGame = gameService.createGame(game);

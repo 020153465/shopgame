@@ -13,9 +13,13 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
-      - ./Database/init.sql:/docker-entrypoint-initdb.d/init.sql
     networks:
       - shopgame-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-prootpassword"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
 
   backend:
     build:
@@ -30,7 +34,8 @@ services:
       SPRING_DATASOURCE_PASSWORD: shopgame_pass
       JWT_SECRET: your-secret-key-here-make-it-long-and-secure-in-production
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
     networks:
       - shopgame-network
 

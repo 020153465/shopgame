@@ -66,4 +66,8 @@ public class GameService {
     public List<Game> searchGamesByPublisher(String publisher) {
         return gameRepository.findByPublisherContainingIgnoreCase(publisher);
     }
+
+    public List<Game> getFeaturedGames() {
+        return gameRepository.findByFeaturedTrue();
+    }
 } 
