@@ -48,47 +48,47 @@ body, html, .landing-bg {
   margin-bottom: 16px;
 }
 .logo-icon {
-  width: 64px;
-  height: 64px;
-  filter: drop-shadow(0 2px 8px #000a);
+  width: 96px;
+  height: 96px;
+  filter: drop-shadow(0 2px 12px #000a);
 }
 .brand-title {
-  font-size: 2.8rem;
+  font-size: 4rem;
   font-weight: 900;
-  letter-spacing: 2px;
+  letter-spacing: 3px;
   color: #fff;
-  text-shadow: 0 2px 16px #000a;
+  text-shadow: 0 4px 32px #000a;
 }
 .tagline {
-  font-size: 2.2rem;
-  font-weight: 700;
-  margin: 16px 0 8px 0;
-  letter-spacing: 1px;
+  font-size: 3rem;
+  font-weight: 800;
+  margin: 32px 0 16px 0;
+  letter-spacing: 2px;
   color: #ffeb3b;
-  text-shadow: 0 2px 16px #000a;
+  text-shadow: 0 4px 32px #000a;
 }
 .subtitle {
-  font-size: 1.2rem;
+  font-size: 1.7rem;
   color: #e0e0e0;
-  margin-bottom: 32px;
-  text-shadow: 0 2px 8px #0008;
+  margin-bottom: 48px;
+  text-shadow: 0 2px 12px #0008;
 }
 .featured-covers {
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  gap: 16px;
+  gap: 32px;
   margin-bottom: 40px;
   position: relative;
-  min-height: 120px;
+  min-height: 180px;
 }
 .cover {
-  width: 90px;
-  height: 120px;
-  border-radius: 12px;
-  box-shadow: 0 4px 32px #000a, 0 2px 8px #1976d2aa;
+  width: 140px;
+  height: 180px;
+  border-radius: 16px;
+  box-shadow: 0 8px 48px #000a, 0 2px 12px #1976d2aa;
   object-fit: cover;
-  opacity: 0.92;
+  opacity: 0.96;
   transform: translateY(0) scale(1);
   transition: transform 0.3s, box-shadow 0.3s;
   animation: floatCover 3s ease-in-out infinite alternate;
@@ -103,21 +103,21 @@ body, html, .landing-bg {
   100% { transform: translateY(-16px) scale(1.05); }
 }
 .cover:hover {
-  transform: translateY(-24px) scale(1.12) rotate(-2deg);
-  box-shadow: 0 8px 48px #1976d2cc, 0 2px 8px #000a;
+  transform: translateY(-32px) scale(1.15) rotate(-2deg);
+  box-shadow: 0 16px 64px #1976d2cc, 0 2px 12px #000a;
   z-index: 2;
 }
 .enter-btn {
-  font-size: 1.3rem;
-  padding: 16px 48px;
-  border-radius: 32px;
-  margin-top: 24px;
+  font-size: 2rem;
+  padding: 24px 64px;
+  border-radius: 40px;
+  margin-top: 40px;
   background: linear-gradient(90deg, #ff4081 0%, #1976d2 100%);
   color: #fff;
-  box-shadow: 0 4px 32px #1976d2aa;
+  box-shadow: 0 8px 48px #1976d2aa;
   animation: glowBtn 2s ease-in-out infinite alternate;
-  font-weight: 700;
-  letter-spacing: 1px;
+  font-weight: 800;
+  letter-spacing: 2px;
 }
 @keyframes glowBtn {
   0% { box-shadow: 0 4px 32px #1976d2aa; }
@@ -135,36 +135,56 @@ body, html, .landing-bg {
   animation: bounceDown 1.5s infinite alternate;
 }
 .scroll-down mat-icon {
-  font-size: 3rem;
+  font-size: 4rem;
 }
 @keyframes bounceDown {
   0% { transform: translateY(0); }
   100% { transform: translateY(16px); }
+}
+
+/* Large scroll section for interactivity */
+.landing-scroll-section {
+  min-height: 600px;
+  background: #222b3a;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  padding: 80px 0;
 }
 @media (max-width: 700px) {
   .landing-content {
     padding-top: 24px;
   }
   .logo-icon {
-    width: 48px;
-    height: 48px;
+    width: 64px;
+    height: 64px;
   }
   .brand-title {
-    font-size: 2rem;
+    font-size: 2.5rem;
   }
   .tagline {
-    font-size: 1.3rem;
+    font-size: 1.7rem;
+  }
+  .subtitle {
+    font-size: 1.1rem;
   }
   .featured-covers {
-    gap: 8px;
-    min-height: 80px;
+    gap: 12px;
+    min-height: 100px;
   }
   .cover {
-    width: 60px;
-    height: 80px;
+    width: 70px;
+    height: 100px;
   }
   .enter-btn {
-    font-size: 1rem;
-    padding: 12px 24px;
+    font-size: 1.2rem;
+    padding: 14px 28px;
+  }
+  .landing-scroll-section {
+    font-size: 1.2rem;
+    padding: 40px 0;
   }
 } 

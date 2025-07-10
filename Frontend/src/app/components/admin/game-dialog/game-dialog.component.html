@@ -53,6 +53,7 @@
         </mat-form-field>
       </div>
 
+      <!-- Ensure the featured toggle is present and clear in the dialog -->
       <div class="form-row">
         <mat-checkbox [(ngModel)]="game.featured" name="featured" (change)="onFeaturedChange()" [disabled]="maxFeaturedReached && !isEditMode">
           Featured Game

@@ -44,6 +44,8 @@ public class GameService {
         game.setPublisher(gameDetails.getPublisher());
         game.setCoverImageUrl(gameDetails.getCoverImageUrl());
         game.setStockQuantity(gameDetails.getStockQuantity());
+        game.setFeatured(gameDetails.isFeatured());
+        game.setMusicUrl(gameDetails.getMusicUrl());
 
         return gameRepository.save(game);
     }

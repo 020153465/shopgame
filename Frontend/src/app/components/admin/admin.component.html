@@ -153,8 +153,8 @@
       <ng-container matColumnDef="featured">
         <th mat-header-cell *matHeaderCellDef>Featured</th>
         <td mat-cell *matCellDef="let game">
-          <mat-checkbox [checked]="game.featured" (change)="toggleFeatured(game, $event)" (click)="$event.stopPropagation()">
-          </mat-checkbox>
+          <mat-icon *ngIf="game.featured" color="warn">star</mat-icon>
+          <span *ngIf="!game.featured">—</span>
         </td>
       </ng-container>
       

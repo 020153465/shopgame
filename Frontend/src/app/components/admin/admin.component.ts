@@ -272,26 +272,6 @@ export class AdminComponent implements OnInit {
     });
   }
 
-  toggleFeatured(game: Game, event: any) {
-    event.preventDefault();
-    event.stopPropagation();
-    
-    const updatedGame = { ...game, featured: !game.featured };
-    this.gameService.updateGame(game.id, updatedGame).subscribe({
-      next: () => {
-        this.fetchGames();
-        this.snackBar.open(`Game ${updatedGame.featured ? 'featured' : 'unfeatured'} successfully!`, 'Close', { duration: 3000 });
-      },
-      error: err => {
-        console.error('Toggle featured error:', err);
-        this.gameError = err?.error || 'Failed to update game.';
-        this.snackBar.open(this.gameError || 'Failed to update game.', 'Close', { duration: 5000 });
-        // Revert the checkbox state on error
-        this.fetchGames();
-      }
-    });
-  }
-
   getAssetUrl(filename: string, type: 'cover' | 'music'): string {
     if (!filename) return '';
     if (filename.startsWith('http')) return filename;

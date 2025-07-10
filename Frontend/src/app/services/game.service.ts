@@ -97,4 +97,8 @@ export class GameService {
     formData.append('file', file);
     return this.http.post<string>(`${this.apiUrl}/upload/music`, formData);
   }
+
+  getFeaturedGames(): Observable<Game[]> {
+    return this.http.get<Game[]>(`${this.apiUrl}/featured`);
+  }
 } 
