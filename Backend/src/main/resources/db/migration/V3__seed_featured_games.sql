@@ -1,5 +1,5 @@
-UPDATE games SET featured = TRUE, music_url = 'https://www.youtube.com/watch?v=8X2kIfS6fb8', cover_image_url = 'https://images.igdb.com/igdb/image/upload/t_cover_big/co1r6b.png' WHERE title = 'Cyberpunk 2077';
-UPDATE games SET featured = TRUE, music_url = 'https://www.youtube.com/watch?v=2-Xw0_2eMJg', cover_image_url = 'https://images.igdb.com/igdb/image/upload/t_cover_big/co1tmu.png' WHERE title = 'The Witcher 3: Wild Hunt';
-UPDATE games SET featured = TRUE, music_url = 'https://www.youtube.com/watch?v=gmA6MrX81z4', cover_image_url = 'https://images.igdb.com/igdb/image/upload/t_cover_big/co1q0y.png' WHERE title = 'Red Dead Redemption 2';
-UPDATE games SET featured = TRUE, music_url = 'https://www.youtube.com/watch?v=E3Huy2cdih0', cover_image_url = 'https://images.igdb.com/igdb/image/upload/t_cover_big/co2p23.png' WHERE title = 'Elden Ring';
-UPDATE games SET featured = TRUE, music_url = 'https://www.youtube.com/watch?v=EE-4GvjKcfs', cover_image_url = 'https://images.igdb.com/igdb/image/upload/t_cover_big/co5wyy.png' WHERE title = 'God of War Ragnarök'; 
+UPDATE games SET featured = TRUE, music_url = 'https://www.youtube.com/watch?v=8X2kIfS6fb8', cover_image_url = 'https://images.igdb.com/igdb/image/upload/t_cover_big/co7497.png' WHERE title = 'Cyberpunk 2077';
+UPDATE games SET featured = TRUE, music_url = 'https://www.youtube.com/watch?v=2-Xw0_2eMJg', cover_image_url = 'https://images.igdb.com/igdb/image/upload/t_cover_big/co1wyy.png' WHERE title = 'The Witcher 3: Wild Hunt';
+UPDATE games SET featured = TRUE, music_url = 'https://www.youtube.com/watch?v=gmA6MrX81z4', cover_image_url = 'https://images.igdb.com/igdb/image/upload/t_cover_big/co1q1f.png' WHERE title = 'Red Dead Redemption 2';
+UPDATE games SET featured = TRUE, music_url = 'https://www.youtube.com/watch?v=E3Huy2cdih0', cover_image_url = 'https://images.igdb.com/igdb/image/upload/t_cover_big/co4jni.png' WHERE title = 'Elden Ring';
+UPDATE games SET featured = TRUE, music_url = 'https://www.youtube.com/watch?v=EE-4GvjKcfs', cover_image_url = 'https://images.igdb.com/igdb/image/upload/t_cover_big/co5s5v.png' WHERE title = 'God of War Ragnarök';
