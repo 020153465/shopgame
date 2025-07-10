@@ -27,4 +27,108 @@
   padding: 12px;
   margin-bottom: 16px;
   font-weight: 500;
+}
+.user-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #e3e6f3;
+  color: #3f51b5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin: 0 auto;
+  box-shadow: 0 1px 4px #0001;
+}
+.role-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-size: 0.95em;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.role-badge.user {
+  background: #e3f2fd;
+  color: #1976d2;
+  border: 1px solid #90caf9;
+}
+.role-badge.admin {
+  background: #fff3e0;
+  color: #e65100;
+  border: 1px solid #ffb74d;
+}
+.search-bar {
+  width: 100%;
+  max-width: 350px;
+  margin-bottom: 18px;
+  display: block;
+}
+.fab {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  z-index: 100;
+  box-shadow: 0 2px 8px #0002;
+}
+.admin-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.active-tab {
+  font-weight: bold;
+  border-bottom: 2px solid #1976d2;
+  color: #1976d2 !important;
+}
+.game-management-placeholder {
+  padding: 32px;
+  text-align: center;
+  color: #888;
+  font-size: 1.2rem;
+}
+
+/* Game Management Styles */
+.game-cover {
+  width: 60px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid #e0e0e0;
+}
+
+.no-cover {
+  width: 60px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 12px;
+  color: #666;
+}
+
+.game-title {
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.game-genres {
+  font-size: 12px;
+  color: #666;
+}
+
+.in-stock {
+  color: #4caf50;
+  font-weight: 500;
+}
+
+.out-of-stock {
+  color: #f44336;
+  font-weight: 500;
 } 

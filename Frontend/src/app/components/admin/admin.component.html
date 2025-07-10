@@ -1,72 +1,181 @@
 <div class="admin-container">
-  <h2>User Management</h2>
-  <div *ngIf="loading">Loading users...</div>
-  <div *ngIf="error" class="error-message">{{ error }}</div>
-  <div *ngIf="success" class="success-message">{{ success }}</div>
-  <table mat-table [dataSource]="users" class="mat-elevation-z8" *ngIf="!loading">
-    <ng-container matColumnDef="username">
-      <th mat-header-cell *matHeaderCellDef>Username</th>
-      <td mat-cell *matCellDef="let user">{{ user.username }}</td>
-    </ng-container>
-    <ng-container matColumnDef="email">
-      <th mat-header-cell *matHeaderCellDef>Email</th>
-      <td mat-cell *matCellDef="let user">{{ user.email }}</td>
-    </ng-container>
-    <ng-container matColumnDef="role">
-      <th mat-header-cell *matHeaderCellDef>Role</th>
-      <td mat-cell *matCellDef="let user">{{ user.role }}</td>
-    </ng-container>
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef>Actions</th>
-      <td mat-cell *matCellDef="let user">
-        <button mat-button color="primary" (click)="selectUser(user)">View/Edit</button>
-        <button mat-button color="warn" (click)="deleteUser(user)">Delete</button>
-      </td>
-    </ng-container>
-    <tr mat-header-row *matHeaderRowDef="['username', 'email', 'role', 'actions']"></tr>
-    <tr mat-row *matRowDef="let row; columns: ['username', 'email', 'role', 'actions'];"></tr>
-  </table>
-
-  <div *ngIf="selectedUser" class="user-detail">
-    <h3>User Detail</h3>
-    <form *ngIf="editMode; else viewMode">
-      <mat-form-field>
-        <mat-label>Username</mat-label>
-        <input matInput [(ngModel)]="selectedUser.username" name="username">
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Email</mat-label>
-        <input matInput [(ngModel)]="selectedUser.email" name="email">
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>First Name</mat-label>
-        <input matInput [(ngModel)]="selectedUser.firstName" name="firstName">
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Last Name</mat-label>
-        <input matInput [(ngModel)]="selectedUser.lastName" name="lastName">
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Role</mat-label>
-        <mat-select [(ngModel)]="selectedUser.role" name="role">
-          <mat-option *ngFor="let role of userRoles" [value]="role">{{ role }}</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <div class="button-container">
-        <button mat-raised-button color="primary" (click)="saveUser()">Save</button>
-        <button mat-button (click)="cancelEdit()">Cancel</button>
-      </div>
-    </form>
-    <ng-template #viewMode>
-      <p><strong>Username:</strong> {{ selectedUser.username }}</p>
-      <p><strong>Email:</strong> {{ selectedUser.email }}</p>
-      <p><strong>First Name:</strong> {{ selectedUser.firstName }}</p>
-      <p><strong>Last Name:</strong> {{ selectedUser.lastName }}</p>
-      <p><strong>Role:</strong> {{ selectedUser.role }}</p>
-      <div class="button-container">
-        <button mat-raised-button color="primary" (click)="enableEdit()">Edit</button>
-        <button mat-button (click)="selectedUser = null">Close</button>
-      </div>
-    </ng-template>
+  <h2>Admin Dashboard</h2>
+  <div class="admin-tabs">
+    <button mat-button [class.active-tab]="activeTab === 'users'" (click)="activeTab = 'users'">User Management</button>
+    <button mat-button [class.active-tab]="activeTab === 'games'" (click)="activeTab = 'games'">Game Management</button>
   </div>
+
+  <ng-container *ngIf="activeTab === 'users'">
+    <h2>User Management</h2>
+    <div *ngIf="loading">Loading users...</div>
+    <div *ngIf="error" class="error-message">{{ error }}</div>
+    <div *ngIf="success" class="success-message">{{ success }}</div>
+
+    <mat-form-field appearance="outline" class="search-bar">
+      <mat-label>Search users</mat-label>
+      <input matInput [(ngModel)]="searchTerm" (ngModelChange)="applyFilter()" placeholder="Search by username or email">
+      <button mat-icon-button matSuffix *ngIf="searchTerm" (click)="searchTerm=''; applyFilter();">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <table mat-table [dataSource]="filteredUsers" class="mat-elevation-z8" *ngIf="!loading">
+      <ng-container matColumnDef="avatar">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let user">
+          <div class="user-avatar">{{ getUserInitials(user) }}</div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="username">
+        <th mat-header-cell *matHeaderCellDef>Username</th>
+        <td mat-cell *matCellDef="let user">{{ user.username }}</td>
+      </ng-container>
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef>Email</th>
+        <td mat-cell *matCellDef="let user">{{ user.email }}</td>
+      </ng-container>
+      <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef>Role</th>
+        <td mat-cell *matCellDef="let user">
+          <span class="role-badge" [ngClass]="user.role.toLowerCase()">{{ user.role }}</span>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="createdAt">
+        <th mat-header-cell *matHeaderCellDef>Created</th>
+        <td mat-cell *matCellDef="let user">{{ user.createdAt | date:'mediumDate' }}</td>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let user">
+          <button mat-button color="primary" (click)="selectUser(user)">View/Edit</button>
+          <button mat-button color="warn" (click)="deleteUser(user)">Delete</button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="['avatar', 'username', 'email', 'role', 'createdAt', 'actions']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['avatar', 'username', 'email', 'role', 'createdAt', 'actions'];"></tr>
+    </table>
+
+    <button mat-fab color="primary" class="fab" title="Add User" disabled>
+      <mat-icon>person_add</mat-icon>
+    </button>
+
+    <div *ngIf="selectedUser" class="user-detail">
+      <h3>User Detail</h3>
+      <form *ngIf="editMode; else viewMode">
+        <mat-form-field>
+          <mat-label>Username</mat-label>
+          <input matInput [(ngModel)]="selectedUser.username" name="username">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Email</mat-label>
+          <input matInput [(ngModel)]="selectedUser.email" name="email">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>First Name</mat-label>
+          <input matInput [(ngModel)]="selectedUser.firstName" name="firstName">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Last Name</mat-label>
+          <input matInput [(ngModel)]="selectedUser.lastName" name="lastName">
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Role</mat-label>
+          <mat-select [(ngModel)]="selectedUser.role" name="role">
+            <mat-option *ngFor="let role of userRoles" [value]="role">{{ role }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div class="button-container">
+          <button mat-raised-button color="primary" (click)="saveUser()">Save</button>
+          <button mat-button (click)="cancelEdit()">Cancel</button>
+        </div>
+      </form>
+      <ng-template #viewMode>
+        <p><strong>Username:</strong> {{ selectedUser.username }}</p>
+        <p><strong>Email:</strong> {{ selectedUser.email }}</p>
+        <p><strong>First Name:</strong> {{ selectedUser.firstName }}</p>
+        <p><strong>Last Name:</strong> {{ selectedUser.lastName }}</p>
+        <p><strong>Role:</strong> <span class="role-badge" [ngClass]="selectedUser.role.toLowerCase()">{{ selectedUser.role }}</span></p>
+        <div class="button-container">
+          <button mat-raised-button color="primary" (click)="enableEdit()">Edit</button>
+          <button mat-button (click)="selectedUser = null">Close</button>
+        </div>
+      </ng-template>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="activeTab === 'games'">
+    <h2>Game Management</h2>
+    <div *ngIf="gameLoading">Loading games...</div>
+    <div *ngIf="gameError" class="error-message">{{ gameError }}</div>
+    <div *ngIf="gameSuccess" class="success-message">{{ gameSuccess }}</div>
+
+    <mat-form-field appearance="outline" class="search-bar">
+      <mat-label>Search games</mat-label>
+      <input matInput [(ngModel)]="gameSearchTerm" (ngModelChange)="applyGameFilter()" placeholder="Search by title, genre, or platform">
+      <button mat-icon-button matSuffix *ngIf="gameSearchTerm" (click)="gameSearchTerm=''; applyGameFilter();">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <table mat-table [dataSource]="filteredGames" class="mat-elevation-z8" *ngIf="!gameLoading">
+      <ng-container matColumnDef="cover">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let game">
+          <img *ngIf="game.coverImageUrl" [src]="getAssetUrl(game.coverImageUrl, 'cover')" 
+               [alt]="game.title" class="game-cover" 
+               (error)="onImageError($event)">
+          <div *ngIf="!game.coverImageUrl" class="no-cover">No Cover</div>
+        </td>
+      </ng-container>
+      
+      <ng-container matColumnDef="title">
+        <th mat-header-cell *matHeaderCellDef>Title</th>
+        <td mat-cell *matCellDef="let game">
+          <div class="game-title">{{ game.title }}</div>
+          <div class="game-genres">{{ game.genres }}</div>
+        </td>
+      </ng-container>
+      
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef>Price</th>
+        <td mat-cell *matCellDef="let game">${{ game.price }}</td>
+      </ng-container>
+      
+      <ng-container matColumnDef="stock">
+        <th mat-header-cell *matHeaderCellDef>Stock</th>
+        <td mat-cell *matCellDef="let game">
+          <span [class]="game.stockQuantity > 0 ? 'in-stock' : 'out-of-stock'">
+            {{ game.stockQuantity }}
+          </span>
+        </td>
+      </ng-container>
+      
+      <ng-container matColumnDef="featured">
+        <th mat-header-cell *matHeaderCellDef>Featured</th>
+        <td mat-cell *matCellDef="let game">
+          <mat-checkbox [checked]="game.featured" (change)="toggleFeatured(game, $event)" (click)="$event.stopPropagation()">
+          </mat-checkbox>
+        </td>
+      </ng-container>
+      
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let game">
+          <button mat-icon-button color="primary" (click)="openGameDialog(game)" title="Edit">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteGame(game)" title="Delete">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      
+      <tr mat-header-row *matHeaderRowDef="displayedGameColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedGameColumns;"></tr>
+    </table>
+
+    <button mat-fab color="primary" class="fab" title="Add Game" (click)="openGameDialog()">
+      <mat-icon>add</mat-icon>
+    </button>
+  </ng-container>
 </div> 

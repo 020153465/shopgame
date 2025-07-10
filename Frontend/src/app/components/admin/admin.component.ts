@@ -8,6 +8,16 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { User, UserRole } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule, MatDialog } from '@angular/material/dialog';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { Game, CreateGameRequest } from '../../models/game.model';
+import { GameService } from '../../services/game.service';
+import { GameDialogComponent } from './game-dialog/game-dialog.component';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-admin',
@@ -19,24 +29,46 @@ import { UserService } from '../../services/user.service';
     MatInputModule,
     MatFormFieldModule,
     MatSelectModule,
-    FormsModule
+    FormsModule,
+    MatIconModule,
+    MatDialogModule,
+    MatCheckboxModule,
+    MatCardModule,
+    MatChipsModule,
+    MatSnackBarModule
   ],
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css']
 })
 export class AdminComponent implements OnInit {
   users: User[] = [];
+  filteredUsers: User[] = [];
   selectedUser: User | null = null;
   editMode = false;
   userRoles = Object.values(UserRole);
   error: string | null = null;
   success: string | null = null;
   loading = false;
+  searchTerm = '';
+  activeTab: 'users' | 'games' = 'users';
+  games: Game[] = [];
+  filteredGames: Game[] = [];
+  gameSearchTerm = '';
+  gameLoading = false;
+  gameError: string | null = null;
+  gameSuccess: string | null = null;
+  displayedGameColumns: string[] = ['cover', 'title', 'price', 'stock', 'featured', 'actions'];
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private gameService: GameService,
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar
+  ) {}
 
   ngOnInit() {
     this.fetchUsers();
+    this.fetchGames();
   }
 
   fetchUsers() {
@@ -44,6 +76,7 @@ export class AdminComponent implements OnInit {
     this.userService.getAllUsers().subscribe({
       next: users => {
         this.users = users;
+        this.applyFilter();
         this.loading = false;
       },
       error: err => {
@@ -51,6 +84,28 @@ export class AdminComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  applyFilter() {
+    const term = this.searchTerm.trim().toLowerCase();
+    if (!term) {
+      this.filteredUsers = this.users;
+      return;
+    }
+    this.filteredUsers = this.users.filter(user =>
+      user.username.toLowerCase().includes(term) ||
+      user.email.toLowerCase().includes(term)
+    );
+  }
+
+  getUserInitials(user: User): string {
+    if (user.firstName && user.lastName) {
+      return user.firstName.charAt(0).toUpperCase() + user.lastName.charAt(0).toUpperCase();
+    }
+    if (user.username) {
+      return user.username.slice(0, 2).toUpperCase();
+    }
+    return '?';
   }
 
   selectUser(user: User) {
@@ -127,6 +182,126 @@ export class AdminComponent implements OnInit {
     this.success = null;
     if (this.selectedUser) {
       this.selectUser(this.selectedUser);
+    }
+  }
+
+  fetchGames() {
+    this.gameLoading = true;
+    this.gameService.getAllGames().subscribe({
+      next: games => {
+        this.games = games;
+        this.applyGameFilter();
+        this.gameLoading = false;
+      },
+      error: err => {
+        console.error('Fetch games error:', err);
+        this.gameError = 'Failed to load games.';
+        this.gameLoading = false;
+      }
+    });
+  }
+
+  applyGameFilter() {
+    const term = this.gameSearchTerm.trim().toLowerCase();
+    if (!term) {
+      this.filteredGames = this.games;
+      return;
+    }
+    this.filteredGames = this.games.filter(game =>
+      game.title.toLowerCase().includes(term) ||
+      game.genres.toLowerCase().includes(term) ||
+      game.platforms.toLowerCase().includes(term)
+    );
+  }
+
+  openGameDialog(game?: Game) {
+    const dialogRef = this.dialog.open(GameDialogComponent, {
+      width: '600px',
+      data: { game, featuredCount: this.games.filter(g => g.featured).length }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        if (game) {
+          this.updateGame(game.id, result);
+        } else {
+          this.createGame(result);
+        }
+      }
+    });
+  }
+
+  createGame(gameData: any) {
+    this.gameService.createGame(gameData.game, gameData.coverFile, gameData.musicFile).subscribe({
+      next: () => {
+        this.fetchGames();
+        this.snackBar.open('Game created successfully!', 'Close', { duration: 3000 });
+      },
+      error: err => {
+        this.gameError = err?.error || 'Failed to create game.';
+        this.snackBar.open(this.gameError || 'Failed to create game.', 'Close', { duration: 5000 });
+      }
+    });
+  }
+
+  updateGame(id: number, gameData: any) {
+    this.gameService.updateGame(id, gameData.game, gameData.coverFile, gameData.musicFile).subscribe({
+      next: () => {
+        this.fetchGames();
+        this.snackBar.open('Game updated successfully!', 'Close', { duration: 3000 });
+      },
+      error: err => {
+        this.gameError = err?.error || 'Failed to update game.';
+        this.snackBar.open(this.gameError || 'Failed to update game.', 'Close', { duration: 5000 });
+      }
+    });
+  }
+
+  deleteGame(game: Game) {
+    if (!confirm(`Delete game "${game.title}"?`)) return;
+    
+    this.gameService.deleteGame(game.id).subscribe({
+      next: () => {
+        this.fetchGames();
+        this.snackBar.open('Game deleted successfully!', 'Close', { duration: 3000 });
+      },
+      error: err => {
+        this.gameError = err?.error || 'Failed to delete game.';
+        this.snackBar.open(this.gameError || 'Failed to delete game.', 'Close', { duration: 5000 });
+      }
+    });
+  }
+
+  toggleFeatured(game: Game, event: any) {
+    event.preventDefault();
+    event.stopPropagation();
+    
+    const updatedGame = { ...game, featured: !game.featured };
+    this.gameService.updateGame(game.id, updatedGame).subscribe({
+      next: () => {
+        this.fetchGames();
+        this.snackBar.open(`Game ${updatedGame.featured ? 'featured' : 'unfeatured'} successfully!`, 'Close', { duration: 3000 });
+      },
+      error: err => {
+        console.error('Toggle featured error:', err);
+        this.gameError = err?.error || 'Failed to update game.';
+        this.snackBar.open(this.gameError || 'Failed to update game.', 'Close', { duration: 5000 });
+        // Revert the checkbox state on error
+        this.fetchGames();
+      }
+    });
+  }
+
+  getAssetUrl(filename: string, type: 'cover' | 'music'): string {
+    if (!filename) return '';
+    if (filename.startsWith('http')) return filename;
+    return `${environment.apiUrl}/assets/${type === 'cover' ? 'covers' : 'music'}/${filename}`;
+  }
+
+  onImageError(event: Event) {
+    const target = event.target as HTMLImageElement;
+    if (target) {
+      target.style.display = 'none';
     }
   }
 } 

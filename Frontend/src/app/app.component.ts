@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet, RouterLink } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
@@ -33,13 +33,13 @@ import { CartService } from './services/cart.service';
         <span *ngIf="cartCount > 0" class="cart-badge">{{ cartCount }}</span>
       </button>
       <span class="spacer"></span>
-      <ng-container *ngIf="currentUser; else guestLinks">
+      <ng-container *ngIf="currentUser$ | async as user; else guestLinks">
         <button mat-button routerLink="/profile">
           <mat-icon>account_circle</mat-icon>
-          {{ currentUser?.username }}
+          {{ user.username }}
         </button>
         <button mat-button (click)="logout()">Logout</button>
-        <button *ngIf="isAdmin" mat-button routerLink="/admin">Admin</button>
+        <button *ngIf="isAdmin(user)" mat-button routerLink="/admin">Admin</button>
       </ng-container>
       <ng-template #guestLinks>
         <button mat-button routerLink="/login">Login</button>
@@ -79,19 +79,25 @@ import { CartService } from './services/cart.service';
     }
   `]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'ShopGame';
-  currentUser: User | null = null;
-  isAdmin = false;
+  currentUser$ = this.authService.currentUser$;
   cartCount = 0;
 
-  constructor(private authService: AuthService, private cartService: CartService) {
-    this.authService.currentUser$.subscribe(user => {
-      this.currentUser = user;
-      this.isAdmin = user?.role === 'ADMIN';
-    });
+  constructor(
+    public authService: AuthService, // Ensure instantiation
+    private cartService: CartService
+  ) {
     this.updateCartCount();
     window.addEventListener('storage', () => this.updateCartCount());
+  }
+
+  ngOnInit() {
+    this.authService.loadCurrentUser();
+  }
+
+  isAdmin(user: User | null): boolean {
+    return user?.role === 'ADMIN';
   }
 
   onRouteActivate(component: any) {

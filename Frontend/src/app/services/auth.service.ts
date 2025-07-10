@@ -44,7 +44,9 @@ export class AuthService {
   }
 
   getToken(): string | null {
-    return localStorage.getItem('token');
+    const token = localStorage.getItem('token');
+    console.log('Current token:', token ? 'exists' : 'null');
+    return token;
   }
 
   isAuthenticated(): boolean {
@@ -55,7 +57,7 @@ export class AuthService {
     return this.currentUserSubject.value;
   }
 
-  private loadCurrentUser(): void {
+  public loadCurrentUser(): void {
     const token = this.getToken();
     if (token) {
       this.fetchCurrentUser();

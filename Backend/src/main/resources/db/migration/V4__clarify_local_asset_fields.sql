@@ -1,0 +1,3 @@
+-- Clarify that cover_image_url and music_url now store local filenames, not URLs
+-- No schema change required
+-- All new uploads should use local asset filenames (see backend documentation) 

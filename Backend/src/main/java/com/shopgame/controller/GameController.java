@@ -4,7 +4,12 @@ import com.shopgame.model.Game;
 import com.shopgame.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.util.StringUtils;
+import java.io.File;
+import java.io.IOException;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +25,9 @@ public class GameController {
 
     @Autowired
     private GameService gameService;
+
+    private static final String COVER_UPLOAD_DIR = "src/main/resources/static/assets/covers/";
+    private static final String MUSIC_UPLOAD_DIR = "src/main/resources/static/assets/music/";
 
     @GetMapping
     public ResponseEntity<List<Game>> getAllGames() {
@@ -92,19 +100,102 @@ public class GameController {
         return ResponseEntity.ok(gameService.filterAndSortGames(title, genre, platform, publisher, devTeam, minPrice, maxPrice, featured, inStock, sortBy, sortDir, pageable));
     }
 
+    @PostMapping("/upload/cover")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> uploadCover(@RequestParam("file") MultipartFile file) throws IOException {
+        String filename = StringUtils.cleanPath(file.getOriginalFilename());
+        File dest = new File(COVER_UPLOAD_DIR + filename);
+        dest.getParentFile().mkdirs();
+        file.transferTo(dest);
+        return ResponseEntity.ok("/assets/covers/" + filename);
+    }
+
+    @PostMapping("/upload/music")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> uploadMusic(@RequestParam("file") MultipartFile file) throws IOException {
+        String filename = StringUtils.cleanPath(file.getOriginalFilename());
+        File dest = new File(MUSIC_UPLOAD_DIR + filename);
+        dest.getParentFile().mkdirs();
+        file.transferTo(dest);
+        return ResponseEntity.ok("/assets/music/" + filename);
+    }
+
     @PostMapping
-    public ResponseEntity<Game> createGame(@RequestBody Game game) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> createGame(@RequestPart("game") Game game,
+                                        @RequestPart(value = "cover", required = false) MultipartFile cover,
+                                        @RequestPart(value = "music", required = false) MultipartFile music) throws IOException {
+        // Enforce max 10 featured games
+        if (game.isFeatured() && gameService.getFeaturedGames().size() >= 10) {
+            return ResponseEntity.badRequest().body("Cannot feature more than 10 games.");
+        }
+        if (cover != null && !cover.isEmpty()) {
+            String coverFilename = StringUtils.cleanPath(cover.getOriginalFilename());
+            File dest = new File(COVER_UPLOAD_DIR + coverFilename);
+            dest.getParentFile().mkdirs();
+            cover.transferTo(dest);
+            game.setCoverImageUrl(coverFilename);
+        }
+        if (music != null && !music.isEmpty()) {
+            String musicFilename = StringUtils.cleanPath(music.getOriginalFilename());
+            File dest = new File(MUSIC_UPLOAD_DIR + musicFilename);
+            dest.getParentFile().mkdirs();
+            music.transferTo(dest);
+            game.setMusicUrl(musicFilename);
+        }
         Game createdGame = gameService.createGame(game);
         return ResponseEntity.ok(createdGame);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Game> updateGame(@PathVariable Long id, @RequestBody Game gameDetails) {
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> updateGame(@PathVariable Long id,
+                                        @RequestPart("game") Game gameDetails,
+                                        @RequestPart(value = "cover", required = false) MultipartFile cover,
+                                        @RequestPart(value = "music", required = false) MultipartFile music) throws IOException {
+        // Enforce max 10 featured games
+        if (gameDetails.isFeatured()) {
+            List<Game> featured = gameService.getFeaturedGames();
+            boolean isAlreadyFeatured = featured.stream().anyMatch(g -> g.getId().equals(id));
+            if (!isAlreadyFeatured && featured.size() >= 10) {
+                return ResponseEntity.badRequest().body("Cannot feature more than 10 games.");
+            }
+        }
+        if (cover != null && !cover.isEmpty()) {
+            String coverFilename = StringUtils.cleanPath(cover.getOriginalFilename());
+            File dest = new File(COVER_UPLOAD_DIR + coverFilename);
+            dest.getParentFile().mkdirs();
+            cover.transferTo(dest);
+            gameDetails.setCoverImageUrl(coverFilename);
+        }
+        if (music != null && !music.isEmpty()) {
+            String musicFilename = StringUtils.cleanPath(music.getOriginalFilename());
+            File dest = new File(MUSIC_UPLOAD_DIR + musicFilename);
+            dest.getParentFile().mkdirs();
+            music.transferTo(dest);
+            gameDetails.setMusicUrl(musicFilename);
+        }
+        Game updatedGame = gameService.updateGame(id, gameDetails);
+        return ResponseEntity.ok(updatedGame);
+    }
+
+    @PatchMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> updateGameFields(@PathVariable Long id, @RequestBody Game gameDetails) {
+        // Enforce max 10 featured games
+        if (gameDetails.isFeatured()) {
+            List<Game> featured = gameService.getFeaturedGames();
+            boolean isAlreadyFeatured = featured.stream().anyMatch(g -> g.getId().equals(id));
+            if (!isAlreadyFeatured && featured.size() >= 10) {
+                return ResponseEntity.badRequest().body("Cannot feature more than 10 games.");
+            }
+        }
         Game updatedGame = gameService.updateGame(id, gameDetails);
         return ResponseEntity.ok(updatedGame);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteGame(@PathVariable Long id) {
         gameService.deleteGame(id);
         return ResponseEntity.ok().build();

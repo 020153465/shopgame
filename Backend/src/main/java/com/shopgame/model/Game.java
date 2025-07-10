@@ -35,11 +35,13 @@ public class Game {
     
     private String publisher;
     
+    // Stores the filename of the cover image in /assets/covers/
     private String coverImageUrl;
     
     private Integer stockQuantity = 0;
 
     private boolean featured = false;
+    // Stores the filename of the music file in /assets/music/
     private String musicUrl;
     
     private LocalDateTime createdAt;

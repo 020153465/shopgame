@@ -9,6 +9,8 @@ export interface Game {
   publisher: string;
   coverImageUrl: string;
   stockQuantity: number;
+  featured: boolean;
+  musicUrl?: string;
   releaseDate?: Date;
   rating?: number;
 }
@@ -23,6 +25,8 @@ export interface CreateGameRequest {
   publisher: string;
   coverImageUrl: string;
   stockQuantity: number;
+  featured: boolean;
+  musicUrl?: string;
   releaseDate?: Date;
   rating?: number;
 } 
