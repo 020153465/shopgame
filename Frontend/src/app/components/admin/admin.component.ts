@@ -30,6 +30,7 @@ export class AdminComponent implements OnInit {
   editMode = false;
   userRoles = Object.values(UserRole);
   error: string | null = null;
+  success: string | null = null;
   loading = false;
 
   constructor(private userService: UserService) {}
@@ -53,9 +54,20 @@ export class AdminComponent implements OnInit {
   }
 
   selectUser(user: User) {
-    this.selectedUser = { ...user };
+    // Create a copy without the password field to prevent accidental password changes
+    this.selectedUser = { 
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      role: user.role,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt
+    };
     this.editMode = false;
     this.error = null;
+    this.success = null;
   }
 
   enableEdit() {
@@ -64,13 +76,28 @@ export class AdminComponent implements OnInit {
 
   saveUser() {
     if (!this.selectedUser) return;
-    this.userService.updateUser(this.selectedUser.id, this.selectedUser).subscribe({
+    
+    // Create update object without password field
+    const updateData = {
+      username: this.selectedUser.username,
+      email: this.selectedUser.email,
+      firstName: this.selectedUser.firstName,
+      lastName: this.selectedUser.lastName,
+      role: this.selectedUser.role
+    };
+    
+    this.userService.updateUser(this.selectedUser.id, updateData).subscribe({
       next: updated => {
         this.editMode = false;
         this.fetchUsers();
+        this.error = null;
+        this.success = 'User updated successfully!';
+        // Clear success message after 3 seconds
+        setTimeout(() => this.success = null, 3000);
       },
       error: err => {
         this.error = 'Failed to update user.';
+        this.success = null;
       }
     });
   }
@@ -78,14 +105,26 @@ export class AdminComponent implements OnInit {
   deleteUser(user: User) {
     if (!confirm(`Delete user ${user.username}?`)) return;
     this.userService.deleteUser(user.id).subscribe({
-      next: () => this.fetchUsers(),
-      error: () => this.error = 'Failed to delete user.'
+      next: (message) => {
+        this.error = null;
+        this.success = 'User deleted successfully!';
+        this.fetchUsers();
+        setTimeout(() => this.success = null, 3000);
+      },
+      error: (err) => {
+        // Log the error for debugging
+        console.error('Delete user error:', err);
+        // Show more details if available
+        this.error = err?.error?.message || err?.message || 'Failed to delete user.';
+        this.success = null;
+      }
     });
   }
 
   cancelEdit() {
     this.editMode = false;
     this.error = null;
+    this.success = null;
     if (this.selectedUser) {
       this.selectUser(this.selectedUser);
     }

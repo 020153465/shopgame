@@ -24,8 +24,8 @@ export class UserService {
     return this.http.put<User>(`${this.adminUrl}/${id}`, user);
   }
 
-  deleteUser(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.adminUrl}/${id}`);
+  deleteUser(id: number): Observable<any> {
+    return this.http.delete(`${this.adminUrl}/${id}`, { responseType: 'text' as 'json' });
   }
 
   // Self-service endpoints
@@ -37,7 +37,7 @@ export class UserService {
     return this.http.put<User>(this.selfUrl, user);
   }
 
-  deleteCurrentUser(): Observable<void> {
-    return this.http.delete<void>(this.selfUrl);
+  deleteCurrentUser(): Observable<any> {
+    return this.http.delete(this.selfUrl);
   }
 } 

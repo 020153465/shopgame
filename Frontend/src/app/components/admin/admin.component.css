@@ -11,6 +11,20 @@
   margin-top: 16px;
 }
 .error-message {
-  color: red;
-  margin-bottom: 12px;
+  color: #d32f2f;
+  background: #ffebee;
+  border: 1px solid #ffcdd2;
+  border-radius: 4px;
+  padding: 12px;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+.success-message {
+  color: #2e7d32;
+  background: #e8f5e8;
+  border: 1px solid #c8e6c9;
+  border-radius: 4px;
+  padding: 12px;
+  margin-bottom: 16px;
+  font-weight: 500;
 } 

@@ -7,10 +7,11 @@ export interface User {
   role: UserRole;
   createdAt: Date;
   updatedAt: Date;
+  password?: string; // Optional since we don't want to send passwords in updates
 }
 
 export enum UserRole {
-  CUSTOMER = 'CUSTOMER',
+  USER = 'USER',
   ADMIN = 'ADMIN'
 }
 
@@ -29,5 +30,6 @@ export interface RegisterRequest {
 
 export interface AuthResponse {
   token: string;
-  user: User;
+  type: string;
+  message?: string;
 } 

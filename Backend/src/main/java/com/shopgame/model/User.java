@@ -1,5 +1,6 @@
 package com.shopgame.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -27,6 +28,7 @@ public class User {
     
     @NotBlank
     @Size(max = 255)
+    @JsonIgnore // Don't serialize password in JSON responses
     private String password;
     
     @Size(max = 50)

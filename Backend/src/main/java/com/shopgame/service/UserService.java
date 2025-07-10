@@ -45,10 +45,25 @@ public class UserService {
         user.setLastName(userDetails.getLastName());
         user.setRole(userDetails.getRole());
 
+        // Only update password if a new plain text password is provided
+        // Don't re-hash if the password is already hashed (starts with $2a$)
         if (userDetails.getPassword() != null && !userDetails.getPassword().isEmpty()) {
-            user.setPassword(passwordEncoder.encode(userDetails.getPassword()));
+            String password = userDetails.getPassword();
+            if (!password.startsWith("$2a$")) {
+                // Only hash if it's not already hashed
+                user.setPassword(passwordEncoder.encode(password));
+            }
+            // If it's already hashed, don't change it
         }
 
+        return userRepository.save(user);
+    }
+
+    public User updateUserPassword(Long id, String newPassword) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        
+        user.setPassword(passwordEncoder.encode(newPassword));
         return userRepository.save(user);
     }
 

@@ -49,7 +49,27 @@ public class SecurityConfig {
             .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
             .authorizeHttpRequests(authz -> authz
-                .anyRequest().permitAll() // TEMP: permit all for debugging
+                // Public endpoints (no authentication required)
+                .requestMatchers("/api/auth/login").permitAll()
+                .requestMatchers("/api/auth/register").permitAll()
+                .requestMatchers("/api/games").permitAll()
+                .requestMatchers("/api/games/search").permitAll()
+                .requestMatchers("/api/games/{id}").permitAll()
+                .requestMatchers("/actuator/health").permitAll()
+                .requestMatchers("/actuator/info").permitAll()
+                // User self-service endpoints (require authentication)
+                .requestMatchers("/api/users/me").authenticated()
+                // Admin-only endpoints (POST/PUT/DELETE operations)
+                .requestMatchers("POST", "/api/games").hasRole("ADMIN")
+                .requestMatchers("PUT", "/api/games/{id}").hasRole("ADMIN")
+                .requestMatchers("DELETE", "/api/games/{id}").hasRole("ADMIN")
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                // User endpoints (require authentication)
+                .requestMatchers("/api/cart/**").authenticated()
+                .requestMatchers("/api/orders/**").authenticated()
+                .requestMatchers("/api/profile/**").authenticated()
+                // All other requests require authentication
+                .anyRequest().authenticated()
             );
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
