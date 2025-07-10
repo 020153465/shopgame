@@ -30,31 +30,41 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequest.getUsername(),
-                        loginRequest.getPassword()
-                )
-        );
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginRequest.getUsername(),
+                            loginRequest.getPassword()
+                    )
+            );
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = tokenProvider.generateToken(authentication);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            String jwt = tokenProvider.generateToken(authentication);
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("token", jwt);
-        response.put("type", "Bearer");
-        
-        return ResponseEntity.ok(response);
+            Map<String, Object> response = new HashMap<>();
+            response.put("token", jwt);
+            response.put("type", "Bearer");
+            
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            Map<String, Object> errorResponse = new HashMap<>();
+            errorResponse.put("message", "Invalid username or password");
+            return ResponseEntity.badRequest().body(errorResponse);
+        }
     }
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody RegisterRequest registerRequest) {
+        Map<String, Object> errorResponse = new HashMap<>();
+        
         if (userService.existsByUsername(registerRequest.getUsername())) {
-            return ResponseEntity.badRequest().body("Username is already taken!");
+            errorResponse.put("message", "Username is already taken!");
+            return ResponseEntity.badRequest().body(errorResponse);
         }
 
         if (userService.existsByEmail(registerRequest.getEmail())) {
-            return ResponseEntity.badRequest().body("Email is already in use!");
+            errorResponse.put("message", "Email is already in use!");
+            return ResponseEntity.badRequest().body(errorResponse);
         }
 
         User user = new User();
@@ -66,7 +76,23 @@ public class AuthController {
 
         User savedUser = userService.createUser(user);
 
-        return ResponseEntity.ok("User registered successfully!");
+        // Authenticate the newly registered user and generate JWT token
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        registerRequest.getUsername(),
+                        registerRequest.getPassword()
+                )
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = tokenProvider.generateToken(authentication);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("token", jwt);
+        response.put("type", "Bearer");
+        response.put("message", "User registered successfully!");
+        
+        return ResponseEntity.ok(response);
     }
 
     public static class LoginRequest {

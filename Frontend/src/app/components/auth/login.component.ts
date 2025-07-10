@@ -43,7 +43,14 @@ export class LoginComponent {
       },
       error: err => {
         this.loading = false;
-        this.error = err.error?.message || 'Login failed. Please check your credentials.';
+        // Handle both structured and unstructured error responses
+        if (err.error && typeof err.error === 'object' && err.error.message) {
+          this.error = err.error.message;
+        } else if (err.error && typeof err.error === 'string') {
+          this.error = err.error;
+        } else {
+          this.error = 'Login failed. Please check your credentials.';
+        }
       }
     });
   }

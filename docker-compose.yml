@@ -10,7 +10,7 @@ services:
       MYSQL_USER: shopgame_user
       MYSQL_PASSWORD: shopgame_pass
     ports:
-      - "3306:3306"
+      - "127.0.0.1:3306:3306"  # Only accessible from localhost for security
     volumes:
       - mysql_data:/var/lib/mysql
     networks:
@@ -20,6 +20,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 10
+    restart: unless-stopped
 
   backend:
     build:
@@ -27,7 +28,7 @@ services:
       dockerfile: Dockerfile
     container_name: shopgame-backend
     ports:
-      - "8080:8080"
+      - "8080:8080"  # Accessible from external IPs
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/shopgame?useSSL=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: shopgame_user
@@ -38,6 +39,12 @@ services:
         condition: service_healthy
     networks:
       - shopgame-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
   frontend:
     build:
@@ -45,11 +52,17 @@ services:
       dockerfile: Dockerfile
     container_name: shopgame-frontend
     ports:
-      - "4200:80"
+      - "4200:80"  # Accessible from external IPs
     depends_on:
       - backend
     networks:
       - shopgame-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 
 volumes:
   mysql_data:
