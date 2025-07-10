@@ -37,6 +37,23 @@ export class RegisterComponent {
 
   register() {
     this.error = null;
+    
+    // Basic validation
+    if (!this.username || !this.email || !this.firstName || !this.lastName || !this.password) {
+      this.error = 'All fields are required.';
+      return;
+    }
+    
+    if (this.password.length < 6) {
+      this.error = 'Password must be at least 6 characters long.';
+      return;
+    }
+    
+    if (!this.email.includes('@')) {
+      this.error = 'Please enter a valid email address.';
+      return;
+    }
+    
     this.loading = true;
     const userData: RegisterRequest = {
       username: this.username,

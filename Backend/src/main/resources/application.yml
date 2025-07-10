@@ -23,7 +23,7 @@ server:
   address: 0.0.0.0
 
 jwt:
-  secret: ${JWT_SECRET:your-secret-key-here-make-it-long-and-secure-in-production}
+  secret: ${JWT_SECRET:}  # Will auto-generate if not provided
   expiration: 86400000 # 24 hours
 
 logging:

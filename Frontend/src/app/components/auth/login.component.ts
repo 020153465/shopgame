@@ -34,6 +34,13 @@ export class LoginComponent {
 
   login() {
     this.error = null;
+    
+    // Basic validation
+    if (!this.username || !this.password) {
+      this.error = 'Username and password are required.';
+      return;
+    }
+    
     this.loading = true;
     const credentials: LoginRequest = { username: this.username, password: this.password };
     this.authService.login(credentials).subscribe({

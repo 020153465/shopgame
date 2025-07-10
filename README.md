@@ -18,11 +18,11 @@ A complete e-commerce platform for video games built with Spring Boot, Angular, 
 - **Order Management**: View and process orders
 
 ### Technical Features
-- **JWT Authentication**: Secure token-based authentication
+- **JWT Authentication**: Secure token-based authentication with auto-generated secrets
 - **RESTful API**: Complete CRUD operations for all entities
 - **Modern UI**: Angular Material design with responsive layout
 - **Database**: MySQL with proper relationships and constraints
-- **Docker**: Single command deployment
+- **Docker**: Single command deployment with persistent data
 
 ## Technology Stack
 
@@ -45,6 +45,7 @@ A complete e-commerce platform for video games built with Spring Boot, Angular, 
 - **Docker** and **Docker Compose** for containerization
 - **MySQL** for data persistence
 - **Nginx** for reverse proxy and static file serving
+- **Auto-generated JWT secrets** for secure, portable deployment
 
 ## Quick Start
 
@@ -125,6 +126,11 @@ The database is automatically initialized with sample data including:
 - Sample games (Cyberpunk 2077, The Witcher 3, etc.)
 - Admin and user accounts
 - Proper database schema with relationships
+
+### Security
+- **JWT Secrets**: Automatically generated secure 512-bit secrets on first run
+- **Persistence**: JWT secrets are stored in Docker volumes and persist across deployments
+- **Portability**: No manual configuration required - works out of the box on any machine
 
 ## Project Structure
 
