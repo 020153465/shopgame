@@ -17,6 +17,10 @@
   <div *ngIf="cartItems.length > 0" class="cart-summary">
     <button class="clear-cart-btn" (click)="clearCart()">Clear Cart</button>
     <div class="cart-total">Total: ${{ getTotal() }}</div>
-    <button class="checkout-btn">Checkout</button>
+    <button class="checkout-btn" (click)="checkout()" [disabled]="loading">
+      <mat-icon *ngIf="!loading">shopping_cart_checkout</mat-icon>
+      <span *ngIf="loading">Processing...</span>
+      <span *ngIf="!loading">Checkout</span>
+    </button>
   </div>
 </section> 

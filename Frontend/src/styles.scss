@@ -1,14 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 html, body {
   height: 100%;
-  background: #11151c !important;
-  color: #f5f6fa !important;
+  background: #f8fafc !important;
+  color: #1f2937 !important;
 }
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  background: #11151c !important;
-  color: #f5f6fa !important;
+  background: #f8fafc !important;
+  color: #1f2937 !important;
 }
 
 .mat-mdc-card {
@@ -97,17 +97,74 @@ body {
 
 // Angular Material dark mode overrides
 .mat-mdc-form-field, .mat-mdc-form-field-infix, .mat-mdc-input-element, .mat-mdc-select, .mat-mdc-option, .mat-mdc-select-panel {
-  background: #181c24 !important;
-  color: #f5f6fa !important;
-  border-color: #2e7cf6 !important;
+  background: #ffffff !important;
+  color: #1f2937 !important;
+  border-color: #d1d5db !important;
 }
 .mat-mdc-form-field-label, .mat-mdc-select-placeholder, .mat-mdc-option-text {
-  color: #b0b8c9 !important;
+  color: #6b7280 !important;
 }
-.mat-mdc-select-arrow {
-  color: #2e7cf6 !important;
+
+// Snackbar styles
+.success-snackbar {
+  background: #10b981 !important;
+  color: white !important;
 }
-.mat-mdc-option.mat-mdc-selected, .mat-mdc-option:hover {
-  background: #232b3a !important;
-  color: #2e7cf6 !important;
+
+.error-snackbar {
+  background: #ef4444 !important;
+  color: white !important;
+}
+
+.warning-snackbar {
+  background: #f59e0b !important;
+  color: white !important;
+}
+
+// Global button styles
+.mat-mdc-raised-button.mat-primary {
+  background-color: #2563eb !important;
+}
+
+.mat-mdc-raised-button.mat-accent {
+  background-color: #10b981 !important;
+}
+
+// Toolbar styles
+.mat-mdc-toolbar.mat-primary {
+  background-color: #1f2937 !important;
+}
+
+// Card styles
+.mat-mdc-card {
+  background-color: #ffffff !important;
+  color: #1f2937 !important;
+  border: 1px solid #e5e7eb !important;
+}
+
+// Input styles
+.mat-mdc-form-field {
+  color: #1f2937 !important;
+}
+
+.mat-mdc-input-element {
+  color: #1f2937 !important;
+}
+
+// Select styles
+.mat-mdc-select-value {
+  color: #1f2937 !important;
+}
+
+// Dialog styles
+.mat-mdc-dialog-container {
+  background-color: #ffffff !important;
+}
+
+.mat-mdc-dialog-title {
+  color: #1f2937 !important;
+}
+
+.mat-mdc-dialog-content {
+  color: #4b5563 !important;
 } 

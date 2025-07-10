@@ -1,9 +1,78 @@
+# Build outputs
 target
-.git
-.gitignore
-README.md
-.env
+build
+out
+*.class
+
+# IDE and Editor files
+.vscode
 .idea
 *.iml
+*.ipr
+*.iws
+*.swp
+*.swo
+*~
+
+# OS generated files
 .DS_Store
-Thumbs.db 
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Environment files
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Documentation
+README.md
+*.md
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Docker files
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# Test files
+src/test/
+test/
+tests/
+
+# Temporary folders
+tmp/
+temp/
+
+# Backup files
+*.bak
+*.backup
+
+# Maven specific
+.mvn/
+mvnw
+mvnw.cmd
+
+# Gradle specific (if using Gradle)
+.gradle/
+gradle/
+gradlew
+gradlew.bat
+
+# Application properties (keep only what's needed)
+src/main/resources/application-dev.yml
+src/main/resources/application-test.yml
+src/main/resources/application-prod.yml 

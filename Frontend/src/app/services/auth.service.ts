@@ -10,7 +10,7 @@ import { environment } from '../../environments/environment';
 })
 export class AuthService {
   private apiUrl = `${environment.apiUrl}/auth`;
-  private userApiUrl = `${environment.apiUrl}/users`;
+  private userApiUrl = `${environment.apiUrl}/users/me`;
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
@@ -63,7 +63,7 @@ export class AuthService {
   }
 
   private fetchCurrentUser(): void {
-    this.http.get<User>(`${this.userApiUrl}/me`).subscribe({
+    this.http.get<User>(this.userApiUrl).subscribe({
       next: user => this.currentUserSubject.next(user),
       error: () => this.currentUserSubject.next(null)
     });

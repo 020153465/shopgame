@@ -1,23 +1,180 @@
-<div class="form-container" *ngIf="game">
-  <mat-card>
-    <img mat-card-image [src]="game?.coverImageUrl" [alt]="game?.title">
-    <mat-card-header>
-      <mat-card-title>{{ game?.title }}</mat-card-title>
-      <mat-card-subtitle>{{ game?.publisher }}</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <p>{{ game?.description }}</p>
-      <p><strong>Price:</strong> ${{ game?.price }}</p>
-      <p><strong>Genres:</strong> {{ game?.genres }}</p>
-      <p><strong>Platforms:</strong> {{ game?.platforms }}</p>
-      <p><strong>Developer:</strong> {{ game?.devTeam }}</p>
-      <p><strong>Stock:</strong> {{ game?.stockQuantity }} units</p>
-    </mat-card-content>
-    <mat-card-actions class="button-container">
-      <button mat-raised-button color="accent" (click)="addToCart()">
-        <mat-icon>add_shopping_cart</mat-icon>
-        Add to Cart
-      </button>
-    </mat-card-actions>
-  </mat-card>
+<div class="game-detail-container" *ngIf="game">
+  <!-- Hero Section -->
+  <div class="hero-section">
+    <div class="hero-background" [style.background-image]="'url(' + game.coverImageUrl + ')'"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-image">
+        <img [src]="game.coverImageUrl" [alt]="game.title">
+      </div>
+      <div class="hero-info">
+        <h1 class="game-title">{{ game.title }}</h1>
+        <div class="game-meta">
+          <span class="publisher">{{ game.publisher }}</span>
+          <span class="developer">{{ game.devTeam }}</span>
+        </div>
+        <div class="price-section">
+          <span class="price">${{ game.price }}</span>
+          <span class="stock" [class.low-stock]="game.stockQuantity < 10">
+            {{ game.stockQuantity > 0 ? game.stockQuantity + ' in stock' : 'Out of stock' }}
+          </span>
+        </div>
+        <div class="hero-actions">
+          <button class="add-cart-btn" (click)="addToCart()" [disabled]="game.stockQuantity === 0">
+            <mat-icon>add_shopping_cart</mat-icon>
+            Add to Cart
+          </button>
+          <button class="wishlist-btn">
+            <mat-icon>favorite_border</mat-icon>
+            Wishlist
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="content-grid">
+      <!-- Left Column -->
+      <div class="left-column">
+        <!-- Description Section -->
+        <section class="info-section">
+          <h2>About This Game</h2>
+          <p class="description">{{ game.description }}</p>
+        </section>
+
+        <!-- Game Details -->
+        <section class="info-section">
+          <h2>Game Details</h2>
+          <div class="details-grid">
+            <div class="detail-item">
+              <span class="detail-label">Genres</span>
+              <div class="detail-value">
+                <span class="badge" *ngFor="let genre of game.genres.split(',')">{{ genre.trim() }}</span>
+              </div>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Platforms</span>
+              <div class="detail-value">
+                <span class="badge platform" *ngFor="let platform of game.platforms.split(',')">{{ platform.trim() }}</span>
+              </div>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Developer</span>
+              <span class="detail-value">{{ game.devTeam }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Publisher</span>
+              <span class="detail-value">{{ game.publisher }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Stock</span>
+              <span class="detail-value" [class.low-stock]="game.stockQuantity < 10">
+                {{ game.stockQuantity }} units available
+              </span>
+            </div>
+          </div>
+        </section>
+
+        <!-- System Requirements (Placeholder) -->
+        <section class="info-section">
+          <h2>System Requirements</h2>
+          <div class="requirements">
+            <div class="requirement-category">
+              <h3>Minimum</h3>
+              <ul>
+                <li>OS: Windows 10 64-bit</li>
+                <li>Processor: Intel Core i5-4460</li>
+                <li>Memory: 8 GB RAM</li>
+                <li>Graphics: NVIDIA GTX 1060</li>
+                <li>Storage: 50 GB available space</li>
+              </ul>
+            </div>
+            <div class="requirement-category">
+              <h3>Recommended</h3>
+              <ul>
+                <li>OS: Windows 10 64-bit</li>
+                <li>Processor: Intel Core i7-8700K</li>
+                <li>Memory: 16 GB RAM</li>
+                <li>Graphics: NVIDIA RTX 3070</li>
+                <li>Storage: 50 GB available space</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Right Column -->
+      <div class="right-column">
+        <!-- Purchase Card -->
+        <div class="purchase-card">
+          <div class="purchase-header">
+            <span class="purchase-price">${{ game.price }}</span>
+            <span class="purchase-stock" [class.low-stock]="game.stockQuantity < 10">
+              {{ game.stockQuantity > 0 ? game.stockQuantity + ' in stock' : 'Out of stock' }}
+            </span>
+          </div>
+          <div class="purchase-actions">
+            <button class="buy-now-btn" (click)="addToCart()" [disabled]="game.stockQuantity === 0">
+              <mat-icon>shopping_cart</mat-icon>
+              Add to Cart
+            </button>
+            <button class="wishlist-btn-secondary" [disabled]="game.stockQuantity === 0">
+              <mat-icon>favorite_border</mat-icon>
+              Add to Wishlist
+            </button>
+          </div>
+          <div class="purchase-features">
+            <div class="feature">
+              <mat-icon>cloud_download</mat-icon>
+              <span>Instant Download</span>
+            </div>
+            <div class="feature">
+              <mat-icon>security</mat-icon>
+              <span>Secure Payment</span>
+            </div>
+            <div class="feature">
+              <mat-icon>support_agent</mat-icon>
+              <span>24/7 Support</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Related Games (Placeholder) -->
+        <div class="related-games">
+          <h3>You Might Also Like</h3>
+          <div class="related-list">
+            <div class="related-item">
+              <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co1tmu.png" alt="Related Game">
+              <div class="related-info">
+                <span class="related-title">The Witcher 3</span>
+                <span class="related-price">$29.99</span>
+              </div>
+            </div>
+            <div class="related-item">
+              <img src="https://images.igdb.com/igdb/image/upload/t_cover_big/co1wyy.png" alt="Related Game">
+              <div class="related-info">
+                <span class="related-title">Elden Ring</span>
+                <span class="related-price">$59.99</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Loading State -->
+<div class="loading-container" *ngIf="loading">
+  <div class="loading-spinner"></div>
+  <p>Loading game details...</p>
+</div>
+
+<!-- Error State -->
+<div class="error-container" *ngIf="error">
+  <mat-icon class="error-icon">error</mat-icon>
+  <p>{{ error }}</p>
+  <button class="retry-btn" (click)="loadGame()">Try Again</button>
 </div> 
