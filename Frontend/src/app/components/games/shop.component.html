@@ -10,8 +10,16 @@
   <div *ngIf="loading" class="loading">Loading games...</div>
   <div *ngIf="error" class="error-message">{{ error }}</div>
   <div class="games-grid" *ngIf="!loading && !error">
-    <div class="game-card" *ngFor="let game of games">
-      <img class="game-image" [src]="getImage(game.coverImageUrl)" [alt]="game.title">
+    <div class="game-card" *ngFor="let game of games" (click)="viewGameDetails(game.id)">
+      <div class="card-image-container">
+        <img class="game-image" [src]="getImage(game.coverImageUrl)" [alt]="game.title">
+        <div class="image-overlay">
+          <div class="overlay-content">
+            <span class="view-details">View Details</span>
+          </div>
+        </div>
+        <div class="price-badge">${{ game.price }}</div>
+      </div>
       <div class="game-info">
         <h2 class="game-title">{{ game.title }}</h2>
         <div class="game-publisher">{{ game.publisher }}</div>
@@ -19,11 +27,19 @@
           <span *ngFor="let genre of game.genres.split(',')" class="genre-badge">{{ genre.trim() }}</span>
         </div>
         <p class="game-desc">{{ game.description | slice:0:80 }}...</p>
-        <div class="game-price">${{ game.price }}</div>
       </div>
       <div class="game-actions">
-        <button class="details-btn" [routerLink]="['/game', game.id]">Details</button>
-        <button class="add-cart-btn" (click)="addToCart(game)">Add to Cart</button>
+        <button class="details-btn" (click)="viewGameDetails(game.id); $event.stopPropagation()">
+          <mat-icon>info</mat-icon> Details
+        </button>
+        <button 
+          class="add-cart-btn" 
+          [class.login-required]="!isAuthenticated()"
+          (click)="addToCart(game); $event.stopPropagation()"
+          [disabled]="!isAuthenticated()">
+          <mat-icon>add_shopping_cart</mat-icon>
+          {{ isAuthenticated() ? 'Add to Cart' : 'Login to Buy' }}
+        </button>
       </div>
     </div>
   </div>

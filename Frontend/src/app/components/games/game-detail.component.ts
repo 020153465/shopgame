@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GameService } from '../../services/game.service';
 import { CartService } from '../../services/cart.service';
+import { AuthService } from '../../services/auth.service';
 import { Game } from '../../models/game.model';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -26,11 +27,17 @@ export class GameDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private gameService: GameService,
     private cartService: CartService,
-    private snackBar: MatSnackBar
+    private authService: AuthService,
+    private snackBar: MatSnackBar,
+    private router: Router
   ) {}
 
   ngOnInit() {
     this.loadGame();
+  }
+
+  isAuthenticated(): boolean {
+    return this.authService.isAuthenticated();
   }
 
   loadGame() {
@@ -52,6 +59,17 @@ export class GameDetailComponent implements OnInit {
   }
 
   addToCart() {
+    if (!this.isAuthenticated()) {
+      this.snackBar.open('Please login to add items to cart', 'Login', {
+        duration: 3000,
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom'
+      }).onAction().subscribe(() => {
+        this.router.navigate(['/login']);
+      });
+      return;
+    }
+
     if (this.game) {
       this.cartService.addToCart(this.game, 1);
       this.snackBar.open(`Added ${this.game.title} to cart!`, 'Close', {

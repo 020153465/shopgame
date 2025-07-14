@@ -11,6 +11,48 @@
   color: #222;
   margin-bottom: 24px;
 }
+
+/* Login Required Styles */
+.login-required {
+  text-align: center;
+  padding: 60px 20px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
+}
+
+.lock-icon {
+  font-size: 4rem;
+  color: #6b7280;
+  margin-bottom: 20px;
+}
+
+.login-required h3 {
+  font-size: 1.8rem;
+  color: #222;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.login-required p {
+  color: #6b7280;
+  font-size: 1.1rem;
+  margin-bottom: 30px;
+  line-height: 1.5;
+}
+
+.login-required button {
+  margin: 0 8px;
+  padding: 12px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.login-required button mat-icon {
+  margin-right: 8px;
+}
+
 .empty-cart {
   color: #6b7280;
   font-size: 1.1rem;

@@ -33,8 +33,12 @@ services:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/shopgame?useSSL=false&allowPublicKeyRetrieval=true
       SPRING_DATASOURCE_USERNAME: shopgame_user
       SPRING_DATASOURCE_PASSWORD: shopgame_pass
+      UPLOAD_PATH: /app/uploads
+      COVER_UPLOAD_PATH: /app/uploads/covers
+      MUSIC_UPLOAD_PATH: /app/uploads/music
     volumes:
       - jwt_secret:/app/jwt-secret  # Persist JWT secret across restarts
+      - uploads_data:/app/uploads   # Persist uploaded files
     depends_on:
       mysql:
         condition: service_healthy
@@ -68,6 +72,7 @@ services:
 volumes:
   mysql_data:
   jwt_secret:  # New volume for JWT secret persistence
+  uploads_data:  # New volume for uploaded files
 
 networks:
   shopgame-network:

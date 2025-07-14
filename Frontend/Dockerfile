@@ -18,6 +18,9 @@ RUN npm run build
 # Production stage
 FROM nginx:alpine
 
+# Install curl for health checks
+RUN apk add --no-cache curl
+
 # Copy built application
 COPY --from=build /app/dist/shopgame-frontend /usr/share/nginx/html
 

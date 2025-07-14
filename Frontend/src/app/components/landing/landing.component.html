@@ -6,19 +6,149 @@
       <span class="brand-title">ShopGame</span>
     </div>
     <h1 class="tagline">Level Up Your Game Library</h1>
-    <p class="subtitle">Discover, collect, and play the world’s best games. Welcome to the next generation of digital game shopping.</p>
+    <p class="subtitle">Discover, collect, and play the world's best games. Welcome to the next generation of digital game shopping.</p>
     <div class="featured-covers">
-      <img *ngFor="let game of featuredGames" class="cover" [src]="getCoverUrl(game)" [alt]="game.title" />
+      <img *ngFor="let game of featuredGames; let i = index" 
+           class="cover" 
+           [class]="'cover cover' + (i + 1)"
+           [src]="getCoverUrl(game)" 
+           [alt]="game.title" />
     </div>
     <button mat-raised-button color="accent" class="enter-btn" (click)="enterShop()">
       <mat-icon>play_arrow</mat-icon> Enter Shop
     </button>
     <div class="scroll-down" (click)="scrollToSection()">
       <mat-icon>expand_more</mat-icon>
+      <span class="scroll-down-text">Scroll to discover more</span>
+    </div>
+  </div>
+  <!-- What's Inside quick overview -->
+  <div class="whats-inside-overview">
+    <div class="overview-step" *ngFor="let step of overviewSteps" (click)="scrollTo(step.sectionId)">
+      <mat-icon>{{ step.icon }}</mat-icon>
+      <span>{{ step.label }}</span>
     </div>
   </div>
 </div>
-<div class="landing-scroll-section" id="info-section">
-  <h2>Welcome to ShopGame!</h2>
-  <p>Discover, collect, and play the world’s best games. More features coming soon...</p>
-</div> 
+
+<!-- All other sections are now outside .landing-bg -->
+
+<!-- HOW IT WORKS SECTION -->
+<div class="how-it-works-section" id="how-it-works-section">
+  <h2 class="section-title" data-aos="fade-up">How It Works</h2>
+  <div class="how-steps">
+    <div class="how-step" *ngFor="let step of howItWorksSteps" data-aos="fade-up">
+      <mat-icon>{{ step.icon }}</mat-icon>
+      <h3>{{ step.title }}</h3>
+      <p>{{ step.desc }}</p>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES SECTION -->
+<div class="features-section" id="features-section">
+  <h2 class="section-title" data-aos="fade-up">Why Choose ShopGame?</h2>
+  <div class="features-grid">
+    <div class="feature-card" *ngFor="let feature of features" data-aos="fade-up">
+      <div class="feature-icon"><mat-icon>{{ feature.icon }}</mat-icon></div>
+      <h3>{{ feature.title }}</h3>
+      <p>{{ feature.desc }}</p>
+    </div>
+  </div>
+</div>
+
+<!-- GAME DISCOVERY SECTION -->
+<div class="discovery-section" id="discovery-section">
+  <h2 class="section-title" data-aos="fade-up">Discover Games</h2>
+  <div class="discovery-carousel" data-aos="fade-up">
+    <mat-card class="discovery-card" *ngFor="let game of featuredGames">
+      <div class="discovery-image-wrapper tall">
+        <img mat-card-image [src]="getCoverUrl(game)" [alt]="game.title">
+        <div class="discovery-image-gradient"></div>
+      </div>
+      <mat-card-header>
+        <mat-card-title>{{ game.title }}</mat-card-title>
+        <mat-card-subtitle>{{ game.publisher }}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>{{ game.description | slice:0:100 }}...</p>
+        <p class="price"><strong>Price:</strong> ${{ game.price }}</p>
+      </mat-card-content>
+      <mat-card-actions class="discovery-actions">
+        <button mat-stroked-button color="primary" [routerLink]="['/game', game.id]">
+          <mat-icon>info</mat-icon> Details
+        </button>
+        <button mat-raised-button color="accent" (click)="addToCart(game)" [disabled]="!isAuthenticated()">
+          <mat-icon>add_shopping_cart</mat-icon> {{ isAuthenticated() ? 'Add to Cart' : 'Login to Buy' }}
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
+
+<!-- TRUST & SOCIAL PROOF SECTION -->
+<div class="trust-section" id="trust-section">
+  <div class="trust-cards">
+    <div class="trust-card" data-aos="fade-up">
+      <mat-icon>verified_user</mat-icon>
+      <span>100% Secure Payments</span>
+    </div>
+    <div class="trust-card" data-aos="fade-up">
+      <mat-icon>support_agent</mat-icon>
+      <span>24/7 Support</span>
+    </div>
+    <div class="trust-card" data-aos="fade-up">
+      <mat-icon>groups</mat-icon>
+      <span>Trusted by 10,000+ Gamers</span>
+    </div>
+    <div class="trust-card" data-aos="fade-up">
+      <mat-icon>cloud_download</mat-icon>
+      <span>Instant Digital Delivery</span>
+    </div>
+  </div>
+</div>
+
+<!-- COMMUNITY/SUPPORT SECTION -->
+<div class="community-section-full-bg">
+  <app-community-section />
+</div>
+
+<!-- CALL TO ACTION SECTION -->
+<div class="cta-section" data-aos="fade-up">
+  <div class="cta-content">
+    <h2>Ready to Start Gaming?</h2>
+    <p>Join thousands of gamers who trust ShopGame for their digital entertainment</p>
+    <button mat-raised-button color="accent" class="cta-btn" (click)="enterShop()">
+      <mat-icon>shopping_cart</mat-icon> Start Shopping Now
+    </button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="landing-footer">
+  <div class="footer-links">
+    <a routerLink="/shop">Shop</a>
+    <a routerLink="/login">Login</a>
+    <a routerLink="/register">Register</a>
+    <a routerLink="/admin">Admin</a>
+    <a href="#community-section">Community</a>
+  </div>
+  <div class="footer-copy">&copy; {{ currentYear }} ShopGame. All rights reserved.</div>
+</footer>
+
+<!-- Floating section navigation button -->
+<div class="section-nav-fab" *ngIf="showSectionNav">
+  <button mat-fab color="primary" (click)="toggleSectionNavMenu()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <div class="section-nav-menu" *ngIf="sectionNavMenuOpen">
+    <button mat-mini-fab *ngFor="let step of overviewSteps" (click)="scrollTo(step.sectionId); toggleSectionNavMenu()" [attr.aria-label]="step.label">
+      <mat-icon>{{ step.icon }}</mat-icon>
+    </button>
+  </div>
+</div>
+
+<!-- Back to top button -->
+<button class="back-to-top" *ngIf="showBackToTop" mat-fab color="accent" (click)="scrollToTop()">
+  <mat-icon>arrow_upward</mat-icon>
+</button> 

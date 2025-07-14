@@ -152,6 +152,19 @@
   box-shadow: none;
 }
 
+.add-cart-btn.login-required {
+  background: #6b7280;
+  color: white;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.add-cart-btn.login-required:hover {
+  background: #6b7280;
+  transform: none;
+  box-shadow: none;
+}
+
 .wishlist-btn {
   background: rgba(255, 255, 255, 0.2);
   color: white;
@@ -361,6 +374,20 @@
   background: #6b7280;
   cursor: not-allowed;
   transform: none;
+  box-shadow: none;
+}
+
+.buy-now-btn.login-required {
+  background: #6b7280;
+  color: white;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+.buy-now-btn.login-required:hover {
+  background: #6b7280;
+  transform: none;
+  box-shadow: none;
 }
 
 .wishlist-btn-secondary {

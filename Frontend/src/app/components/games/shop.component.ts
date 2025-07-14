@@ -6,11 +6,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Game } from '../../models/game.model';
 import { GameService } from '../../services/game.service';
 import { CartService } from '../../services/cart.service';
+import { AuthService } from '../../services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
@@ -59,10 +60,20 @@ export class ShopComponent implements OnInit {
 
   @Output() cartChanged = new EventEmitter<void>();
 
-  constructor(private gameService: GameService, private cartService: CartService, private snackBar: MatSnackBar) {}
+  constructor(
+    private gameService: GameService, 
+    private cartService: CartService, 
+    private authService: AuthService,
+    private snackBar: MatSnackBar,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.fetchGames();
+  }
+
+  isAuthenticated(): boolean {
+    return this.authService.isAuthenticated();
   }
 
   fetchGames() {
@@ -165,6 +176,17 @@ export class ShopComponent implements OnInit {
   }
 
   addToCart(game: Game) {
+    if (!this.isAuthenticated()) {
+      this.snackBar.open('Please login to add items to cart', 'Login', {
+        duration: 3000,
+        horizontalPosition: 'center',
+        verticalPosition: 'bottom'
+      }).onAction().subscribe(() => {
+        this.router.navigate(['/login']);
+      });
+      return;
+    }
+
     this.cartService.addToCart(game);
     this.snackBar.open(`Added ${game.title} to cart!`, 'Close', {
       duration: 2000,
@@ -181,5 +203,9 @@ export class ShopComponent implements OnInit {
   filterByGenre() {
     this.page = 0;
     this.fetchGames();
+  }
+
+  viewGameDetails(gameId: number) {
+    this.router.navigate(['/game', gameId]);
   }
 } 

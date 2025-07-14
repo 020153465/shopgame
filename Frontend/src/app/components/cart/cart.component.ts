@@ -30,6 +30,10 @@ export class CartComponent implements OnInit {
     this.loadCart();
   }
 
+  isAuthenticated(): boolean {
+    return this.authService.isAuthenticated();
+  }
+
   loadCart() {
     this.cartItems = this.cartService.getCartItems();
   }

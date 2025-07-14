@@ -20,9 +20,13 @@
           </span>
         </div>
         <div class="hero-actions">
-          <button class="add-cart-btn" (click)="addToCart()" [disabled]="game.stockQuantity === 0">
-            <mat-icon>add_shopping_cart</mat-icon>
-            Add to Cart
+          <button 
+            class="add-cart-btn" 
+            [class.login-required]="!isAuthenticated()"
+            (click)="addToCart()" 
+            [disabled]="game.stockQuantity === 0 || !isAuthenticated()">
+            <mat-icon>{{ isAuthenticated() ? 'add_shopping_cart' : 'lock' }}</mat-icon>
+            {{ isAuthenticated() ? 'Add to Cart' : 'Login to Buy' }}
           </button>
           <button class="wishlist-btn">
             <mat-icon>favorite_border</mat-icon>
@@ -116,9 +120,13 @@
             </span>
           </div>
           <div class="purchase-actions">
-            <button class="buy-now-btn" (click)="addToCart()" [disabled]="game.stockQuantity === 0">
-              <mat-icon>shopping_cart</mat-icon>
-              Add to Cart
+            <button 
+              class="buy-now-btn" 
+              [class.login-required]="!isAuthenticated()"
+              (click)="addToCart()" 
+              [disabled]="game.stockQuantity === 0 || !isAuthenticated()">
+              <mat-icon>{{ isAuthenticated() ? 'shopping_cart' : 'lock' }}</mat-icon>
+              {{ isAuthenticated() ? 'Add to Cart' : 'Login to Buy' }}
             </button>
             <button class="wishlist-btn-secondary" [disabled]="game.stockQuantity === 0">
               <mat-icon>favorite_border</mat-icon>

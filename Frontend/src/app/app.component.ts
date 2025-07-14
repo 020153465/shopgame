@@ -25,7 +25,7 @@ import { CartService } from './services/cart.service';
     <mat-toolbar color="primary" class="main-toolbar">
       <span class="brand" routerLink="/">🎮 ShopGame</span>
       <span class="spacer"></span>
-      <button mat-button routerLink="/">Home</button>
+      <button mat-button routerLink="/">Discover</button>
       <button mat-button routerLink="/shop">Shop</button>
       <button mat-button routerLink="/cart">
         <mat-icon>shopping_cart</mat-icon>
