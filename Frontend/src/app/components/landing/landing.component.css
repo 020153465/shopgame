@@ -943,9 +943,9 @@ body, html {
   box-shadow: 0 12px 48px #1976d2cc;
 }
 .discovery-image-wrapper {
-  position: relative;
+  /* position: relative; */
   width: 100%;
-  height: 260px;
+  height: 320px; /* Increased from 260px for a taller image area */
   overflow: hidden;
   display: flex;
   align-items: center;
@@ -994,33 +994,87 @@ body, html {
 
 /* DISCOVERY CARD ENHANCEMENTS */
 .discovery-card {
-  min-height: 540px;
-  box-shadow: 0 4px 32px #1976d2aa, 0 0 0 2px #23243a;
-  border: 1.5px solid #2a5298;
-  transition: box-shadow 0.2s, border 0.2s, transform 0.2s;
+  height: 600px;
+  min-height: 600px;
+  max-height: 600px;
+  display: flex;
+  flex-direction: column;
 }
-.discovery-card:hover {
-  box-shadow: 0 8px 48px #00eaff99, 0 0 0 2.5px #00eaff;
-  border-color: #00eaff;
+.discovery-image-wrapper {
+  /* position: relative; */
+  width: 100%;
+  height: 70%; /* 70% of card height */
+  min-height: 0;
+  max-height: 420px; /* 70% of 600px */
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.discovery-image-wrapper.tall {
-  height: 320px;
+.discovery-details {
+  flex: 0 0 20%;
+  height: 20%;
+  min-height: 0;
+  max-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 16px 20px 0 20px;
 }
 .discovery-actions {
   display: flex;
-  gap: 16px;
-  justify-content: flex-end;
-  align-items: center;
-  margin: 0 16px 16px 16px;
+  width: 100%;
+  height: 10%;
+  min-height: 0;
+  max-height: 60px;
+  gap: 0;
+  justify-content: stretch;
+  align-items: stretch;
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: none;
 }
 .discovery-actions button {
-  min-width: 120px;
+  flex: 1 1 50%;
+  min-width: 0;
   font-weight: 700;
   font-size: 1rem;
-  border-radius: 24px;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, color 0.2s;
+  height: 100%;
 }
-.discovery-actions mat-icon {
+.discovery-actions button:first-child {
+  border-bottom-left-radius: 20px;
+}
+.discovery-actions button:last-child {
+  border-bottom-right-radius: 20px;
+}
+.discovery-actions button mat-icon {
+  font-size: 1.2rem;
   margin-right: 6px;
+}
+.discovery-actions button[mat-stroked-button] {
+  background: #2563eb;
+  color: #fff;
+}
+.discovery-actions button[mat-stroked-button]:hover {
+  background: #1e40af;
+  color: #fff;
+}
+.discovery-actions button[mat-raised-button] {
+  background: #43b06a;
+  color: #fff;
+}
+.discovery-actions button[mat-raised-button]:hover {
+  background: #2e7d4f;
+  color: #fff;
 }
 
 /* COMMUNITY SECTION FINAL HIGH CONTRAST FIX */

@@ -213,9 +213,18 @@ export class LandingComponent implements OnInit {
   }
 
   scrollTo(sectionId: string) {
-    const section = document.getElementById(sectionId);
+    // Special handling for community-section (full-bg wrapper)
+    let section = document.getElementById(sectionId);
+    if (!section && sectionId === 'community-section') {
+      section = document.querySelector('.community-section-full-bg') as HTMLElement;
+    }
+    if (!section && sectionId === 'cta-section') {
+      section = document.querySelector('.cta-section') as HTMLElement;
+    }
     if (section) {
       section.scrollIntoView({ behavior: 'smooth' });
+    } else if (sectionId === 'shop' || sectionId === '/shop') {
+      this.router.navigate(['/shop']);
     }
   }
 
