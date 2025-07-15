@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet, RouterLink } from '@angular/router';
+import { RouterOutlet, RouterLink, Router, NavigationEnd } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -33,6 +33,9 @@ import { CartService } from './services/cart.service';
         <span *ngIf="cartCount > 0" class="cart-badge">{{ cartCount }}</span>
       </button>
       <span class="spacer"></span>
+      <button *ngIf="showThemeToggle" mat-icon-button (click)="toggleTheme()" [attr.aria-label]="isDarkTheme ? 'Switch to light mode' : 'Switch to dark mode'">
+        <mat-icon>{{ isDarkTheme ? 'light_mode' : 'dark_mode' }}</mat-icon>
+      </button>
       <ng-container *ngIf="currentUser$ | async as user; else guestLinks">
         <button mat-button routerLink="/profile">
           <mat-icon>account_circle</mat-icon>
@@ -83,13 +86,25 @@ export class AppComponent implements OnInit {
   title = 'ShopGame';
   currentUser$ = this.authService.currentUser$;
   cartCount = 0;
+  isDarkTheme = false;
+  showThemeToggle = true;
 
   constructor(
-    public authService: AuthService, // Ensure instantiation
-    private cartService: CartService
+    public authService: AuthService,
+    private cartService: CartService,
+    private router: Router
   ) {
     this.updateCartCount();
     window.addEventListener('storage', () => this.updateCartCount());
+    // Theme initialization
+    this.isDarkTheme = localStorage.getItem('theme') === 'dark';
+    this.applyTheme();
+    // Hide theme toggle on landing page
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.showThemeToggle = !(event.urlAfterRedirects === '/' || event.url === '/');
+      }
+    });
   }
 
   ngOnInit() {
@@ -113,5 +128,20 @@ export class AppComponent implements OnInit {
   logout() {
     this.authService.logout();
     window.location.href = '/';
+  }
+
+  toggleTheme() {
+    this.isDarkTheme = !this.isDarkTheme;
+    localStorage.setItem('theme', this.isDarkTheme ? 'dark' : 'light');
+    this.applyTheme();
+  }
+
+  applyTheme() {
+    const body = document.body;
+    if (this.isDarkTheme) {
+      body.classList.add('dark-theme');
+    } else {
+      body.classList.remove('dark-theme');
+    }
   }
 } 

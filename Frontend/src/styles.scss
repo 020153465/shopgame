@@ -177,3 +177,96 @@ app-root {
 .mat-mdc-dialog-content {
   color: #4b5563 !important;
 } 
+
+.dark-theme {
+  --bg-main: #181c24;
+  --surface: #23243a;
+  --surface-alt: #23243a;
+  --primary: #2563eb;
+  --primary-dark: #1e40af;
+  --accent: #ffeb3b;
+  --accent-pink: #ff4081;
+  --success: #43b06a;
+  --danger: #ef4444;
+  --danger-dark: #dc2626;
+  --text-main: #fff;
+  --text-muted: #b0bec5;
+  --text-dark: #1e293b;
+  --border: #23243a;
+  --border-light: #3a3d4a;
+  --shadow: 0 4px 32px #000a;
+  --radius: 20px;
+
+  background: var(--bg-main) !important;
+  color: var(--text-main) !important;
+}
+
+.dark-theme body,
+.dark-theme app-root {
+  background: var(--bg-main) !important;
+  color: var(--text-main) !important;
+}
+
+.dark-theme .mat-mdc-toolbar.mat-primary {
+  background-color: #181c24 !important;
+  color: #ffeb3b !important;
+}
+
+.dark-theme .mat-mdc-card {
+  background-color: #23243a !important;
+  color: #fff !important;
+  border: 1px solid #23243a !important;
+  box-shadow: 0 4px 32px #000a !important;
+}
+
+.dark-theme .mat-mdc-form-field, .dark-theme .mat-mdc-form-field-infix, .dark-theme .mat-mdc-input-element, .dark-theme .mat-mdc-select, .dark-theme .mat-mdc-option, .dark-theme .mat-mdc-select-panel {
+  background: #23243a !important;
+  color: #fff !important;
+  border-color: #23243a !important;
+}
+
+.dark-theme .mat-mdc-form-field-label, .dark-theme .mat-mdc-select-placeholder, .dark-theme .mat-mdc-option-text {
+  color: #b0bec5 !important;
+}
+
+.dark-theme .mat-mdc-form-field-underline, .dark-theme .mat-mdc-form-field-ripple {
+  background-color: #2563eb !important;
+}
+
+.dark-theme .success-snackbar {
+  background: #43b06a !important;
+  color: #fff !important;
+}
+
+.dark-theme .error-snackbar {
+  background: #ef4444 !important;
+  color: #fff !important;
+}
+
+.dark-theme .warning-snackbar {
+  background: #ffeb3b !important;
+  color: #1e293b !important;
+}
+
+.dark-theme .mat-mdc-raised-button.mat-primary {
+  background-color: #2563eb !important;
+  color: #fff !important;
+}
+
+.dark-theme .mat-mdc-raised-button.mat-accent {
+  background-color: #43b06a !important;
+  color: #fff !important;
+}
+
+.dark-theme .mat-mdc-dialog-container {
+  background-color: #23243a !important;
+  color: #fff !important;
+}
+
+.dark-theme .mat-mdc-dialog-title {
+  color: #ffeb3b !important;
+}
+
+.dark-theme .mat-mdc-dialog-content {
+  color: #b0bec5 !important;
+} 
