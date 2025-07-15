@@ -236,4 +236,30 @@ export class LandingComponent implements OnInit {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     this.sectionNavMenuOpen = false;
   }
+
+  // Add this method to compute optimal columns for discovery section
+  getDiscoveryColumns(): number {
+    const n = this.featuredGames.length;
+    if (n <= 2) return n; // 1 or 2 games: 1 or 2 columns
+    if (n === 3) return 3;
+    if (n === 4) return 2;
+    if (n === 5) return 3;
+    if (n === 6) return 3;
+    if (n === 7) return 4;
+    if (n === 8) return 4;
+    if (n === 9) return 3;
+    if (n === 10) return 5;
+    if (n === 11) return 4;
+    if (n === 12) return 4;
+    if (n === 13) return 5;
+    if (n === 14) return 5;
+    if (n === 15) return 5;
+    return Math.min(5, Math.ceil(Math.sqrt(n))); // fallback for larger numbers
+  }
+
+  // Returns true if all cards should be displayed in a single row
+  shouldSingleRow(): boolean {
+    // You can adjust the threshold (5) based on card width and section width
+    return this.featuredGames.length > 0 && this.featuredGames.length <= 5;
+  }
 } 

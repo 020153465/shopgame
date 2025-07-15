@@ -60,29 +60,31 @@
 <!-- GAME DISCOVERY SECTION -->
 <div class="discovery-section" id="discovery-section">
   <h2 class="section-title" data-aos="fade-up">Discover Games</h2>
-  <div class="discovery-carousel" data-aos="fade-up">
-    <mat-card class="discovery-card" *ngFor="let game of featuredGames">
-      <div class="discovery-image-wrapper">
-        <img mat-card-image [src]="getCoverUrl(game)" [alt]="game.title">
-        <div class="discovery-image-gradient"></div>
-      </div>
-      <mat-card-header>
-        <mat-card-title>{{ game.title }}</mat-card-title>
-        <mat-card-subtitle>{{ game.publisher }}</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <p>{{ game.description | slice:0:100 }}...</p>
-        <p class="price"><strong>Price:</strong> ${{ game.price }}</p>
-      </mat-card-content>
-      <mat-card-actions class="discovery-actions">
-        <button mat-stroked-button color="primary" [routerLink]="['/game', game.id]">
-          <mat-icon>info</mat-icon> Details
-        </button>
-        <button mat-raised-button color="accent" (click)="addToCart(game)" [disabled]="!isAuthenticated()">
-          <mat-icon>add_shopping_cart</mat-icon> {{ isAuthenticated() ? 'Add to Cart' : 'Login to Buy' }}
-        </button>
-      </mat-card-actions>
-    </mat-card>
+  <div class="discovery-section-inner">
+    <div class="discovery-carousel" data-aos="fade-up">
+      <mat-card class="discovery-card" *ngFor="let game of featuredGames">
+        <div class="discovery-image-wrapper">
+          <img mat-card-image [src]="getCoverUrl(game)" [alt]="game.title">
+          <div class="discovery-image-gradient"></div>
+        </div>
+        <mat-card-header>
+          <mat-card-title>{{ game.title }}</mat-card-title>
+          <mat-card-subtitle>{{ game.publisher }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ game.description | slice:0:100 }}...</p>
+          <p class="price"><strong>Price:</strong> ${{ game.price }}</p>
+        </mat-card-content>
+        <mat-card-actions class="discovery-actions">
+          <button mat-stroked-button color="primary" [routerLink]="['/game', game.id]">
+            <mat-icon>info</mat-icon> Details
+          </button>
+          <button mat-raised-button color="accent" (click)="addToCart(game)" [disabled]="!isAuthenticated()">
+            <mat-icon>add_shopping_cart</mat-icon> {{ isAuthenticated() ? 'Add to Cart' : 'Login to Buy' }}
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
   </div>
 </div>
 
