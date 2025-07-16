@@ -1,0 +1,36 @@
+<h2 class="checkout-title">Checkout</h2>
+<div class="checkout-step">
+  <div class="checkout-row">
+    <label class="checkout-label">Payment Type:</label>
+    <div class="checkout-radio-group">
+      <label><input type="radio" name="paymentType" [(ngModel)]="paymentType" value="credit"> Credit Card</label>
+      <label><input type="radio" name="paymentType" [(ngModel)]="paymentType" value="paypal"> PayPal</label>
+    </div>
+  </div>
+  <div *ngIf="paymentType === 'credit'">
+    <div class="checkout-row"><input class="checkout-input" [(ngModel)]="cardNumber" placeholder="Card Number"></div>
+    <div class="checkout-row"><input class="checkout-input" [(ngModel)]="cardName" placeholder="Name on Card"></div>
+    <div class="checkout-row checkout-row-split">
+      <input class="checkout-input" [(ngModel)]="cardExp" placeholder="MM/YY">
+      <input class="checkout-input" [(ngModel)]="cardCvc" placeholder="CVC">
+    </div>
+  </div>
+  <div *ngIf="paymentType === 'paypal'">
+    <div class="checkout-row"><input class="checkout-input" [(ngModel)]="email" placeholder="PayPal Email"></div>
+  </div>
+  <div class="checkout-summary">
+    <div class="checkout-summary-label">Total:</div>
+    <div class="checkout-summary-value">${{ data.total }}</div>
+  </div>
+  <div class="checkout-actions">
+    <button mat-stroked-button (click)="close()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="pay()" [disabled]="loading">
+      <mat-icon *ngIf="!loading">credit_score</mat-icon>
+      <span *ngIf="loading">Processing...</span>
+      <span *ngIf="!loading">Pay Now</span>
+    </button>
+  </div>
+  <div *ngIf="success" class="checkout-success">
+    <mat-icon>check_circle</mat-icon> Payment successful! Thank you for your order.
+  </div>
+</div> 

@@ -1,121 +1,96 @@
-import { Component, OnInit } from '@angular/core';
-import { CartService, CartItem } from '../../services/cart.service';
-import { AuthService } from '../../services/auth.service';
+import { Component, Inject, Output, EventEmitter } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { MatDialog, MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FormsModule } from '@angular/forms';
+import { CartService, CartItem } from '../../services/cart.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatButtonModule, MatCardModule, MatSnackBarModule],
+  imports: [CommonModule, MatIconModule, MatButtonModule, MatDialogModule, FormsModule],
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css']
 })
-export class CartComponent implements OnInit {
+export class CartComponent {
   cartItems: CartItem[] = [];
-  loading = false;
-
+  @Output() cartChanged = new EventEmitter<void>();
   constructor(
     private cartService: CartService,
     private authService: AuthService,
-    private snackBar: MatSnackBar,
-    private router: Router
-  ) {}
-
-  ngOnInit() {
+    private dialog: MatDialog
+  ) {
     this.loadCart();
   }
-
+  loadCart() {
+    this.cartItems = this.cartService.getCartItems();
+    this.cartChanged.emit();
+  }
   isAuthenticated(): boolean {
     return this.authService.isAuthenticated();
   }
-
-  loadCart() {
-    this.cartItems = this.cartService.getCartItems();
+  getTotal(): string {
+    const total = this.cartItems.reduce((sum, item) => sum + item.game.price * item.quantity, 0);
+    return total.toFixed(2);
   }
-
   updateQuantity(gameId: number, quantity: number) {
     if (quantity <= 0) {
       this.removeFromCart(gameId);
     } else {
-      const items = this.cartService.getCartItems();
-      const idx = items.findIndex(item => item.game.id === gameId);
-      if (idx > -1) {
-        items[idx].quantity = quantity;
-        localStorage.setItem('shopgame_cart', JSON.stringify(items));
-        this.loadCart();
-      }
+      this.cartService.addToCart(this.cartItems.find(i => i.game.id === gameId)!.game, quantity - this.cartItems.find(i => i.game.id === gameId)!.quantity);
+      this.loadCart();
+      this.cartChanged.emit();
     }
   }
-
   removeFromCart(gameId: number) {
     this.cartService.removeFromCart(gameId);
     this.loadCart();
-    this.snackBar.open('Item removed from cart', 'Close', {
-      duration: 2000,
-      horizontalPosition: 'center',
-      verticalPosition: 'bottom'
-    });
+    this.cartChanged.emit();
   }
-
   clearCart() {
     this.cartService.clearCart();
     this.loadCart();
-    this.snackBar.open('Cart cleared', 'Close', {
-      duration: 2000,
-      horizontalPosition: 'center',
-      verticalPosition: 'bottom'
+    this.cartChanged.emit();
+  }
+  openCheckout() {
+    this.dialog.open(CartCheckoutDialog, {
+      width: '420px',
+      data: { cartItems: this.cartItems, total: this.getTotal() }
     });
   }
+}
 
-  getTotal(): number {
-    return this.cartItems.reduce((sum, item) => sum + item.game.price * item.quantity, 0);
-  }
-
-  checkout() {
-    if (!this.authService.isAuthenticated()) {
-      this.snackBar.open('Please login to checkout', 'Close', {
-        duration: 3000,
-        horizontalPosition: 'center',
-        verticalPosition: 'bottom'
-      });
-      this.router.navigate(['/login']);
-      return;
-    }
-
-    if (this.cartItems.length === 0) {
-      this.snackBar.open('Your cart is empty', 'Close', {
-        duration: 2000,
-        horizontalPosition: 'center',
-        verticalPosition: 'bottom'
-      });
-      return;
-    }
-
+@Component({
+  selector: 'cart-checkout-dialog',
+  standalone: true,
+  imports: [CommonModule, MatButtonModule, MatIconModule, FormsModule],
+  templateUrl: './checkout-dialog.component.html',
+  styleUrls: ['./checkout-dialog.component.css']
+})
+export class CartCheckoutDialog {
+  paymentType = 'credit';
+  cardNumber = '';
+  cardName = '';
+  cardExp = '';
+  cardCvc = '';
+  email = '';
+  success = false;
+  loading = false;
+  constructor(
+    public dialogRef: MatDialogRef<CartCheckoutDialog>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {}
+  pay() {
     this.loading = true;
-    
-    // Simulate checkout process
     setTimeout(() => {
       this.loading = false;
-      this.snackBar.open('Order placed successfully! Thank you for your purchase.', 'Close', {
-        duration: 5000,
-        horizontalPosition: 'center',
-        verticalPosition: 'bottom',
-        panelClass: ['success-snackbar']
-      });
-      
-      // Clear cart after successful checkout
-      this.cartService.clearCart();
-      this.loadCart();
-      
-      // Redirect to home page
-      setTimeout(() => {
-        this.router.navigate(['/']);
-      }, 2000);
-    }, 2000);
+      this.success = true;
+      setTimeout(() => this.dialogRef.close(true), 1800);
+    }, 1800);
+  }
+  close() {
+    this.dialogRef.close();
   }
 } 

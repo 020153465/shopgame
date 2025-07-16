@@ -1,0 +1,112 @@
+/* Glassmorphism Checkout Dialog */
+.checkout-title {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #4f8cff;
+  margin: 0 0 24px 0;
+  text-align: left;
+  text-shadow: 0 2px 12px #fff8;
+}
+.checkout-step {
+  padding: 0 8px 8px 8px;
+  min-width: 320px;
+  background: rgba(255,255,255,0.22);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+  border: 1.5px solid rgba(255,255,255,0.28);
+  backdrop-filter: blur(18px) saturate(1.2);
+  -webkit-backdrop-filter: blur(18px) saturate(1.2);
+}
+.checkout-row {
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.checkout-row-split {
+  flex-direction: row;
+  gap: 12px;
+}
+.checkout-label {
+  font-weight: 700;
+  color: #23243a;
+  margin-bottom: 4px;
+}
+.checkout-radio-group {
+  display: flex;
+  gap: 18px;
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+.checkout-input {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1.5px solid #a5b4fc;
+  background: rgba(255,255,255,0.45);
+  color: #23243a;
+  font-size: 1rem;
+  font-weight: 600;
+  outline: none;
+  transition: border 0.2s;
+  box-shadow: 0 1px 4px #0001;
+}
+.checkout-input:focus {
+  border: 1.5px solid #4f8cff;
+}
+.checkout-summary {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin: 18px 0 10px 0;
+}
+.checkout-summary-label {
+  color: #6b7280;
+}
+.checkout-summary-value {
+  color: #4f8cff;
+}
+.checkout-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 14px;
+  margin-top: 10px;
+}
+.checkout-success {
+  color: #43b06a;
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+}
+button[mat-stroked-button], button[mat-raised-button] {
+  box-shadow: 0 2px 8px #4f8cff22;
+  border-radius: 12px !important;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  background: rgba(255,255,255,0.35);
+  color: #23243a;
+  border: 1.5px solid #a5b4fc;
+  transition: background 0.18s, color 0.18s, border 0.18s;
+}
+button[mat-stroked-button]:hover, button[mat-raised-button]:hover {
+  background: #e0e7ef;
+  color: #4f8cff;
+  border: 1.5px solid #4f8cff;
+}
+button[mat-raised-button][color="primary"] {
+  background: linear-gradient(90deg, #4f8cff 0%, #a5b4fc 100%);
+  color: #fff;
+  border: none;
+  box-shadow: 0 4px 16px #4f8cff33;
+}
+button[mat-raised-button][color="primary"]:hover {
+  background: linear-gradient(90deg, #3b82f6 0%, #a5b4fc 100%);
+  color: #fff;
+} 
