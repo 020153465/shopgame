@@ -24,46 +24,51 @@
       <div *ngIf="paymentType === 'credit'">
         <div class="checkout-row">
           <input class="checkout-input" 
-                 [ngClass]="{'input-error': cardNumberError}"
+                 [ngClass]="{'input-error': cardNumberError && cardNumberTouched}"
                  [(ngModel)]="cardNumber" 
                  (input)="onCardNumberInput($event)" 
+                 (blur)="onCardNumberBlur()"
                  placeholder="Card Number" 
                  maxlength="19">
-          <div class="input-error-message" *ngIf="cardNumberError">{{cardNumberError}}</div>
+          <div class="input-error-message" *ngIf="cardNumberError && cardNumberTouched">{{cardNumberError}}</div>
         </div>
         <div class="checkout-row">
           <input class="checkout-input" 
-                 [ngClass]="{'input-error': cardNameError}"
+                 [ngClass]="{'input-error': cardNameError && cardNameTouched}"
                  [(ngModel)]="cardName" 
                  (input)="onCardNameInput($event)" 
+                 (blur)="onCardNameBlur()"
                  placeholder="Name on Card">
-          <div class="input-error-message" *ngIf="cardNameError">{{cardNameError}}</div>
+          <div class="input-error-message" *ngIf="cardNameError && cardNameTouched">{{cardNameError}}</div>
         </div>
         <div class="checkout-row checkout-row-split">
           <input class="checkout-input half" 
-                 [ngClass]="{'input-error': cardExpError}"
+                 [ngClass]="{'input-error': cardExpError && cardExpTouched}"
                  [(ngModel)]="cardExp" 
                  (input)="onCardExpInput($event)" 
+                 (blur)="onCardExpBlur()"
                  placeholder="MM/YY" 
                  maxlength="5">
           <input class="checkout-input half" 
-                 [ngClass]="{'input-error': cardCvcError}"
+                 [ngClass]="{'input-error': cardCvcError && cardCvcTouched}"
                  [(ngModel)]="cardCvc" 
                  (input)="onCardCvcInput($event)" 
+                 (blur)="onCardCvcBlur()"
                  placeholder="CVC" 
                  maxlength="4">
         </div>
-        <div class="input-error-message" *ngIf="cardExpError">{{cardExpError}}</div>
-        <div class="input-error-message" *ngIf="cardCvcError">{{cardCvcError}}</div>
+        <div class="input-error-message" *ngIf="cardExpError && cardExpTouched">{{cardExpError}}</div>
+        <div class="input-error-message" *ngIf="cardCvcError && cardCvcTouched">{{cardCvcError}}</div>
       </div>
       <div *ngIf="paymentType === 'paypal'">
         <div class="checkout-row">
           <input class="checkout-input" 
-                 [ngClass]="{'input-error': emailError}"
+                 [ngClass]="{'input-error': emailError && emailTouched}"
                  [(ngModel)]="email" 
                  (input)="onEmailInput($event)" 
+                 (blur)="onEmailBlur()"
                  placeholder="PayPal Email">
-          <div class="input-error-message" *ngIf="emailError">{{emailError}}</div>
+          <div class="input-error-message" *ngIf="emailError && emailTouched">{{emailError}}</div>
         </div>
       </div>
       <hr class="checkout-separator" />

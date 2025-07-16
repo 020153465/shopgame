@@ -113,6 +113,13 @@ export class CartCheckoutDialog {
   cardCvcError = '';
   emailError = '';
 
+  // Touched states
+  cardNumberTouched = false;
+  cardNameTouched = false;
+  cardExpTouched = false;
+  cardCvcTouched = false;
+  emailTouched = false;
+
   constructor(
     public dialogRef: MatDialogRef<CartCheckoutDialog>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -149,6 +156,13 @@ export class CartCheckoutDialog {
     this.email = e.target.value;
     this.validateEmail();
   }
+
+  // --- Blur Handlers ---
+  onCardNumberBlur() { this.cardNumberTouched = true; this.validateCardNumber(); }
+  onCardNameBlur() { this.cardNameTouched = true; this.validateCardName(); }
+  onCardExpBlur() { this.cardExpTouched = true; this.validateCardExp(); }
+  onCardCvcBlur() { this.cardCvcTouched = true; this.validateCardCvc(); }
+  onEmailBlur() { this.emailTouched = true; this.validateEmail(); }
 
   // --- Validation ---
   validateCardNumber() {
