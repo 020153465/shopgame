@@ -13,6 +13,16 @@ export interface Game {
   musicUrl?: string;
   releaseDate?: Date;
   rating?: number;
+  minOs?: string;
+  minCpu?: string;
+  minRam?: string;
+  minGpu?: string;
+  minStorage?: string;
+  recOs?: string;
+  recCpu?: string;
+  recRam?: string;
+  recGpu?: string;
+  recStorage?: string;
 }
 
 export interface CreateGameRequest {
@@ -29,4 +39,14 @@ export interface CreateGameRequest {
   musicUrl?: string;
   releaseDate?: Date;
   rating?: number;
+  minOs?: string;
+  minCpu?: string;
+  minRam?: string;
+  minGpu?: string;
+  minStorage?: string;
+  recOs?: string;
+  recCpu?: string;
+  recRam?: string;
+  recGpu?: string;
+  recStorage?: string;
 } 

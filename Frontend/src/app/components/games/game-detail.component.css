@@ -625,3 +625,161 @@
     width: 100%;
   }
 } 
+
+/* Dark mode styles for game detail page */
+:host-context(.dark-theme) .game-detail-container {
+  background: linear-gradient(135deg, #181c24 0%, #23243a 100%);
+  color: #f3f4f6;
+}
+:host-context(.dark-theme) .hero-section {
+  background: linear-gradient(135deg, #23243a 0%, #181c24 100%);
+  box-shadow: 0 8px 32px 0 #000a;
+}
+:host-context(.dark-theme) .hero-content {
+  background: rgba(30,34,44,0.92);
+  border-radius: 24px;
+  box-shadow: 0 4px 32px 0 #0008;
+  border: 1.5px solid #23243a;
+}
+:host-context(.dark-theme) .main-content {
+  background: none;
+}
+:host-context(.dark-theme) .info-section {
+  background: rgba(60,65,90,0.98);
+  border-radius: 18px;
+  box-shadow: 0 4px 24px 0 #000b, 0 0 0 1.5px #3b3c5a;
+  border: 2px solid #3b3c5a;
+  margin-bottom: 24px;
+  padding: 28px 32px;
+}
+:host-context(.dark-theme) .info-section h2 {
+  color: #e0e6f7;
+  letter-spacing: 0.5px;
+  font-weight: 700;
+}
+:host-context(.dark-theme) .info-section .description {
+  color: #b3b9d1;
+}
+:host-context(.dark-theme) .details-grid {
+  background: none;
+}
+:host-context(.dark-theme) .details-grid .detail-label {
+  color: #a5b4fc;
+  font-weight: 600;
+}
+:host-context(.dark-theme) .details-grid .detail-value {
+  color: #e0e6f7;
+}
+:host-context(.dark-theme) .badge, :host-context(.dark-theme) .badge.platform {
+  background: #23243a;
+  color: #a5b4fc;
+  border: 1px solid #3b3c5a;
+  box-shadow: 0 2px 8px #23243a55;
+}
+:host-context(.dark-theme) .price, :host-context(.dark-theme) .purchase-price {
+  color: #7dd3fc;
+  text-shadow: 0 2px 8px #23243a99;
+}
+:host-context(.dark-theme) .stock, :host-context(.dark-theme) .purchase-stock {
+  color: #fde68a;
+  background: #23243a;
+  border: 1px solid #3b3c5a;
+}
+:host-context(.dark-theme) .stock.low-stock, :host-context(.dark-theme) .purchase-stock.low-stock {
+  background: #ef4444;
+  color: #fff;
+}
+:host-context(.dark-theme) .requirement-category {
+  background: #23243a;
+  border-radius: 8px;
+  padding: 8px 12px;
+  box-shadow: 0 2px 8px #0004;
+  border: 1px solid #3b3c5a;
+}
+:host-context(.dark-theme) .requirement-category h3 {
+  color: #a5b4fc;
+}
+:host-context(.dark-theme) .requirement-category ul li {
+  color: #f3f4f6;
+}
+:host-context(.dark-theme) .purchase-card {
+  background: rgba(35,36,58,0.98);
+  color: #f3f4f6;
+  border: 1.5px solid #23243a;
+  border-radius: 18px;
+  box-shadow: 0 2px 16px 0 #0006;
+  margin-bottom: 24px;
+}
+:host-context(.dark-theme) .purchase-header {
+  color: #7dd3fc;
+}
+:host-context(.dark-theme) .purchase-actions button {
+  background: #23243a;
+  color: #a5b4fc;
+  border: 1.5px solid #3b3c5a;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px #23243a55;
+  transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+}
+:host-context(.dark-theme) .purchase-actions button:hover:not(:disabled) {
+  background: #3b3c5a;
+  color: #fff;
+  box-shadow: 0 4px 16px #7dd3fc55;
+}
+:host-context(.dark-theme) .purchase-actions button:disabled {
+  background: #23243a;
+  color: #888;
+  border: 1.5px solid #444;
+  opacity: 0.7;
+}
+:host-context(.dark-theme) .purchase-features {
+  background: rgba(60,65,90,0.98);
+  border-radius: 14px;
+  box-shadow: 0 2px 12px #0007;
+  border: 2px solid #3b3c5a;
+  margin-top: 18px;
+  padding: 16px 12px 8px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+:host-context(.dark-theme) .feature {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #e0e6f7;
+  font-weight: 600;
+  font-size: 1.08rem;
+  padding: 6px 0;
+}
+:host-context(.dark-theme) .feature mat-icon {
+  color: #7dd3fc;
+  font-size: 1.5rem;
+  filter: drop-shadow(0 2px 6px #23243a88);
+}
+:host-context(.dark-theme) .related-games {
+  background: rgba(35,36,58,0.98);
+  color: #f3f4f6;
+  border-radius: 18px;
+  box-shadow: 0 2px 16px 0 #0006;
+  border: 1.5px solid #23243a;
+  margin-top: 24px;
+  padding: 18px 18px 12px 18px;
+}
+:host-context(.dark-theme) .related-item {
+  background: #181c24;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px #23243a55;
+  border: 1px solid #23243a;
+  transition: box-shadow 0.18s, border 0.18s;
+}
+:host-context(.dark-theme) .related-item:hover {
+  box-shadow: 0 4px 16px #7dd3fc55;
+  border: 1.5px solid #7dd3fc;
+}
+:host-context(.dark-theme) .related-title {
+  color: #a5b4fc;
+}
+:host-context(.dark-theme) .related-price {
+  color: #7dd3fc;
+} 

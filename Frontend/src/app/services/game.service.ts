@@ -101,4 +101,8 @@ export class GameService {
   getFeaturedGames(): Observable<Game[]> {
     return this.http.get<Game[]>(`${this.apiUrl}/featured`);
   }
+
+  getRecommendedGames(id: number, limit: number = 4): Observable<Game[]> {
+    return this.http.get<Game[]>(`${this.apiUrl}/${id}/recommendations?limit=${limit}`);
+  }
 } 

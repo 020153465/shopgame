@@ -46,6 +46,17 @@ public class GameService {
         game.setStockQuantity(gameDetails.getStockQuantity());
         game.setFeatured(gameDetails.isFeatured());
         game.setMusicUrl(gameDetails.getMusicUrl());
+        // System Requirements
+        game.setMinOs(gameDetails.getMinOs());
+        game.setMinCpu(gameDetails.getMinCpu());
+        game.setMinRam(gameDetails.getMinRam());
+        game.setMinGpu(gameDetails.getMinGpu());
+        game.setMinStorage(gameDetails.getMinStorage());
+        game.setRecOs(gameDetails.getRecOs());
+        game.setRecCpu(gameDetails.getRecCpu());
+        game.setRecRam(gameDetails.getRecRam());
+        game.setRecGpu(gameDetails.getRecGpu());
+        game.setRecStorage(gameDetails.getRecStorage());
 
         return gameRepository.save(game);
     }
@@ -123,5 +134,32 @@ public class GameService {
         }
         // Sorting is handled by Pageable
         return gameRepository.findAll(spec, pageable);
+    }
+
+    public List<Game> getRecommendedGames(Long id, int limit) {
+        Optional<Game> currentOpt = gameRepository.findById(id);
+        if (currentOpt.isEmpty()) return List.of();
+        Game current = currentOpt.get();
+        String[] genres = current.getGenres() != null ? current.getGenres().split(",") : new String[0];
+        List<Game> all = gameRepository.findAll();
+        return all.stream()
+            .filter(g -> !g.getId().equals(id))
+            .sorted((g1, g2) -> {
+                int overlap1 = countOverlap(genres, g1.getGenres());
+                int overlap2 = countOverlap(genres, g2.getGenres());
+                return Integer.compare(overlap2, overlap1);
+            })
+            .limit(limit)
+            .toList();
+    }
+    private int countOverlap(String[] genres, String otherGenres) {
+        if (otherGenres == null) return 0;
+        int count = 0;
+        for (String g : genres) {
+            for (String og : otherGenres.split(",")) {
+                if (g.trim().equalsIgnoreCase(og.trim())) count++;
+            }
+        }
+        return count;
     }
 } 

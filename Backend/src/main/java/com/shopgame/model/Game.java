@@ -44,6 +44,18 @@ public class Game {
     // Stores the filename of the music file in /assets/music/
     private String musicUrl;
     
+    // System Requirements
+    private String minOs;
+    private String minCpu;
+    private String minRam;
+    private String minGpu;
+    private String minStorage;
+    private String recOs;
+    private String recCpu;
+    private String recRam;
+    private String recGpu;
+    private String recStorage;
+    
     private LocalDateTime createdAt;
     
     private LocalDateTime updatedAt;
@@ -161,6 +173,27 @@ public class Game {
     public void setMusicUrl(String musicUrl) {
         this.musicUrl = musicUrl;
     }
+    
+    public String getMinOs() { return minOs; }
+    public void setMinOs(String minOs) { this.minOs = minOs; }
+    public String getMinCpu() { return minCpu; }
+    public void setMinCpu(String minCpu) { this.minCpu = minCpu; }
+    public String getMinRam() { return minRam; }
+    public void setMinRam(String minRam) { this.minRam = minRam; }
+    public String getMinGpu() { return minGpu; }
+    public void setMinGpu(String minGpu) { this.minGpu = minGpu; }
+    public String getMinStorage() { return minStorage; }
+    public void setMinStorage(String minStorage) { this.minStorage = minStorage; }
+    public String getRecOs() { return recOs; }
+    public void setRecOs(String recOs) { this.recOs = recOs; }
+    public String getRecCpu() { return recCpu; }
+    public void setRecCpu(String recCpu) { this.recCpu = recCpu; }
+    public String getRecRam() { return recRam; }
+    public void setRecRam(String recRam) { this.recRam = recRam; }
+    public String getRecGpu() { return recGpu; }
+    public void setRecGpu(String recGpu) { this.recGpu = recGpu; }
+    public String getRecStorage() { return recStorage; }
+    public void setRecStorage(String recStorage) { this.recStorage = recStorage; }
     
     public LocalDateTime getCreatedAt() {
         return createdAt;

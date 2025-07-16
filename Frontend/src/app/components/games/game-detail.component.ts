@@ -22,6 +22,9 @@ export class GameDetailComponent implements OnInit {
   game: Game | null = null;
   loading = false;
   error: string | null = null;
+  recommendedGames: Game[] = [];
+  recommendationsLoading = false;
+  recommendationsError: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
@@ -44,18 +47,39 @@ export class GameDetailComponent implements OnInit {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.loading = true;
     this.error = null;
-    
+    this.recommendationsLoading = true;
+    this.recommendationsError = null;
     this.gameService.getGameById(id).subscribe({
       next: (game: Game) => {
         this.game = game;
         this.loading = false;
+        this.fetchRecommendations(id);
       },
       error: (err) => {
         this.error = 'Failed to load game details. Please try again.';
         this.loading = false;
+        this.recommendationsLoading = false;
         console.error('Error loading game:', err);
       }
     });
+  }
+
+  fetchRecommendations(id: number) {
+    this.gameService.getRecommendedGames(id, 4).subscribe({
+      next: (games: Game[]) => {
+        this.recommendedGames = games;
+        this.recommendationsLoading = false;
+      },
+      error: (err) => {
+        this.recommendationsError = 'Failed to load recommendations.';
+        this.recommendationsLoading = false;
+        console.error('Error loading recommendations:', err);
+      }
+    });
+  }
+
+  goToGame(gameId: number) {
+    this.router.navigate(['/games', gameId]);
   }
 
   addToCart() {

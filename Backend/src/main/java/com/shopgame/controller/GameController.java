@@ -100,6 +100,15 @@ public class GameController {
         return ResponseEntity.ok(gameService.filterAndSortGames(title, genre, platform, publisher, devTeam, minPrice, maxPrice, featured, inStock, sortBy, sortDir, pageable));
     }
 
+    @GetMapping("/{id}/recommendations")
+    public ResponseEntity<List<Game>> getRecommendedGames(@PathVariable Long id, @RequestParam(defaultValue = "4") int limit) {
+        if (!gameService.getGameById(id).isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        List<Game> recommendations = gameService.getRecommendedGames(id, limit);
+        return ResponseEntity.ok(recommendations);
+    }
+
     @PostMapping("/upload/cover")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> uploadCover(@RequestParam("file") MultipartFile file) throws IOException {
