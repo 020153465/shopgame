@@ -10,6 +10,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CommonModule } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-game-detail',
@@ -25,6 +26,7 @@ export class GameDetailComponent implements OnInit {
   recommendedGames: Game[] = [];
   recommendationsLoading = false;
   recommendationsError: string | null = null;
+  private routeSub?: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -36,7 +38,13 @@ export class GameDetailComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.loadGame();
+    this.routeSub = this.route.paramMap.subscribe(() => {
+      this.loadGame();
+    });
+  }
+
+  ngOnDestroy() {
+    this.routeSub?.unsubscribe();
   }
 
   isAuthenticated(): boolean {
@@ -79,7 +87,8 @@ export class GameDetailComponent implements OnInit {
   }
 
   goToGame(gameId: number) {
-    this.router.navigate(['/games', gameId]);
+    this.router.navigate(['/game', gameId]);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   addToCart() {

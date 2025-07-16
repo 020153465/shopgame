@@ -55,6 +55,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/games").permitAll()
                 .requestMatchers("/api/games/search").permitAll()
                 .requestMatchers("/api/games/{id}").permitAll()
+                .requestMatchers("/api/games/{id}/recommendations").permitAll()
                 .requestMatchers("/actuator/health").permitAll()
                 .requestMatchers("/actuator/info").permitAll()
                 // User self-service endpoints (require authentication)
