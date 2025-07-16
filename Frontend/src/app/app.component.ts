@@ -30,7 +30,7 @@ import { CartService } from './services/cart.service';
       <button mat-button routerLink="/cart">
         <mat-icon>shopping_cart</mat-icon>
         <span class="cart-label">Cart</span>
-        <span *ngIf="cartCount > 0" class="cart-badge">{{ cartCount }}</span>
+        <span *ngIf="cartCount > 0" class="cart-badge" [class.badge-animate]="badgeAnimate">{{ cartCount }}</span>
       </button>
       <span class="spacer"></span>
       <button *ngIf="showThemeToggle" mat-icon-button (click)="toggleTheme()" [attr.aria-label]="isDarkTheme ? 'Switch to light mode' : 'Switch to dark mode'">
@@ -88,6 +88,7 @@ export class AppComponent implements OnInit {
   cartCount = 0;
   isDarkTheme = false;
   showThemeToggle = true;
+  badgeAnimate = false;
 
   constructor(
     public authService: AuthService,
@@ -122,7 +123,19 @@ export class AppComponent implements OnInit {
   }
 
   updateCartCount() {
+    const prev = this.cartCount;
     this.cartCount = this.cartService.getCartCount();
+    if (this.cartCount !== prev) {
+      this.animateBadge();
+    }
+  }
+
+  animateBadge() {
+    this.badgeAnimate = false;
+    setTimeout(() => {
+      this.badgeAnimate = true;
+      setTimeout(() => this.badgeAnimate = false, 350);
+    }, 10);
   }
 
   logout() {

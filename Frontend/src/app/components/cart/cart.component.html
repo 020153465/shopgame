@@ -11,7 +11,7 @@
   </div>
   <div *ngIf="isAuthenticated() && cartItems.length > 0">
     <div class="cart-list">
-      <div class="cart-card" *ngFor="let item of cartItems">
+      <div class="cart-card" *ngFor="let item of cartItems; trackBy: trackByGameId" [class.card-fade-in]="item.fadeIn" [class.card-fade-out]="item.fading">
         <img class="cart-img" [src]="item.game.coverImageUrl" [alt]="item.game.title">
         <div class="cart-info">
           <div class="cart-game-title">{{ item.game.title }}</div>
@@ -22,7 +22,7 @@
               <span class="cart-qty">{{ item.quantity }}</span>
               <button mat-mini-fab color="primary" (click)="updateQuantity(item.game.id, item.quantity + 1)"><mat-icon>add</mat-icon></button>
             </div>
-            <button class="cart-remove-btn" (click)="removeFromCart(item.game.id)"><mat-icon>delete</mat-icon> Remove</button>
+            <button class="cart-remove-btn" (click)="animateRemove(item.game.id)"><mat-icon>delete</mat-icon> Remove</button>
           </div>
         </div>
       </div>
