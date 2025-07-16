@@ -31,7 +31,10 @@
     <div class="cart-summary-row">
       <button mat-stroked-button color="warn" (click)="clearCart()">Clear Cart</button>
       <div class="cart-total">Total: ${{ getTotal() }}</div>
-      <button mat-raised-button color="primary" (click)="openCheckout()"><mat-icon>shopping_cart_checkout</mat-icon> Checkout</button>
+      <button mat-raised-button class="cart-checkout-btn cart-checkout-btn-override" (click)="openCheckout()" [disabled]="cartItems.length === 0">
+        <mat-icon>shopping_cart_checkout</mat-icon>
+        Checkout
+      </button>
     </div>
   </div>
 </section>
