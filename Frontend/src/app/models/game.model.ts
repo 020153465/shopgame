@@ -7,7 +7,6 @@ export interface Game {
   platforms: string;
   devTeam: string;
   publisher: string;
-  coverImageUrl: string;
   coverImageFilename?: string;
   referenceUrl?: string;
   stockQuantity: number;
@@ -35,7 +34,6 @@ export interface CreateGameRequest {
   platforms: string;
   devTeam: string;
   publisher: string;
-  coverImageUrl: string;
   coverImageFilename?: string;
   referenceUrl?: string;
   stockQuantity: number;

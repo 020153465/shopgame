@@ -1,0 +1,255 @@
+body, .game-create-page {
+  background: #fff;
+  color: #181c24;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.game-create-page {
+  max-width: 600px;
+  margin: 40px auto;
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.07);
+  padding: 0 0 24px 0;
+  padding-right: 24px;
+}
+
+.game-create-page h2 {
+  background: linear-gradient(90deg, #4f8cff 0%, #7dd3fc 100%);
+  color: #fff;
+  padding: 24px 0 16px 32px;
+  border-radius: 18px 18px 0 0;
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  box-shadow: 0 2px 12px #0002;
+  margin: 0 0 24px 0;
+}
+
+.game-create-form {
+  padding: 0 40px 0 24px;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+
+input, textarea, select {
+  width: 100%;
+  background: #f8fafc;
+  color: #181c24;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 12px;
+  font-size: 1.1rem;
+  margin-bottom: 0;
+  outline: none;
+  transition: border 0.2s, background 0.2s;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: #4f8cff;
+  background: #fff;
+}
+
+label, .form-label {
+  color: #2563eb;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 2px;
+  display: block;
+}
+
+.featured-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+  background: #f1f5f9;
+  border-radius: 8px;
+  padding: 10px 16px;
+  border: 1.5px solid #4f8cff;
+}
+:host-context(.dark-theme) .featured-section {
+  background: #23243a;
+  border-color: #7dd3fc;
+}
+.featured-label {
+  color: #2563eb;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+:host-context(.dark-theme) .featured-label {
+  color: #7dd3fc;
+}
+.featured-checkbox {
+  accent-color: #4f8cff;
+  width: 22px;
+  height: 22px;
+}
+
+.file-upload-section {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  background: #f1f5f9;
+  border: 1.5px dashed #4f8cff;
+  border-radius: 10px;
+  color: #181c24;
+  margin-bottom: 18px;
+  padding: 16px 20px;
+  min-height: 120px;
+  transition: border 0.2s;
+}
+.file-upload-section input[type="file"] {
+  margin-top: 8px;
+}
+.file-upload-section .preview {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+:host-context(.dark-theme) .file-upload-section {
+  background: #23243a;
+  color: #f9fafb;
+  border-color: #7dd3fc;
+}
+
+.cover-preview {
+  width: 100px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-top: 8px;
+  border: 1.5px solid #4f8cff;
+}
+
+.system-req-section h3 {
+  color: #4f8cff;
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+  margin-top: 12px;
+}
+
+.actions-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.create-btn {
+  background: linear-gradient(90deg, #4f8cff 0%, #7dd3fc 100%);
+  color: #23243a;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border: none;
+  padding: 10px 28px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.create-btn:disabled {
+  background: #9ca3af;
+  color: #fff;
+  cursor: not-allowed;
+}
+
+.error-message {
+  color: #ef4444;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin-top: 12px;
+}
+
+.success-message {
+  color: #22c55e;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: 8px;
+  padding: 10px 16px;
+  margin-top: 12px;
+}
+
+@media (max-width: 700px) {
+  .game-create-page {
+    max-width: 98vw;
+    margin: 12px;
+    padding: 0;
+    padding-right: 8px;
+  }
+  .game-create-form {
+    padding: 0 12px;
+  }
+}
+
+/* Dark mode support */
+:host-context(.dark-theme) .game-create-page {
+  background: #181c24;
+  color: #f9fafb;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+}
+:host-context(.dark-theme) .game-create-page h2 {
+  background: linear-gradient(90deg, #4f8cff 0%, #7dd3fc 100%);
+  color: #fff;
+  box-shadow: 0 2px 12px #0006;
+}
+:host-context(.dark-theme) .game-create-form {
+  background: transparent;
+}
+:host-context(.dark-theme) input, :host-context(.dark-theme) textarea, :host-context(.dark-theme) select {
+  background: #23243a;
+  color: #f9fafb;
+  border: 1.5px solid #4f8cff;
+}
+:host-context(.dark-theme) input:focus, :host-context(.dark-theme) textarea:focus, :host-context(.dark-theme) select:focus {
+  border-color: #7dd3fc;
+  background: #23243a;
+}
+:host-context(.dark-theme) label, :host-context(.dark-theme) .form-label {
+  color: #7dd3fc;
+}
+:host-context(.dark-theme) .file-upload-section {
+  background: #23243a;
+  color: #f9fafb;
+  border: 1.5px solid #4f8cff;
+}
+:host-context(.dark-theme) .file-upload-section label {
+  color: #7dd3fc;
+}
+:host-context(.dark-theme) .cover-preview {
+  border: 1.5px solid #7dd3fc;
+}
+:host-context(.dark-theme) .system-req-section h3 {
+  color: #7dd3fc;
+}
+:host-context(.dark-theme) .create-btn {
+  background: linear-gradient(90deg, #4f8cff 0%, #7dd3fc 100%);
+  color: #23243a;
+}
+:host-context(.dark-theme) .create-btn:disabled {
+  background: #3b3c5a;
+  color: #fff;
+}
+:host-context(.dark-theme) .error-message {
+  color: #f87171;
+  background: #1e293b;
+  border: 1px solid #fecaca;
+}
+:host-context(.dark-theme) .success-message {
+  color: #4ade80;
+  background: #052e16;
+  border: 1px solid #bbf7d0;
+} 

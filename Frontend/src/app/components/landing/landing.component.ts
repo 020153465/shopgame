@@ -9,6 +9,7 @@ import { RouterLink } from '@angular/router';
 import { Game } from '../../models/game.model';
 import { GameService } from '../../services/game.service';
 import { AuthService } from '../../services/auth.service';
+import { CartService } from '../../services/cart.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { FormsModule } from '@angular/forms';
@@ -90,6 +91,7 @@ export class LandingComponent implements OnInit {
     private router: Router, 
     private gameService: GameService,
     private authService: AuthService,
+    private cartService: CartService,
     private snackBar: MatSnackBar
   ) {}
 
@@ -199,7 +201,8 @@ export class LandingComponent implements OnInit {
       return;
     }
 
-    // TODO: Implement cart service
+    // Add to cart using the cart service
+    this.cartService.addToCart(game, 1);
     this.snackBar.open(`${game.title} added to cart!`, 'Close', {
       duration: 2000,
       horizontalPosition: 'center',

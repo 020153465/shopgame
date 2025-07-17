@@ -17,8 +17,8 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Game, CreateGameRequest } from '../../models/game.model';
 import { GameService } from '../../services/game.service';
-import { GameDialogComponent } from './game-dialog/game-dialog.component';
 import { environment } from '../../../environments/environment';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-admin',
@@ -37,7 +37,8 @@ import { environment } from '../../../environments/environment';
     MatCardModule,
     MatChipsModule,
     MatSnackBarModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    RouterModule
   ],
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css']
@@ -64,7 +65,6 @@ export class AdminComponent implements OnInit {
   constructor(
     private userService: UserService,
     private gameService: GameService,
-    private dialog: MatDialog,
     private snackBar: MatSnackBar
   ) {}
 
@@ -214,49 +214,6 @@ export class AdminComponent implements OnInit {
       game.genres.toLowerCase().includes(term) ||
       game.platforms.toLowerCase().includes(term)
     );
-  }
-
-  openGameDialog(game?: Game) {
-    const dialogRef = this.dialog.open(GameDialogComponent, {
-      width: '600px',
-      data: { game, featuredCount: this.games.filter(g => g.featured).length }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        if (game) {
-          this.updateGame(game.id, result);
-        } else {
-          this.createGame(result);
-        }
-      }
-    });
-  }
-
-  createGame(gameData: any) {
-    this.gameService.createGame(gameData.game, gameData.coverFile, gameData.musicFile).subscribe({
-      next: () => {
-        this.fetchGames();
-        this.snackBar.open('Game created successfully!', 'Close', { duration: 3000 });
-      },
-      error: err => {
-        this.gameError = err?.error || 'Failed to create game.';
-        this.snackBar.open(this.gameError || 'Failed to create game.', 'Close', { duration: 5000 });
-      }
-    });
-  }
-
-  updateGame(id: number, gameData: any) {
-    this.gameService.updateGame(id, gameData.game, gameData.coverFile, gameData.musicFile).subscribe({
-      next: () => {
-        this.fetchGames();
-        this.snackBar.open('Game updated successfully!', 'Close', { duration: 3000 });
-      },
-      error: err => {
-        this.gameError = err?.error || 'Failed to update game.';
-        this.snackBar.open(this.gameError || 'Failed to update game.', 'Close', { duration: 5000 });
-      }
-    });
   }
 
   deleteGame(game: Game) {

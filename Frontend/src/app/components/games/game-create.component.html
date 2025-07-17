@@ -1,0 +1,71 @@
+<div class="game-create-page">
+  <h2>Create New Game</h2>
+  <form (ngSubmit)="submit()" class="game-create-form" [class.loading]="loading">
+    <div class="form-row">
+      <label>Title*</label>
+      <input type="text" [(ngModel)]="game.title" name="title" required />
+    </div>
+    <div class="form-row">
+      <label>Description</label>
+      <textarea [(ngModel)]="game.description" name="description" rows="3"></textarea>
+    </div>
+    <div class="form-row">
+      <label>Price*</label>
+      <input type="number" [(ngModel)]="game.price" name="price" min="0" step="0.01" required />
+    </div>
+    <div class="form-row">
+      <label>Stock Quantity*</label>
+      <input type="number" [(ngModel)]="game.stockQuantity" name="stockQuantity" min="0" required />
+    </div>
+    <div class="form-row">
+      <label>Genres (comma-separated)</label>
+      <input type="text" [(ngModel)]="game.genres" name="genres" placeholder="RPG, Action, Adventure" />
+    </div>
+    <div class="form-row">
+      <label>Platforms (comma-separated)</label>
+      <input type="text" [(ngModel)]="game.platforms" name="platforms" placeholder="PC, PS4, Xbox" />
+    </div>
+    <div class="form-row">
+      <label>Development Team</label>
+      <input type="text" [(ngModel)]="game.devTeam" name="devTeam" />
+    </div>
+    <div class="form-row">
+      <label>Publisher</label>
+      <input type="text" [(ngModel)]="game.publisher" name="publisher" />
+    </div>
+    <div class="featured-section">
+      <input type="checkbox" class="featured-checkbox" [(ngModel)]="game.featured" name="featured" id="featured" />
+      <label for="featured" class="featured-label">Featured Game</label>
+    </div>
+    <div class="form-row file-upload-section">
+      <label>Cover Image</label>
+      <input type="file" (change)="onCoverFileSelected($event)" accept="image/*" />
+      <button type="button" (click)="removeCover()" *ngIf="coverPreview">Remove</button>
+      <div *ngIf="coverPreview" class="preview"><img [src]="coverPreview" alt="Cover preview" class="cover-preview" /></div>
+    </div>
+    <div class="form-row file-upload-section">
+      <label>Music File</label>
+      <input type="file" (change)="onMusicFileSelected($event)" accept="audio/*" />
+      <button type="button" (click)="removeMusic()" *ngIf="musicPreview">Remove</button>
+      <div *ngIf="musicPreview" class="preview"><span>{{ musicPreview }}</span></div>
+    </div>
+    <div class="system-req-section">
+      <h3>System Requirements</h3>
+      <div class="form-row"><label>Min OS</label><input type="text" [(ngModel)]="game.minOs" name="minOs" /></div>
+      <div class="form-row"><label>Min CPU</label><input type="text" [(ngModel)]="game.minCpu" name="minCpu" /></div>
+      <div class="form-row"><label>Min RAM</label><input type="text" [(ngModel)]="game.minRam" name="minRam" /></div>
+      <div class="form-row"><label>Min GPU</label><input type="text" [(ngModel)]="game.minGpu" name="minGpu" /></div>
+      <div class="form-row"><label>Min Storage</label><input type="text" [(ngModel)]="game.minStorage" name="minStorage" /></div>
+      <div class="form-row"><label>Rec OS</label><input type="text" [(ngModel)]="game.recOs" name="recOs" /></div>
+      <div class="form-row"><label>Rec CPU</label><input type="text" [(ngModel)]="game.recCpu" name="recCpu" /></div>
+      <div class="form-row"><label>Rec RAM</label><input type="text" [(ngModel)]="game.recRam" name="recRam" /></div>
+      <div class="form-row"><label>Rec GPU</label><input type="text" [(ngModel)]="game.recGpu" name="recGpu" /></div>
+      <div class="form-row"><label>Rec Storage</label><input type="text" [(ngModel)]="game.recStorage" name="recStorage" /></div>
+    </div>
+    <div class="form-row actions-row">
+      <button type="submit" class="create-btn" [disabled]="loading">Create</button>
+    </div>
+    <div *ngIf="error" class="error-message">{{ error }}</div>
+    <div *ngIf="success" class="success-message">{{ success }}</div>
+  </form>
+</div> 

@@ -5,8 +5,8 @@ WORKDIR /app
 # Install curl for health checks
 RUN apt-get update && apt-get install -y curl
 
-# Create directories for file uploads
-RUN mkdir -p /app/uploads/covers /app/uploads/music
+# Create directories for file uploads and static assets
+RUN mkdir -p /app/uploads/covers /app/uploads/music /app/static/assets/covers /app/static/assets/music
 
 # Copy Maven files
 COPY pom.xml .

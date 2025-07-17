@@ -3,6 +3,7 @@ package com.shopgame.controller;
 import com.shopgame.model.Game;
 import com.shopgame.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.util.StringUtils;
 import java.io.File;
 import java.io.IOException;
+import java.util.UUID;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,8 +28,39 @@ public class GameController {
     @Autowired
     private GameService gameService;
 
-    private static final String COVER_UPLOAD_DIR = "src/main/resources/static/assets/covers/";
-    private static final String MUSIC_UPLOAD_DIR = "src/main/resources/static/assets/music/";
+    @Value("${COVER_UPLOAD_PATH:/app/static/assets/covers/}")
+    private String coverUploadDir;
+    
+    @Value("${MUSIC_UPLOAD_PATH:/app/static/assets/music/}")
+    private String musicUploadDir;
+
+    /**
+     * Generate a unique filename to prevent conflicts
+     * @param originalFilename The original filename
+     * @return A unique filename with UUID prefix
+     */
+    private String generateUniqueFilename(String originalFilename) {
+        if (originalFilename == null || originalFilename.isEmpty()) {
+            return UUID.randomUUID().toString() + ".jpg";
+        }
+        
+        String extension = "";
+        int lastDotIndex = originalFilename.lastIndexOf('.');
+        if (lastDotIndex > 0) {
+            extension = originalFilename.substring(lastDotIndex);
+        }
+        
+        String baseName = originalFilename;
+        if (lastDotIndex > 0) {
+            baseName = originalFilename.substring(0, lastDotIndex);
+        }
+        
+        // Clean the base name to remove special characters
+        baseName = baseName.replaceAll("[^a-zA-Z0-9\\-_]", "_");
+        
+        // Generate unique filename: UUID_baseName.extension
+        return UUID.randomUUID().toString() + "_" + baseName + extension;
+    }
 
     @GetMapping
     public ResponseEntity<List<Game>> getAllGames() {
@@ -112,21 +145,23 @@ public class GameController {
     @PostMapping("/upload/cover")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> uploadCover(@RequestParam("file") MultipartFile file) throws IOException {
-        String filename = StringUtils.cleanPath(file.getOriginalFilename());
-        File dest = new File(COVER_UPLOAD_DIR + filename);
+        String originalFilename = StringUtils.cleanPath(file.getOriginalFilename());
+        String uniqueFilename = generateUniqueFilename(originalFilename);
+        File dest = new File(coverUploadDir + uniqueFilename);
         dest.getParentFile().mkdirs();
         file.transferTo(dest);
-        return ResponseEntity.ok("/assets/covers/" + filename);
+        return ResponseEntity.ok("/assets/covers/" + uniqueFilename);
     }
 
     @PostMapping("/upload/music")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> uploadMusic(@RequestParam("file") MultipartFile file) throws IOException {
-        String filename = StringUtils.cleanPath(file.getOriginalFilename());
-        File dest = new File(MUSIC_UPLOAD_DIR + filename);
+        String originalFilename = StringUtils.cleanPath(file.getOriginalFilename());
+        String uniqueFilename = generateUniqueFilename(originalFilename);
+        File dest = new File(musicUploadDir + uniqueFilename);
         dest.getParentFile().mkdirs();
         file.transferTo(dest);
-        return ResponseEntity.ok("/assets/music/" + filename);
+        return ResponseEntity.ok("/assets/music/" + uniqueFilename);
     }
 
     @PostMapping
@@ -134,25 +169,29 @@ public class GameController {
     public ResponseEntity<?> createGame(@RequestPart("game") Game game,
                                         @RequestPart(value = "cover", required = false) MultipartFile cover,
                                         @RequestPart(value = "music", required = false) MultipartFile music) throws IOException {
+        System.out.println("[GameController] Incoming Game object: " + game);
         // Enforce max 10 featured games
         if (game.isFeatured() && gameService.getFeaturedGames().size() >= 10) {
             return ResponseEntity.badRequest().body("Cannot feature more than 10 games.");
         }
         if (cover != null && !cover.isEmpty()) {
-            String coverFilename = StringUtils.cleanPath(cover.getOriginalFilename());
-            File dest = new File(COVER_UPLOAD_DIR + coverFilename);
+            String originalFilename = StringUtils.cleanPath(cover.getOriginalFilename());
+            String uniqueFilename = generateUniqueFilename(originalFilename);
+            File dest = new File(coverUploadDir + uniqueFilename);
             dest.getParentFile().mkdirs();
             cover.transferTo(dest);
-            game.setCoverImageUrl(coverFilename);
+            game.setCoverImageFilename(uniqueFilename);
         }
         if (music != null && !music.isEmpty()) {
-            String musicFilename = StringUtils.cleanPath(music.getOriginalFilename());
-            File dest = new File(MUSIC_UPLOAD_DIR + musicFilename);
+            String originalFilename = StringUtils.cleanPath(music.getOriginalFilename());
+            String uniqueFilename = generateUniqueFilename(originalFilename);
+            File dest = new File(musicUploadDir + uniqueFilename);
             dest.getParentFile().mkdirs();
             music.transferTo(dest);
-            game.setMusicUrl(musicFilename);
+            game.setMusicUrl(uniqueFilename);
         }
         Game createdGame = gameService.createGame(game);
+        System.out.println("[GameController] Created game: id=" + createdGame.getId() + ", title=" + createdGame.getTitle() + ", coverImageFilename=" + createdGame.getCoverImageFilename());
         return ResponseEntity.ok(createdGame);
     }
 
@@ -171,18 +210,20 @@ public class GameController {
             }
         }
         if (cover != null && !cover.isEmpty()) {
-            String coverFilename = StringUtils.cleanPath(cover.getOriginalFilename());
-            File dest = new File(COVER_UPLOAD_DIR + coverFilename);
+            String originalFilename = StringUtils.cleanPath(cover.getOriginalFilename());
+            String uniqueFilename = generateUniqueFilename(originalFilename);
+            File dest = new File(coverUploadDir + uniqueFilename);
             dest.getParentFile().mkdirs();
             cover.transferTo(dest);
-            gameDetails.setCoverImageUrl(coverFilename);
+            gameDetails.setCoverImageFilename(uniqueFilename);
         }
         if (music != null && !music.isEmpty()) {
-            String musicFilename = StringUtils.cleanPath(music.getOriginalFilename());
-            File dest = new File(MUSIC_UPLOAD_DIR + musicFilename);
+            String originalFilename = StringUtils.cleanPath(music.getOriginalFilename());
+            String uniqueFilename = generateUniqueFilename(originalFilename);
+            File dest = new File(musicUploadDir + uniqueFilename);
             dest.getParentFile().mkdirs();
             music.transferTo(dest);
-            gameDetails.setMusicUrl(musicFilename);
+            gameDetails.setMusicUrl(uniqueFilename);
         }
         Game updatedGame = gameService.updateGame(id, gameDetails);
         return ResponseEntity.ok(updatedGame);

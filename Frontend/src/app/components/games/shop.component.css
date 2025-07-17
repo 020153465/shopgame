@@ -70,9 +70,9 @@
 .game-card {
   display: flex;
   flex-direction: column;
-  height: 587px;
-  min-height: 587px;
-  max-height: 587px;
+  height: 520px;
+  min-height: 520px;
+  max-height: 520px;
   width: 100%;
   background: var(--surface);
   border-radius: 20px;
@@ -372,4 +372,92 @@
   text-align: center;
   border: 2px solid var(--danger-dark);
   box-shadow: 0 4px 12px var(--danger);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .shop-section {
+    padding: 16px 12px;
+  }
+  
+  .shop-title {
+    font-size: 1.8rem;
+    margin-bottom: 16px;
+  }
+  
+  .shop-filters {
+    flex-direction: column;
+    gap: 8px;
+    padding: 16px;
+  }
+  
+  .search-input, .genre-select {
+    min-width: auto;
+    width: 100%;
+  }
+  
+  .games-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .game-card {
+    height: 480px;
+    min-height: 480px;
+    max-height: 480px;
+  }
+  
+  .game-title {
+    font-size: 1rem;
+  }
+  
+  .game-actions {
+    flex-direction: column;
+    gap: 8px;
+    height: auto;
+    min-height: 80px;
+  }
+  
+  .details-btn, .add-cart-btn {
+    width: 100%;
+    height: 36px;
+    padding: 8px;
+    font-size: 0.9rem;
+  }
+  
+  .pagination {
+    flex-direction: column;
+    gap: 12px;
+    align-items: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .shop-section {
+    padding: 12px 8px;
+  }
+  
+  .shop-title {
+    font-size: 1.5rem;
+  }
+  
+  .game-card {
+    height: 450px;
+    min-height: 450px;
+    max-height: 450px;
+  }
+  
+  .card-image-container {
+    height: 55%;
+  }
+  
+  .game-info {
+    height: 25%;
+    padding: 12px;
+  }
+  
+  .game-actions {
+    height: 20%;
+    padding: 8px 12px;
+  }
 }

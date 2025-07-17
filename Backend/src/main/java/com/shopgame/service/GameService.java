@@ -43,6 +43,8 @@ public class GameService {
         game.setDevTeam(gameDetails.getDevTeam());
         game.setPublisher(gameDetails.getPublisher());
         game.setCoverImageUrl(gameDetails.getCoverImageUrl());
+        game.setCoverImageFilename(gameDetails.getCoverImageFilename());
+        game.setReferenceUrl(gameDetails.getReferenceUrl());
         game.setStockQuantity(gameDetails.getStockQuantity());
         game.setFeatured(gameDetails.isFeatured());
         game.setMusicUrl(gameDetails.getMusicUrl());

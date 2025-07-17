@@ -548,94 +548,246 @@ body, html {
 /* Mobile Responsive */
 @media (max-width: 700px) {
   .landing-content {
-    padding-top: 24px;
-  }
-  .logo-icon {
-    width: 64px;
-    height: 64px;
-  }
-  .brand-title {
-    font-size: 2.5rem;
-  }
-  .tagline {
-    font-size: 1.7rem;
-  }
-  .subtitle {
-    font-size: 1.1rem;
-  }
-  .featured-covers {
-    gap: 12px;
-    min-height: 100px;
-  }
-  .cover {
-    width: 70px;
-    height: 100px;
-  }
-  .enter-btn {
-    font-size: 1.2rem;
-    padding: 14px 28px;
+    padding: 16px;
+    padding-top: 32px;
+    max-width: 100%;
   }
   
+  .logo-row {
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  
+  .logo-icon {
+    width: 56px;
+    height: 56px;
+  }
+  
+  .brand-title {
+    font-size: 2.2rem;
+    letter-spacing: 2px;
+  }
+  
+  .tagline {
+    font-size: 1.5rem;
+    margin: 24px 0 12px 0;
+    letter-spacing: 1px;
+    line-height: 1.3;
+  }
+  
+  .subtitle {
+    font-size: 1rem;
+    line-height: 1.5;
+    max-width: 100%;
+    margin-bottom: 32px;
+    padding: 0 8px;
+  }
+  
+  .featured-covers {
+    gap: 8px;
+    min-height: 80px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .cover {
+    width: 60px;
+    height: 80px;
+    border-radius: 8px;
+  }
+  
+  .enter-btn {
+    font-size: 1.1rem;
+    padding: 16px 32px;
+    border-radius: 32px;
+    margin-top: 24px;
+    min-height: 48px;
+    touch-action: manipulation;
+  }
+  
+  .enter-btn mat-icon {
+    font-size: 1.5rem;
+  }
+  
+  .scroll-down {
+    margin-top: 32px;
+  }
+  
+  .scroll-down mat-icon {
+    font-size: 3rem;
+  }
+  
+  .scroll-down-text {
+    font-size: 0.9rem;
+  }
+  
+  /* Section improvements */
   .stats-section,
   .features-section,
   .discovery-section,
   .cta-section {
-    padding: 40px 16px;
+    padding: 32px 16px;
   }
   
   .stats-container {
     grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+    gap: 16px;
+  }
+  
+  .stat-item {
+    padding: 20px 12px;
+    border-radius: 16px;
   }
   
   .stat-number {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
   
   .stat-label {
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
   
   .features-grid {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 16px;
   }
   
-  .section-title,
-  .categories-section h3,
-  .featured-section h2,
-  .games-section h2,
-  .cta-content h2 {
-    font-size: 1.8rem;
+  .feature-card {
+    padding: 20px 16px;
+    border-radius: 16px;
   }
   
-  .categories-list {
-    gap: 8px;
+  .section-title {
+    font-size: 1.6rem;
+    margin-bottom: 24px;
   }
   
-  .genre-btn {
+  .discovery-carousel {
+    gap: 16px;
+    padding: 0 8px;
+  }
+  
+  .discovery-card {
+    min-width: 280px;
+    border-radius: 16px;
+  }
+  
+  .discovery-card mat-card-actions {
+    padding: 8px 16px 16px;
+  }
+  
+  .discovery-actions button {
     font-size: 0.9rem;
     padding: 8px 16px;
+    min-height: 40px;
   }
   
-  .featured-grid,
-  .games-grid {
-    grid-template-columns: 1fr;
-    gap: 20px;
-    padding: 0 10px;
+  .trust-cards {
+    gap: 16px;
+    flex-wrap: wrap;
   }
   
-  .featured-card, .game-card {
-    margin: 0;
+  .trust-card {
+    padding: 16px 12px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+  }
+  
+  .cta-content h2 {
+    font-size: 1.6rem;
   }
   
   .cta-content p {
-    font-size: 1.1rem;
+    font-size: 1rem;
+    margin-bottom: 24px;
   }
   
   .cta-btn {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     padding: 16px 32px;
+    min-height: 48px;
+    touch-action: manipulation;
+  }
+  
+  .landing-footer {
+    padding: 24px 16px;
+  }
+  
+  .footer-links {
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .footer-links a {
+    font-size: 0.9rem;
+    padding: 8px 12px;
+  }
+  
+  .footer-copy {
+    font-size: 0.8rem;
+    margin-top: 16px;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  .landing-content {
+    padding: 12px;
+    padding-top: 24px;
+  }
+  
+  .brand-title {
+    font-size: 1.8rem;
+  }
+  
+  .tagline {
+    font-size: 1.3rem;
+    margin: 20px 0 10px 0;
+  }
+  
+  .subtitle {
+    font-size: 0.9rem;
+    margin-bottom: 24px;
+  }
+  
+  .featured-covers {
+    gap: 6px;
+  }
+  
+  .cover {
+    width: 50px;
+    height: 70px;
+  }
+  
+  .enter-btn {
+    font-size: 1rem;
+    padding: 14px 28px;
+    width: 100%;
+    max-width: 280px;
+  }
+  
+  .stats-container {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .trust-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .discovery-card {
+    min-width: 260px;
+  }
+  
+  .discovery-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .discovery-actions button {
+    width: 100%;
   }
 } 
 
