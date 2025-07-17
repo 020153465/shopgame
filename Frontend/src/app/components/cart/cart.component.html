@@ -12,7 +12,7 @@
   <div *ngIf="isAuthenticated() && cartItems.length > 0">
     <div class="cart-list">
       <div class="cart-card" *ngFor="let item of cartItems; trackBy: trackByGameId" [class.card-fade-in]="item.fadeIn" [class.card-fade-out]="item.fading">
-        <img class="cart-img" [src]="item.game.coverImageUrl" [alt]="item.game.title">
+        <img class="cart-img" [src]="getCoverPath(item.game)" [alt]="item.game.title">
         <div class="cart-info">
           <div class="cart-game-title">{{ item.game.title }}</div>
           <div class="cart-game-price">${{ item.game.price }}</div>

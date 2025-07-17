@@ -121,10 +121,9 @@
       <ng-container matColumnDef="cover">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let game">
-          <img *ngIf="game.coverImageUrl" [src]="getAssetUrl(game.coverImageUrl, 'cover')" 
-               [alt]="game.title" class="game-cover" 
+          <img [src]="getAssetUrl(game.coverImageFilename || 'placeholder.jpg', 'cover')"
+               [alt]="game.title" class="game-cover"
                (error)="onImageError($event)">
-          <div *ngIf="!game.coverImageUrl" class="no-cover">No Cover</div>
         </td>
       </ng-container>
       

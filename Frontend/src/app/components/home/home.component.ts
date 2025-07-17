@@ -10,6 +10,7 @@ import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Game } from '../../models/game.model';
 import { GameService } from '../../services/game.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -53,5 +54,25 @@ export class HomeComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  // Returns the cover image path for a game
+  getCoverPath(game: Game | null): string {
+    if (!game) return `${environment.assetsUrl}/covers/placeholder.jpg`;
+    
+    // Only use local filename - never fallback to external URLs
+    if (game.coverImageFilename) {
+      return `${environment.assetsUrl}/covers/${game.coverImageFilename}`;
+    }
+    
+    // Fallback to placeholder for any game without local filename
+    return `${environment.assetsUrl}/covers/placeholder.jpg`;
+  }
+
+  // Error handler for <img> tag: fallback to placeholder
+  onImageError(event: Event) {
+    const img = event.target as HTMLImageElement;
+    img.onerror = null; // Prevent infinite loop
+    img.src = `${environment.assetsUrl}/covers/placeholder.jpg`;
   }
 } 

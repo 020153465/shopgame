@@ -6,6 +6,7 @@ import { MatDialog, MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angu
 import { FormsModule } from '@angular/forms';
 import { CartService, CartItem } from '../../services/cart.service';
 import { AuthService } from '../../services/auth.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-cart',
@@ -86,6 +87,19 @@ export class CartComponent {
         this.removeFromCart(gameId);
       }, 380); // match fade-out duration
     }
+  }
+
+  // Returns the cover image path for a game
+  getCoverPath(game: any): string {
+    if (!game) return `${environment.assetsUrl}/covers/placeholder.jpg`;
+    
+    // Only use local filename - never fallback to external URLs
+    if (game.coverImageFilename) {
+      return `${environment.assetsUrl}/covers/${game.coverImageFilename}`;
+    }
+    
+    // Fallback to placeholder for any game without local filename
+    return `${environment.assetsUrl}/covers/placeholder.jpg`;
   }
 }
 

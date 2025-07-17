@@ -22,6 +22,7 @@ UPDATE games SET cover_image_filename = 'hades.jpg' WHERE title = 'Hades';
 UPDATE games SET cover_image_filename = 'celeste.jpg' WHERE title = 'Celeste';
 UPDATE games SET cover_image_filename = 'residentevilvillage.jpg' WHERE title = 'Resident Evil Village';
 UPDATE games SET cover_image_filename = 'spidermanmiles.jpg' WHERE title = 'Spider-Man: Miles Morales';
+UPDATE games SET cover_image_filename = 'legendofzeldabotw.jpg' WHERE title = 'The Legend of Zelda: Breath of the Wild';
 
 -- Add reference URLs for existing games
 UPDATE games SET reference_url = 'https://store.steampowered.com/app/1091500/Cyberpunk_2077/' WHERE title = 'Cyberpunk 2077';

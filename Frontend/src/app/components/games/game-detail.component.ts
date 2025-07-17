@@ -130,20 +130,21 @@ export class GameDetailComponent implements OnInit {
 
   // Returns the cover image path for a game
   getCoverPath(game: Game | null): string {
-    if (!game) return 'https://via.placeholder.com/300x400?text=No+Image';
+    if (!game) return `${environment.assetsUrl}/covers/placeholder.jpg`;
+    
+    // Only use local filename - never fallback to external URLs
     if (game.coverImageFilename) {
       return `${environment.assetsUrl}/covers/${game.coverImageFilename}`;
     }
-    if (game.coverImageUrl) {
-      return game.coverImageUrl;
-    }
-    return 'https://via.placeholder.com/300x400?text=No+Image';
+    
+    // Fallback to placeholder for any game without local filename
+    return `${environment.assetsUrl}/covers/placeholder.jpg`;
   }
 
-  // Error handler for <img> tag: fallback to placeholder only
+  // Error handler for <img> tag: fallback to placeholder
   onImageError(event: Event) {
     const img = event.target as HTMLImageElement;
     img.onerror = null; // Prevent infinite loop
-    img.src = 'https://via.placeholder.com/300x400?text=Image+Not+Found';
+    img.src = `${environment.assetsUrl}/covers/placeholder.jpg`;
   }
 } 

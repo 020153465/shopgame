@@ -28,7 +28,7 @@
   <h2>Featured Games</h2>
   <div class="featured-grid">
     <mat-card class="featured-card" *ngFor="let game of featuredGames">
-      <img mat-card-image [src]="game.coverImageUrl || 'https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg'" [alt]="game.title" (error)="game.coverImageUrl='https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg'">
+      <img mat-card-image [src]="getCoverPath(game)" [alt]="game.title" (error)="onImageError($event)">
       <mat-card-header>
         <mat-card-title>{{ game.title }}</mat-card-title>
         <mat-card-subtitle>{{ game.publisher }}</mat-card-subtitle>
@@ -55,7 +55,7 @@
   <div *ngIf="error" class="error-message">{{ error }}</div>
   <div class="games-grid" *ngIf="!loading && !error">
     <mat-card class="game-card" *ngFor="let game of games">
-      <img mat-card-image [src]="game.coverImageUrl || 'https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg'" [alt]="game.title" (error)="game.coverImageUrl='https://upload.wikimedia.org/wikipedia/commons/6/65/No-Image-Placeholder.svg'">
+      <img mat-card-image [src]="getCoverPath(game)" [alt]="game.title" (error)="onImageError($event)">
       <mat-card-header>
         <mat-card-title>{{ game.title }}</mat-card-title>
         <mat-card-subtitle>{{ game.publisher }}</mat-card-subtitle>

@@ -24,6 +24,12 @@ spring:
 server:
   port: 8080
   address: 0.0.0.0
+  ssl:
+    enabled: ${SSL_ENABLED:false}
+    key-store: ${SSL_KEY_STORE:}
+    key-store-password: ${SSL_KEY_STORE_PASSWORD:}
+    key-store-type: ${SSL_KEY_STORE_TYPE:PKCS12}
+    key-alias: ${SSL_KEY_ALIAS:tomcat}
 
 jwt:
   secret: ${JWT_SECRET:}  # Will auto-generate if not provided

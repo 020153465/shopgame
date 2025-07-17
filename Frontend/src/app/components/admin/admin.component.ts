@@ -273,8 +273,13 @@ export class AdminComponent implements OnInit {
   }
 
   getAssetUrl(filename: string, type: 'cover' | 'music'): string {
-    if (!filename) return '';
-    if (filename.startsWith('http')) return filename;
+    if (!filename) return `${environment.apiUrl}/assets/covers/placeholder.jpg`;
+    
+    // Only use local filenames - never fallback to external URLs
+    if (filename.startsWith('http')){
+      return `${environment.apiUrl}/assets/covers/placeholder.jpg`;
+    }
+    
     return `${environment.apiUrl}/assets/${type === 'cover' ? 'covers' : 'music'}/${filename}`;
   }
 

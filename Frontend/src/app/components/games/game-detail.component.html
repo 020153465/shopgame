@@ -1,11 +1,11 @@
 <div class="game-detail-container" *ngIf="game">
   <!-- Hero Section -->
   <div class="hero-section">
-    <div class="hero-background" [style.background-image]="'url(' + game.coverImageUrl + ')'"></div>
+    <div class="hero-background" [style.background-image]="'url(' + getCoverPath(game) + ')'"></div>
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <div class="hero-image">
-        <img [src]="game.coverImageUrl" [alt]="game.title">
+        <img [src]="getCoverPath(game)" [alt]="game.title">
       </div>
       <div class="hero-info">
         <h1 class="game-title">{{ game.title }}</h1>
@@ -156,7 +156,7 @@
           <div *ngIf="recommendationsError" class="related-list"><span>{{ recommendationsError }}</span></div>
           <div class="related-list" *ngIf="!recommendationsLoading && !recommendationsError && recommendedGames.length">
             <div class="related-item" *ngFor="let rec of recommendedGames" (click)="goToGame(rec.id)" style="cursor:pointer;">
-              <img [src]="rec.coverImageUrl" [alt]="rec.title">
+              <img [src]="getCoverPath(rec)" [alt]="rec.title">
               <div class="related-info">
                 <span class="related-title">{{ rec.title }}</span>
                 <span class="related-price">${{ rec.price }}</span>

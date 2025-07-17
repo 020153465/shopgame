@@ -58,6 +58,7 @@ services:
     container_name: shopgame-frontend
     ports:
       - "4200:80" # Accessible from external IPs
+      - "4443:443" # HTTPS support
     depends_on:
       - backend
     networks:

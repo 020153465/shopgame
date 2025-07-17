@@ -175,9 +175,12 @@ export class LandingComponent implements OnInit {
   }
 
   getCoverUrl(game: Game): string {
-    if (!game.coverImageUrl) return '';
-    if (game.coverImageUrl.startsWith('http')) return game.coverImageUrl;
-    return `${environment.assetsUrl}/covers/${game.coverImageUrl}`;
+    if (game.coverImageFilename) {
+      return `${environment.assetsUrl}/covers/${game.coverImageFilename}`;
+    }
+    
+    // Fallback to placeholder for any game without local filename
+    return `${environment.assetsUrl}/covers/placeholder.jpg`;
   }
 
   isAuthenticated(): boolean {
