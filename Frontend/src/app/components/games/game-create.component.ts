@@ -33,45 +33,11 @@ export class GameCreateComponent {
     recGpu: '',
     recStorage: ''
   };
-  coverFile: File | null = null;
-  musicFile: File | null = null;
-  coverPreview: string | null = null;
-  musicPreview: string | null = null;
   error: string | null = null;
   success: string | null = null;
   loading = false;
 
   constructor(private gameService: GameService) {}
-
-  onCoverFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.coverFile = file;
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        this.coverPreview = e.target?.result as string;
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-
-  onMusicFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.musicFile = file;
-      this.musicPreview = file.name;
-    }
-  }
-
-  removeCover() {
-    this.coverFile = null;
-    this.coverPreview = null;
-  }
-
-  removeMusic() {
-    this.musicFile = null;
-    this.musicPreview = null;
-  }
 
   submit() {
     this.error = null;
@@ -80,7 +46,7 @@ export class GameCreateComponent {
     // Ensure numeric fields are numbers
     this.game.price = Number(this.game.price);
     this.game.stockQuantity = Number(this.game.stockQuantity);
-    this.gameService.createGame(this.game, this.coverFile!, this.musicFile!).subscribe({
+    this.gameService.createGame(this.game).subscribe({
       next: () => {
         this.success = 'Game created successfully!';
         this.loading = false;

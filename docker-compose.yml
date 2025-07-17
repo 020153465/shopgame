@@ -38,7 +38,7 @@ services:
       MUSIC_UPLOAD_PATH: /app/static/assets/music
     volumes:
       - jwt_secret:/app/jwt-secret  # Persist JWT secret across restarts
-      - static_assets:/app/static/assets   # Persist uploaded files
+      - ./Backend/src/main/resources/static/assets:/app/static/assets   # Persist uploaded files and make them visible on host
     depends_on:
       mysql:
         condition: service_healthy
@@ -74,7 +74,7 @@ services:
 volumes:
   mysql_data:
   jwt_secret:  # New volume for JWT secret persistence
-  static_assets:  # New volume for uploaded files
+  # static_assets:  # No longer needed, using host path mapping
 
 networks:
   shopgame-network:

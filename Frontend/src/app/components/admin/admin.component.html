@@ -255,6 +255,10 @@
               <button mat-icon-button color="warn" (click)="deleteGame(game)" title="Delete">
                 <mat-icon>delete</mat-icon>
               </button>
+              <input type="file" accept="image/*" style="display:none" #coverInput (change)="onCoverFileSelected(game, $event)">
+              <button mat-icon-button color="accent" (click)="coverInput.click()" title="Upload Cover Image">
+                <mat-icon>upload</mat-icon>
+              </button>
             </div>
           </td>
         </ng-container>

@@ -248,4 +248,32 @@ export class AdminComponent implements OnInit {
       target.style.display = 'none';
     }
   }
+
+  // --- Cover image upload logic ---
+  triggerCoverInput(gameId: number) {
+    const input = document.querySelector<HTMLInputElement>(`input[type='file'][#coverInput]`);
+    if (input) {
+      input.setAttribute('data-game-id', String(gameId));
+      input.value = '';
+      input.click();
+    }
+  }
+
+  onCoverFileSelected(game: Game, event: Event) {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      this.gameService.uploadGameCover(game.id, file).subscribe({
+        next: () => {
+          this.gameSuccess = 'Cover image uploaded!';
+          this.fetchGames();
+          setTimeout(() => this.gameSuccess = null, 2000);
+        },
+        error: err => {
+          this.gameError = err?.error?.message || err?.message || 'Failed to upload cover image.';
+          setTimeout(() => this.gameError = null, 3000);
+        }
+      });
+    }
+  }
 } 

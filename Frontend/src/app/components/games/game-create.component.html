@@ -37,18 +37,7 @@
       <input type="checkbox" class="featured-checkbox" [(ngModel)]="game.featured" name="featured" id="featured" />
       <label for="featured" class="featured-label">Featured Game</label>
     </div>
-    <div class="form-row file-upload-section">
-      <label>Cover Image</label>
-      <input type="file" (change)="onCoverFileSelected($event)" accept="image/*" />
-      <button type="button" (click)="removeCover()" *ngIf="coverPreview">Remove</button>
-      <div *ngIf="coverPreview" class="preview"><img [src]="coverPreview" alt="Cover preview" class="cover-preview" /></div>
-    </div>
-    <div class="form-row file-upload-section">
-      <label>Music File</label>
-      <input type="file" (change)="onMusicFileSelected($event)" accept="audio/*" />
-      <button type="button" (click)="removeMusic()" *ngIf="musicPreview">Remove</button>
-      <div *ngIf="musicPreview" class="preview"><span>{{ musicPreview }}</span></div>
-    </div>
+    <!-- Remove file upload sections for cover and music -->
     <div class="system-req-section">
       <h3>System Requirements</h3>
       <div class="form-row"><label>Min OS</label><input type="text" [(ngModel)]="game.minOs" name="minOs" /></div>

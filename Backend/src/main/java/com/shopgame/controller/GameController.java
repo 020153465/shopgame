@@ -250,4 +250,47 @@ public class GameController {
         gameService.deleteGame(id);
         return ResponseEntity.ok().build();
     }
+
+    // --- NEW: JSON-only game creation ---
+    @PostMapping("/json")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> createGameJson(@RequestBody Game game) {
+        if (game.isFeatured() && gameService.getFeaturedGames().size() >= 10) {
+            return ResponseEntity.badRequest().body("Cannot feature more than 10 games.");
+        }
+        Game createdGame = gameService.createGame(game);
+        return ResponseEntity.ok(createdGame);
+    }
+
+    // --- NEW: JSON-only game update ---
+    @PutMapping("/{id}/json")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> updateGameJson(@PathVariable Long id, @RequestBody Game gameDetails) {
+        if (gameDetails.isFeatured()) {
+            List<Game> featured = gameService.getFeaturedGames();
+            boolean isAlreadyFeatured = featured.stream().anyMatch(g -> g.getId().equals(id));
+            if (!isAlreadyFeatured && featured.size() >= 10) {
+                return ResponseEntity.badRequest().body("Cannot feature more than 10 games.");
+            }
+        }
+        Game updatedGame = gameService.updateGame(id, gameDetails);
+        return ResponseEntity.ok(updatedGame);
+    }
+
+    // --- NEW: Cover image upload for existing game ---
+    @PostMapping("/{id}/cover")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> uploadGameCover(@PathVariable Long id, @RequestParam("file") MultipartFile file) throws IOException {
+        Optional<Game> gameOpt = gameService.getGameById(id);
+        if (gameOpt.isEmpty()) return ResponseEntity.notFound().build();
+        Game game = gameOpt.get();
+        String originalFilename = StringUtils.cleanPath(file.getOriginalFilename());
+        String uniqueFilename = generateUniqueFilename(originalFilename);
+        File dest = new File(coverUploadDir + uniqueFilename);
+        dest.getParentFile().mkdirs();
+        file.transferTo(dest);
+        game.setCoverImageFilename(uniqueFilename);
+        gameService.createGame(game); // save updated game
+        return ResponseEntity.ok("/assets/covers/" + uniqueFilename);
+    }
 } 

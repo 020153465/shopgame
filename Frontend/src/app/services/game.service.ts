@@ -20,34 +20,12 @@ export class GameService {
     return this.http.get<Game>(`${this.apiUrl}/${id}`);
   }
 
-  createGame(game: CreateGameRequest, coverFile?: File, musicFile?: File): Observable<Game> {
-    const formData = new FormData();
-    formData.append('game', new Blob([JSON.stringify(game)], { type: 'application/json' }));
-    if (coverFile) {
-      formData.append('cover', coverFile);
-    }
-    if (musicFile) {
-      formData.append('music', musicFile);
-    }
-    return this.http.post<Game>(this.apiUrl, formData);
+  createGame(game: CreateGameRequest): Observable<Game> {
+    return this.http.post<Game>(`${this.apiUrl}/json`, game);
   }
 
-  updateGame(id: number, game: Partial<Game>, coverFile?: File, musicFile?: File): Observable<Game> {
-    // If we have files, use the multipart endpoint
-    if (coverFile || musicFile) {
-      const formData = new FormData();
-      formData.append('game', new Blob([JSON.stringify(game)], { type: 'application/json' }));
-      if (coverFile) {
-        formData.append('cover', coverFile);
-      }
-      if (musicFile) {
-        formData.append('music', musicFile);
-      }
-      return this.http.put<Game>(`${this.apiUrl}/${id}`, formData);
-    } else {
-      // For simple field updates, use the PATCH endpoint
-      return this.http.patch<Game>(`${this.apiUrl}/${id}`, game);
-    }
+  updateGame(id: number, game: Partial<Game>): Observable<Game> {
+    return this.http.put<Game>(`${this.apiUrl}/${id}/json`, game);
   }
 
   deleteGame(id: number): Observable<void> {
@@ -104,5 +82,11 @@ export class GameService {
 
   getRecommendedGames(id: number, limit: number = 4): Observable<Game[]> {
     return this.http.get<Game[]>(`${this.apiUrl}/${id}/recommendations?limit=${limit}`);
+  }
+
+  uploadGameCover(id: number, file: File): Observable<string> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<string>(`${this.apiUrl}/${id}/cover`, formData);
   }
 } 

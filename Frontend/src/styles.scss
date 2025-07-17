@@ -270,3 +270,21 @@ app-root {
 .dark-theme .mat-mdc-dialog-content {
   color: #b0bec5 !important;
 } 
+
+.dark-theme .search-bar input,
+.dark-theme .search-bar input:focus,
+.dark-theme ::ng-deep .mat-mdc-input-element,
+.dark-theme ::ng-deep .mat-mdc-input-element:focus {
+  color: #fff !important;
+  background: #23243a !important;
+  border-color: #4f8cff !important;
+}
+.dark-theme .search-bar input::placeholder,
+.dark-theme .search-bar input::-webkit-input-placeholder,
+.dark-theme .search-bar input::-moz-placeholder,
+.dark-theme .search-bar input:-ms-input-placeholder,
+.dark-theme .search-bar input::-ms-input-placeholder,
+.dark-theme ::ng-deep .mat-mdc-input-element::placeholder {
+  color: #fff !important;
+  opacity: 1 !important;
+} 
