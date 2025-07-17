@@ -8,6 +8,8 @@ export interface Game {
   devTeam: string;
   publisher: string;
   coverImageUrl: string;
+  coverImageFilename?: string;
+  referenceUrl?: string;
   stockQuantity: number;
   featured: boolean;
   musicUrl?: string;
@@ -34,6 +36,8 @@ export interface CreateGameRequest {
   devTeam: string;
   publisher: string;
   coverImageUrl: string;
+  coverImageFilename?: string;
+  referenceUrl?: string;
   stockQuantity: number;
   featured: boolean;
   musicUrl?: string;

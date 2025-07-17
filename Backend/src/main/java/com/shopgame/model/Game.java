@@ -35,8 +35,14 @@ public class Game {
     
     private String publisher;
     
-    // Stores the filename of the cover image in /assets/covers/
+    // Stores the remote URL of the cover image
     private String coverImageUrl;
+
+    // New: Stores the local filename of the cover image (if available)
+    private String coverImageFilename;
+
+    // New: Stores a reference URL to the game (e.g., Steam, IGDB, Wikipedia)
+    private String referenceUrl;
     
     private Integer stockQuantity = 0;
 
@@ -151,6 +157,22 @@ public class Game {
     
     public void setCoverImageUrl(String coverImageUrl) {
         this.coverImageUrl = coverImageUrl;
+    }
+
+    public String getCoverImageFilename() {
+        return coverImageFilename;
+    }
+
+    public void setCoverImageFilename(String coverImageFilename) {
+        this.coverImageFilename = coverImageFilename;
+    }
+
+    public String getReferenceUrl() {
+        return referenceUrl;
+    }
+
+    public void setReferenceUrl(String referenceUrl) {
+        this.referenceUrl = referenceUrl;
     }
     
     public Integer getStockQuantity() {

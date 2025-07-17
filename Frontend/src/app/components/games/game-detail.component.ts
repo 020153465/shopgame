@@ -11,6 +11,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { CommonModule } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-game-detail',
@@ -125,5 +126,24 @@ export class GameDetailComponent implements OnInit {
         localStorage.setItem('shopgame_cart', JSON.stringify(items));
       }
     }
+  }
+
+  // Returns the cover image path for a game
+  getCoverPath(game: Game | null): string {
+    if (!game) return 'https://via.placeholder.com/300x400?text=No+Image';
+    if (game.coverImageFilename) {
+      return `${environment.assetsUrl}/covers/${game.coverImageFilename}`;
+    }
+    if (game.coverImageUrl) {
+      return game.coverImageUrl;
+    }
+    return 'https://via.placeholder.com/300x400?text=No+Image';
+  }
+
+  // Error handler for <img> tag: fallback to placeholder only
+  onImageError(event: Event) {
+    const img = event.target as HTMLImageElement;
+    img.onerror = null; // Prevent infinite loop
+    img.src = 'https://via.placeholder.com/300x400?text=Image+Not+Found';
   }
 } 

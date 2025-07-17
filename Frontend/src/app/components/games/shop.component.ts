@@ -15,6 +15,7 @@ import { AuthService } from '../../services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { FormsModule } from '@angular/forms';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-shop',
@@ -173,6 +174,25 @@ export class ShopComponent implements OnInit {
 
   getImage(url: string | null | undefined): string {
     return url && url.trim() !== '' ? url : 'https://via.placeholder.com/300x400?text=No+Image';
+  }
+
+  // Returns the cover image path for a game
+  getCoverPath(game: Game | null): string {
+    if (!game) return 'https://via.placeholder.com/300x400?text=No+Image';
+    if (game.coverImageFilename) {
+      return `${environment.assetsUrl}/covers/${game.coverImageFilename}`;
+    }
+    if (game.coverImageUrl) {
+      return game.coverImageUrl;
+    }
+    return 'https://via.placeholder.com/300x400?text=No+Image';
+  }
+
+  // Error handler for <img> tag: fallback to placeholder only
+  onImageError(event: Event) {
+    const img = event.target as HTMLImageElement;
+    img.onerror = null; // Prevent infinite loop
+    img.src = 'https://via.placeholder.com/300x400?text=Image+Not+Found';
   }
 
   addToCart(game: Game) {

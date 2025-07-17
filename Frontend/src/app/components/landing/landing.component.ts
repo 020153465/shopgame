@@ -15,6 +15,7 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { CommunityCommunityComponent } from './community-community.component';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-landing',
@@ -176,7 +177,7 @@ export class LandingComponent implements OnInit {
   getCoverUrl(game: Game): string {
     if (!game.coverImageUrl) return '';
     if (game.coverImageUrl.startsWith('http')) return game.coverImageUrl;
-    return `/api/assets/covers/${game.coverImageUrl}`;
+    return `${environment.assetsUrl}/covers/${game.coverImageUrl}`;
   }
 
   isAuthenticated(): boolean {

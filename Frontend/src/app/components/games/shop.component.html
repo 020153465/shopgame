@@ -12,7 +12,7 @@
   <div class="games-grid" *ngIf="!loading && !error">
     <div class="game-card" *ngFor="let game of games" (click)="viewGameDetails(game.id)">
       <div class="card-image-container">
-        <img class="game-image" [src]="getImage(game.coverImageUrl)" [alt]="game.title">
+        <img class="game-image" [src]="getCoverPath(game)" [alt]="game.title" (error)="onImageError($event)">
         <div class="image-overlay">
           <div class="overlay-content">
             <span class="view-details">View Details</span>
