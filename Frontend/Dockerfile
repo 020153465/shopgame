@@ -34,7 +34,8 @@ RUN mkdir -p /etc/nginx/certs && \
       openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
         -keyout /etc/nginx/certs/shopgame.key \
         -out /etc/nginx/certs/shopgame.crt \
-        -subj "/CN=localhost"; \
+        -subj "/CN=*" \
+        -addext "subjectAltName=DNS:*,IP:0.0.0.0"; \
     fi
 
 # Expose ports

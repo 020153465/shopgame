@@ -57,7 +57,8 @@ services:
       dockerfile: Dockerfile
     container_name: shopgame-frontend
     ports:
-      - "4200:80" # Accessible from external IPs
+      - "80:80"   # HTTP for Cloudflare Flexible SSL
+      - "4200:80" # Alternative HTTP port
       - "4443:443" # HTTPS support
     depends_on:
       - backend
