@@ -6,10 +6,7 @@
       <span class="brand-title">ShopGame</span>
     </div>
     <h1 class="tagline">Level Up Your Game Library</h1>
-    <div class="subtitle">
-      <p class="subtitle-line">Discover, collect, and play the world's best games.</p>
-      <p class="subtitle-line">Welcome to the next generation of digital game shopping.</p>
-    </div>
+    <p class="subtitle">Discover, collect, and play the world's best games. Welcome to the next generation of digital game shopping.</p>
     <div class="featured-covers">
       <img *ngFor="let game of featuredGames; let i = index" 
            class="cover" 
@@ -23,13 +20,6 @@
     <div class="scroll-down" (click)="scrollToSection()">
       <mat-icon>expand_more</mat-icon>
       <span class="scroll-down-text">Scroll to discover more</span>
-    </div>
-  </div>
-  <!-- What's Inside quick overview -->
-  <div class="whats-inside-overview">
-    <div class="overview-step" *ngFor="let step of overviewSteps" (click)="scrollTo(step.sectionId)">
-      <mat-icon>{{ step.icon }}</mat-icon>
-      <span>{{ step.label }}</span>
     </div>
   </div>
 </div>

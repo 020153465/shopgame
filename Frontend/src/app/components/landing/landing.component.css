@@ -99,22 +99,14 @@ body, html {
 }
 
 .subtitle {
-  margin-bottom: 48px;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.subtitle-line {
-  font-size: 1.7rem;
+  font-size: 1.4rem;
   color: #e0e0e0;
+  margin-bottom: 48px;
   text-shadow: 0 2px 12px #0008;
   line-height: 1.6;
-  margin: 0 0 12px 0;
-}
-
-.subtitle-line:last-child {
-  margin-bottom: 0;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .featured-covers {
