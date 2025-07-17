@@ -14,6 +14,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Game, CreateGameRequest } from '../../models/game.model';
 import { GameService } from '../../services/game.service';
 import { GameDialogComponent } from './game-dialog/game-dialog.component';
@@ -35,7 +36,8 @@ import { environment } from '../../../environments/environment';
     MatCheckboxModule,
     MatCardModule,
     MatChipsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatProgressSpinnerModule
   ],
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css']

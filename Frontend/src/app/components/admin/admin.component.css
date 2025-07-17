@@ -1,134 +1,553 @@
+/* Admin Dashboard Container */
 .admin-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
   padding: 24px;
+  transition: all 0.3s ease;
 }
-.user-detail {
-  margin-top: 24px;
-  max-width: 400px;
+
+/* Header Section */
+.admin-header {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 24px 32px;
+  margin-bottom: 32px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
 }
-.button-container {
+
+.admin-header h2 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #1e293b;
+  margin: 0 0 8px 0;
+  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transition: all 0.3s ease;
+}
+
+.admin-subtitle {
+  color: #64748b;
+  font-size: 1.1rem;
+  margin: 0;
+  transition: color 0.3s ease;
+}
+
+/* Tabs Section */
+.admin-tabs {
   display: flex;
   gap: 8px;
-  margin-top: 16px;
+  margin-bottom: 32px;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
 }
+
+.admin-tabs button {
+  flex: 1;
+  padding: 16px 24px;
+  border: none;
+  border-radius: 12px;
+  background: transparent;
+  color: #64748b;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.admin-tabs button:hover {
+  background: rgba(37, 99, 235, 0.1);
+  color: #2563eb;
+  transform: translateY(-1px);
+}
+
+.admin-tabs button.active-tab {
+  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+  color: white;
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Content Sections */
+.admin-content {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 32px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.admin-content h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 24px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: color 0.3s ease;
+}
+
+.admin-content h2::before {
+  content: '';
+  width: 4px;
+  height: 32px;
+  background: linear-gradient(135deg, #2563eb 0%, #1e40af 100%);
+  border-radius: 2px;
+}
+
+/* Search Bar */
+.search-bar {
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 24px;
+  transition: all 0.3s ease;
+}
+
+/* Messages */
+.error-message, .success-message {
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.3s ease;
+}
+
 .error-message {
-  color: #d32f2f;
-  background: #ffebee;
-  border: 1px solid #ffcdd2;
-  border-radius: 4px;
-  padding: 12px;
-  margin-bottom: 16px;
-  font-weight: 500;
+  background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.1);
 }
+
 .success-message {
-  color: #2e7d32;
-  background: #e8f5e8;
-  border: 1px solid #c8e6c9;
-  border-radius: 4px;
-  padding: 12px;
-  margin-bottom: 16px;
-  font-weight: 500;
+  background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+  border: 1px solid #bbf7d0;
+  color: #16a34a;
+  box-shadow: 0 2px 8px rgba(22, 163, 74, 0.1);
 }
+
+/* Tables */
+.mat-elevation-z8 {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  transition: all 0.3s ease;
+}
+
+.mat-mdc-table {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+}
+
+.mat-mdc-header-cell {
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  color: #1e293b;
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 20px 16px;
+  border-bottom: 2px solid #e2e8f0;
+  transition: all 0.3s ease;
+}
+
+.mat-mdc-cell {
+  padding: 16px;
+  border-bottom: 1px solid #f1f5f9;
+  transition: all 0.3s ease;
+}
+
+.mat-mdc-row:hover {
+  background: rgba(37, 99, 235, 0.05);
+  transform: scale(1.01);
+  transition: all 0.3s ease;
+}
+
+/* User Avatar */
 .user-avatar {
-  width: 36px;
-  height: 36px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
-  background: #e3e6f3;
-  color: #3f51b5;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
-  font-size: 1.1rem;
-  margin: 0 auto;
-  box-shadow: 0 1px 4px #0001;
+  font-size: 1.2rem;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  transition: all 0.3s ease;
 }
+
+.user-avatar:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+}
+
+/* Role Badges */
 .role-badge {
   display: inline-block;
-  padding: 2px 10px;
-  border-radius: 12px;
-  font-size: 0.95em;
-  font-weight: 600;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
 }
+
 .role-badge.user {
-  background: #e3f2fd;
-  color: #1976d2;
-  border: 1px solid #90caf9;
+  background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+  color: #1d4ed8;
+  border: 1px solid #93c5fd;
+  box-shadow: 0 2px 8px rgba(29, 78, 216, 0.1);
 }
+
 .role-badge.admin {
-  background: #fff3e0;
-  color: #e65100;
-  border: 1px solid #ffb74d;
+  background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+  color: #d97706;
+  border: 1px solid #fbbf24;
+  box-shadow: 0 2px 8px rgba(217, 119, 6, 0.1);
 }
-.search-bar {
-  width: 100%;
-  max-width: 350px;
-  margin-bottom: 18px;
-  display: block;
+
+/* Game Cover */
+.game-cover {
+  width: 80px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 2px solid #e2e8f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
 }
+
+.game-cover:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Game Info */
+.game-title {
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 6px;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
+}
+
+.game-genres {
+  font-size: 0.9rem;
+  color: #64748b;
+  transition: color 0.3s ease;
+}
+
+/* Stock Status */
+.in-stock {
+  color: #16a34a;
+  font-weight: 700;
+  background: rgba(22, 163, 74, 0.1);
+  padding: 4px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(22, 163, 74, 0.2);
+}
+
+.out-of-stock {
+  color: #dc2626;
+  font-weight: 700;
+  background: rgba(220, 38, 38, 0.1);
+  padding: 4px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(220, 38, 38, 0.2);
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.action-buttons button {
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.action-buttons button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* FAB Button */
 .fab {
   position: fixed;
   bottom: 32px;
   right: 32px;
   z-index: 100;
-  box-shadow: 0 2px 8px #0002;
+  box-shadow: 0 8px 32px rgba(37, 99, 235, 0.3);
+  transition: all 0.3s ease;
 }
-.admin-tabs {
+
+.fab:hover {
+  transform: scale(1.1);
+  box-shadow: 0 12px 40px rgba(37, 99, 235, 0.4);
+}
+
+/* User Detail Section */
+.user-detail {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 24px;
+  margin-top: 24px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+}
+
+.user-detail h3 {
+  color: #1e293b;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  transition: color 0.3s ease;
+}
+
+.button-container {
   display: flex;
   gap: 12px;
-  margin-bottom: 24px;
+  margin-top: 20px;
 }
-.active-tab {
-  font-weight: bold;
-  border-bottom: 2px solid #1976d2;
-  color: #1976d2 !important;
+
+.button-container button {
+  border-radius: 8px;
+  transition: all 0.3s ease;
 }
-.game-management-placeholder {
-  padding: 32px;
+
+.button-container button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Loading States */
+.loading {
   text-align: center;
-  color: #888;
-  font-size: 1.2rem;
+  padding: 40px;
+  color: #64748b;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
 }
 
-/* Game Management Styles */
-.game-cover {
-  width: 60px;
-  height: 80px;
-  object-fit: cover;
-  border-radius: 4px;
-  border: 1px solid #e0e0e0;
+/* Dark Theme Styles */
+:host-context(.dark-theme) .admin-container {
+  background: linear-gradient(135deg, #181c24 0%, #23243a 100%);
 }
 
-.no-cover {
-  width: 60px;
-  height: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #f5f5f5;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  font-size: 12px;
-  color: #666;
+:host-context(.dark-theme) .admin-header {
+  background: rgba(35, 36, 58, 0.95);
+  border: 1px solid #3b3c5a;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
-.game-title {
-  font-weight: 500;
-  margin-bottom: 4px;
+:host-context(.dark-theme) .admin-header h2 {
+  background: linear-gradient(135deg, #4f8cff 0%, #7dd3fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.game-genres {
-  font-size: 12px;
-  color: #666;
+:host-context(.dark-theme) .admin-subtitle {
+  color: #a5b4fc;
 }
 
-.in-stock {
-  color: #4caf50;
-  font-weight: 500;
+:host-context(.dark-theme) .admin-tabs {
+  background: rgba(35, 36, 58, 0.8);
+  border: 1px solid #3b3c5a;
 }
 
-.out-of-stock {
-  color: #f44336;
-  font-weight: 500;
+:host-context(.dark-theme) .admin-tabs button {
+  color: #a5b4fc;
+}
+
+:host-context(.dark-theme) .admin-tabs button:hover {
+  background: rgba(79, 140, 255, 0.2);
+  color: #4f8cff;
+}
+
+:host-context(.dark-theme) .admin-tabs button.active-tab {
+  background: linear-gradient(135deg, #4f8cff 0%, #7dd3fc 100%);
+  color: #181c24;
+}
+
+:host-context(.dark-theme) .admin-content {
+  background: rgba(35, 36, 58, 0.95);
+  border: 1px solid #3b3c5a;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+:host-context(.dark-theme) .admin-content h2 {
+  color: #e0e6f7;
+}
+
+:host-context(.dark-theme) .admin-content h2::before {
+  background: linear-gradient(135deg, #4f8cff 0%, #7dd3fc 100%);
+}
+
+:host-context(.dark-theme) .mat-mdc-table {
+  background: rgba(24, 28, 36, 0.95);
+}
+
+:host-context(.dark-theme) .mat-mdc-header-cell {
+  background: linear-gradient(135deg, #23243a 0%, #181c24 100%);
+  color: #e0e6f7;
+  border-bottom: 2px solid #3b3c5a;
+}
+
+:host-context(.dark-theme) .mat-mdc-cell {
+  color: #e0e6f7;
+  border-bottom: 1px solid #3b3c5a;
+}
+
+:host-context(.dark-theme) .mat-mdc-row:hover {
+  background: rgba(79, 140, 255, 0.1);
+}
+
+:host-context(.dark-theme) .user-avatar {
+  background: linear-gradient(135deg, #4f8cff 0%, #7dd3fc 100%);
+  box-shadow: 0 4px 12px rgba(79, 140, 255, 0.3);
+}
+
+:host-context(.dark-theme) .user-avatar:hover {
+  box-shadow: 0 6px 20px rgba(79, 140, 255, 0.4);
+}
+
+:host-context(.dark-theme) .role-badge.user {
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+  color: #7dd3fc;
+  border: 1px solid #3b82f6;
+}
+
+:host-context(.dark-theme) .role-badge.admin {
+  background: linear-gradient(135deg, #92400e 0%, #d97706 100%);
+  color: #fde68a;
+  border: 1px solid #f59e0b;
+}
+
+:host-context(.dark-theme) .game-cover {
+  border: 2px solid #3b3c5a;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+:host-context(.dark-theme) .game-title {
+  color: #e0e6f7;
+}
+
+:host-context(.dark-theme) .game-genres {
+  color: #a5b4fc;
+}
+
+:host-context(.dark-theme) .in-stock {
+  background: rgba(34, 197, 94, 0.2);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #4ade80;
+}
+
+:host-context(.dark-theme) .out-of-stock {
+  background: rgba(239, 68, 68, 0.2);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #f87171;
+}
+
+:host-context(.dark-theme) .user-detail {
+  background: rgba(35, 36, 58, 0.95);
+  border: 1px solid #3b3c5a;
+}
+
+:host-context(.dark-theme) .user-detail h3 {
+  color: #e0e6f7;
+}
+
+:host-context(.dark-theme) .loading {
+  color: #a5b4fc;
+}
+
+:host-context(.dark-theme) .error-message {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.1) 100%);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+}
+
+:host-context(.dark-theme) .success-message {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(22, 163, 74, 0.1) 100%);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #4ade80;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .admin-container {
+    padding: 16px;
+  }
+  
+  .admin-header {
+    padding: 20px 24px;
+  }
+  
+  .admin-header h2 {
+    font-size: 2rem;
+  }
+  
+  .admin-tabs {
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .admin-tabs button {
+    padding: 12px 16px;
+  }
+  
+  .admin-content {
+    padding: 20px;
+  }
+  
+  .admin-content h2 {
+    font-size: 1.5rem;
+  }
+  
+  .mat-mdc-header-cell,
+  .mat-mdc-cell {
+    padding: 12px 8px;
+    font-size: 0.9rem;
+  }
+  
+  .user-avatar {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+  
+  .game-cover {
+    width: 60px;
+    height: 80px;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+    gap: 4px;
+  }
 } 
